@@ -56,7 +56,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Container\Machine.Container\Machine.Container.csproj">
+    <ProjectReference Include="..\..\Container\Machine.Container\Machine.Container.csproj">
       <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
       <Name>Machine.Container</Name>
     </ProjectReference>

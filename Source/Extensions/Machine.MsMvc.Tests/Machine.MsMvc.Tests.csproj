@@ -73,7 +73,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Machine.Core\Machine.Core.Tests\Machine.Core.Tests.csproj">
+    <ProjectReference Include="..\..\Machine.Core\Machine.Core.Tests\Machine.Core.Tests.csproj">
       <Project>{AA05C128-39BA-41D0-A627-A5B20F8A79FF}</Project>
       <Name>Machine.Core.Tests</Name>
     </ProjectReference>

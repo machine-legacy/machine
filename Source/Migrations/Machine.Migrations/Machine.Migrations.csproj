@@ -33,19 +33,15 @@
   <ItemGroup>
     <Reference Include="Boo.Lang, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\Boo\Boo.Lang.dll</HintPath>
+      <HintPath>..\..\..\Libraries\Boo\Boo.Lang.dll</HintPath>
     </Reference>
     <Reference Include="Boo.Lang.Compiler, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\Boo\Boo.Lang.Compiler.dll</HintPath>
-    </Reference>
-    <Reference Include="Boo.Lang.Parser, Version=2.0.0.0, Culture=neutral, PublicKeyToken=32c39770e9a21a67, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\Boo\Boo.Lang.Parser.dll</HintPath>
+      <HintPath>..\..\..\Libraries\Boo\Boo.Lang.Compiler.dll</HintPath>
     </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Libraries\Logging\log4net.dll</HintPath>
+      <HintPath>..\..\..\Libraries\Logging\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Build.Engine" />
     <Reference Include="Microsoft.Build.Framework" />
@@ -104,7 +100,7 @@
     <Compile Include="VersionState.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Container\Machine.Container\Machine.Container.csproj">
+    <ProjectReference Include="..\..\Container\Machine.Container\Machine.Container.csproj">
       <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
       <Name>Machine.Container</Name>
     </ProjectReference>
@@ -112,7 +108,7 @@
       <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
       <Name>Machine.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Machine.WindsorExtensions\Machine.WindsorExtensions\Machine.WindsorExtensions.csproj">
+    <ProjectReference Include="..\..\Extensions\Machine.WindsorExtensions\Machine.WindsorExtensions\Machine.WindsorExtensions.csproj">
       <Project>{8DABCD9B-546A-4789-87C3-94FCEB38110D}</Project>
       <Name>Machine.WindsorExtensions</Name>
     </ProjectReference>
