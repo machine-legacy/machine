@@ -110,7 +110,7 @@
     <Compile Include="Calendars\Weekly\WeeklyCalendar.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Machine.snk" />
+    <None Include="..\..\..\Machine.snk" />
     <None Include="Views\Home\Index.brail" />
     <None Include="Views\Layouts\Default.brail" />
     <None Include="Views\Rescues\GeneralError.brail" />
