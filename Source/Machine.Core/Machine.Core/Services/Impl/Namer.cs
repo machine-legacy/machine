@@ -25,6 +25,38 @@ namespace Machine.Core.Services.Impl
       return sb.ToString();
     }
 
+    public string ToLowerCamelCase(string source)
+    {
+      string camelCase = ToCamelCase(source);
+      return camelCase.Substring(0, 1).ToLower() + camelCase.Substring(1);
+    }
+
+    public string ToUnderscoreDelimited(string source)
+    {
+      return ToDelimited(source, '_');
+    }
+
+    public string ToDashDelimited(string source)
+    {
+      return ToDelimited(source, '-');
+    }
+
+    public string ToDelimited(string source, char delimiter)
+    {
+      StringBuilder sb = new StringBuilder();
+      bool previousWasDelimiter = true;
+      foreach (char c in source)
+      {
+        if (Char.IsUpper(c) && !previousWasDelimiter)
+        {
+          sb.Append(delimiter);
+        }
+        sb.Append(c);
+        previousWasDelimiter = (c == delimiter);
+      }
+      return sb.ToString().ToLower();
+    }
+
     public string MakeRandomName()
     {
       string lowercase = "abcdefghijklmnopqrstuvwxyz";
