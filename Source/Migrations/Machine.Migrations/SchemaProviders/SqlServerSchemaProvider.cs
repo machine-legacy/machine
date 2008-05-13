@@ -214,6 +214,10 @@ namespace Machine.Migrations.SchemaProviders
       {
         return "MONEY";
       }
+      if (type == typeof(char) || type == typeof(byte))
+      {
+        return "CHAR(1)";
+      }
       if (type == typeof(SqlMoney))
       {
         return "MONEY";
