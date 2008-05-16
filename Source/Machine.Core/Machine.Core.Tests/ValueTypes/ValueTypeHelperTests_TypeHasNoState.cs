@@ -16,14 +16,14 @@ namespace Machine.Core.ValueTypes
     [ExpectedException(typeof(ArgumentNullException))]
     public void CalculateHashCode_NullValue_Throws()
     {
-      ValueTypeHelper.CalculateHashCode<Message1>(null);
+      ValueTypeHelper.CalculateHashCode(null);
     }
 
     [Test]
     [ExpectedException(typeof(ArgumentNullException))]
     public void ToString_NullValue_Throws()
     {
-      ValueTypeHelper.ToString<Message1>(null);
+      ValueTypeHelper.ToString(null);
     }
 
     [Test]

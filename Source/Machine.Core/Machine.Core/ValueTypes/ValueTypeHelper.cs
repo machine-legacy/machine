@@ -18,7 +18,7 @@ namespace Machine.Core.ValueTypes
       public CalculateHashCodeFunction CalculateHashCode;
       public ToStringFunction MakeString;
     }
-
+    /*
     public static bool AreEqual<TType>(TType a, TType b)
     {
       return Lookup(typeof(TType)).AreEqual(a, b);
@@ -32,29 +32,38 @@ namespace Machine.Core.ValueTypes
       }
       return false;
     }
-
+    */
     public static bool AreEqual(object a, object b)
     {
+      if (a == null) throw new ArgumentNullException("a");
+      if (b == null) throw new ArgumentNullException("b");
       if (a.GetType().Equals(b.GetType()))
       {
         return Lookup(a.GetType()).AreEqual(a, b);
       }
       return false;
     }
-
+    /*
     public static Int32 CalculateHashCode<TType>(TType value)
     {
       return Lookup(typeof(TType)).CalculateHashCode(value);
     }
-
+    */
     public static Int32 CalculateHashCode(object value)
     {
+      if (value == null) throw new ArgumentNullException("value");
       return Lookup(value.GetType()).CalculateHashCode(value);
     }
-
+    /*
     public static string ToString<TType>(TType a)
     {
       return Lookup(typeof(TType)).MakeString(a);
+    }
+    */
+    public static string ToString(object value)
+    {
+      if (value == null) throw new ArgumentNullException("value");
+      return Lookup(value.GetType()).MakeString(value);
     }
 
     private static CacheEntry Lookup(Type type)
