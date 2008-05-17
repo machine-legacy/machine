@@ -7,21 +7,50 @@ using System.Text;
 namespace Machine.Mocks
 {
   [Serializable]
-  public class MocksException : Exception
+  public class MockVerificationException : Exception
   {
-    public MocksException()
+    //
+    // For guidelines regarding the creation of new exception types, see
+    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+    // and
+    //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+    //
+
+    public MockVerificationException()
     {
     }
 
-    public MocksException(string message) : base(message)
+    public MockVerificationException(string message) : base(message)
     {
     }
 
-    public MocksException(string message, Exception inner) : base(message, inner)
+    public MockVerificationException(string message, Exception inner) : base(message, inner)
     {
     }
 
-    protected MocksException(
+    protected MockVerificationException(
+      SerializationInfo info,
+      StreamingContext context) : base(info, context)
+    {
+    }
+  }
+
+  [Serializable]
+  public class MockUsageException : Exception
+  {
+    public MockUsageException()
+    {
+    }
+
+    public MockUsageException(string message) : base(message)
+    {
+    }
+
+    public MockUsageException(string message, Exception inner) : base(message, inner)
+    {
+    }
+
+    protected MockUsageException(
       SerializationInfo info,
       StreamingContext context) : base(info, context)
     {
@@ -30,9 +59,9 @@ namespace Machine.Mocks
 
   public static class MocksExceptions
   {
-    public static MocksException MockInterfaceWithConstructorArguments(Type type)
+    public static MockUsageException MockInterfaceWithConstructorArguments(Type type)
     {
-      return new MocksException(String.Format(Resources.Exception_MockInterfaceWithConstructorArguments, type.Name));
+      return new MockUsageException(String.Format(Resources.Exception_MockInterfaceWithConstructorArguments, type.Name));
     }
   }
 }

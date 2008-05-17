@@ -35,7 +35,7 @@ namespace Machine.Core
       }
       if (!_normalMocks.ContainsKey(typeof(TMock)))
       {
-        _normalMocks[typeof(TMock)] = _mocks.CreateMock<TMock>();
+        _normalMocks[typeof(TMock)] = _mocks.StrictMock<TMock>();
       }
       return (TMock)_normalMocks[typeof(TMock)];
     }

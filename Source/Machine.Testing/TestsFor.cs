@@ -154,7 +154,7 @@ namespace Machine.Testing
           Override(Mocks.Stub<T>());
           break;
         case With.StrictMock:
-          Override(Mocks.CreateMock<T>());
+          Override(Mocks.StrictMock<T>());
           break;
         default:
           throw new Exception("Unknown With");

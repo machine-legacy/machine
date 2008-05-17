@@ -25,8 +25,8 @@ namespace Machine.Migrations.Services.Impl
       _databaseProvider = _mocks.DynamicMock<IDatabaseProvider>();
       _migrationSelector = _mocks.DynamicMock<IMigrationSelector>();
       _schemaStateManager = _mocks.DynamicMock<ISchemaStateManager>();
-      _migrationRunner = _mocks.CreateMock<IMigrationRunner>();
-      _workingDirectoryManager = _mocks.CreateMock<IWorkingDirectoryManager>();
+      _migrationRunner = _mocks.StrictMock<IMigrationRunner>();
+      _workingDirectoryManager = _mocks.StrictMock<IWorkingDirectoryManager>();
       return new Migrator(_migrationSelector, _migrationRunner, _databaseProvider, _schemaStateManager, _workingDirectoryManager);
     }
 

@@ -18,8 +18,8 @@ namespace Machine.Migrations.Services.Impl
 
     public override CommonTransformations Create()
     {
-      _databaseProvider = _mocks.CreateMock<IDatabaseProvider>();
-      _schemaProvider = _mocks.CreateMock<ISchemaProvider>();
+      _databaseProvider = _mocks.StrictMock<IDatabaseProvider>();
+      _schemaProvider = _mocks.StrictMock<ISchemaProvider>();
       return new CommonTransformations(_databaseProvider, _schemaProvider);
     }
 

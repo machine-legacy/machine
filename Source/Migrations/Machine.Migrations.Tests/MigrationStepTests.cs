@@ -57,7 +57,7 @@ namespace Machine.Migrations
     public void Apply_WhenNotReverting_GoesUp()
     {
       _step1 = new MigrationStep(_reference1, false);
-      _step1.DatabaseMigration = _mocks.CreateMock<IDatabaseMigration>();
+      _step1.DatabaseMigration = _mocks.StrictMock<IDatabaseMigration>();
       using (_mocks.Record())
       {
         _step1.DatabaseMigration.Up();
@@ -70,7 +70,7 @@ namespace Machine.Migrations
     public void Apply_WhenReverting_GoesDown()
     {
       _step1 = new MigrationStep(_reference1, true);
-      _step1.DatabaseMigration = _mocks.CreateMock<IDatabaseMigration>();
+      _step1.DatabaseMigration = _mocks.StrictMock<IDatabaseMigration>();
       using (_mocks.Record())
       {
         _step1.DatabaseMigration.Down();

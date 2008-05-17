@@ -16,7 +16,7 @@ namespace Machine.Migrations.SchemaProviders
 
     public override SqlServerSchemaProvider Create()
     {
-      _databaseProvider = _mocks.CreateMock<IDatabaseProvider>();
+      _databaseProvider = _mocks.StrictMock<IDatabaseProvider>();
       return new SqlServerSchemaProvider(_databaseProvider);
     }
 

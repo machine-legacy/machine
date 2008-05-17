@@ -25,7 +25,7 @@ namespace Machine.Container.Services.Impl
     {
       base.Setup();
       _entry = ServiceEntryHelper.NewEntry();
-      _objectFactory = _mocks.CreateMock<IObjectFactory>();
+      _objectFactory = _mocks.StrictMock<IObjectFactory>();
       _activatorResolver = _mocks.DynamicMock<IActivatorResolver>();
       _serviceDependencyInspector = _mocks.DynamicMock<IServiceDependencyInspector>();
       _serviceEntryResolver = _mocks.DynamicMock<IServiceEntryResolver>();

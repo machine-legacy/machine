@@ -18,7 +18,7 @@ namespace Machine.Migrations.Services.Impl
 
     public override SchemaStateManager Create()
     {
-      _databaseProvider = _mocks.CreateMock<IDatabaseProvider>();
+      _databaseProvider = _mocks.StrictMock<IDatabaseProvider>();
       _schemaProvider = _mocks.DynamicMock<ISchemaProvider>();
       return new SchemaStateManager(_databaseProvider, _schemaProvider);
     }

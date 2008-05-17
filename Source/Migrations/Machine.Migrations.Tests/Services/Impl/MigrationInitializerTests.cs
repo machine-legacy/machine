@@ -20,11 +20,11 @@ namespace Machine.Migrations.Services.Impl
 
     public override MigrationInitializer Create()
     {
-      _databaseProvider = _mocks.CreateMock<IDatabaseProvider>();
-      _schemaProvider = _mocks.CreateMock<ISchemaProvider>();
-      _migration = _mocks.CreateMock<IDatabaseMigration>();
-      _configuration = _mocks.CreateMock<IConfiguration>();
-      _commonTransformations = _mocks.CreateMock<ICommonTransformations>();
+      _databaseProvider = _mocks.StrictMock<IDatabaseProvider>();
+      _schemaProvider = _mocks.StrictMock<ISchemaProvider>();
+      _migration = _mocks.StrictMock<IDatabaseMigration>();
+      _configuration = _mocks.StrictMock<IConfiguration>();
+      _commonTransformations = _mocks.StrictMock<ICommonTransformations>();
       return new MigrationInitializer(_configuration, _databaseProvider, _schemaProvider, _commonTransformations);
     }
 

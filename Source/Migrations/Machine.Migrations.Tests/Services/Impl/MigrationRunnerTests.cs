@@ -27,15 +27,15 @@ namespace Machine.Migrations.Services.Impl
       _steps = new List<MigrationStep>();
       _steps.Add(new MigrationStep(new MigrationReference(1, "A", "001_a.cs"), false));
       _steps.Add(new MigrationStep(new MigrationReference(2, "B", "002_b.cs"), false));
-      _migration1 = _mocks.CreateMock<IDatabaseMigration>();
-      _migration2 = _mocks.CreateMock<IDatabaseMigration>();
+      _migration1 = _mocks.StrictMock<IDatabaseMigration>();
+      _migration2 = _mocks.StrictMock<IDatabaseMigration>();
       _schemaStateManager = _mocks.DynamicMock<ISchemaStateManager>();
       _migrationFactoryChooser = _mocks.DynamicMock<IMigrationFactoryChooser>();
       _migrationInitializer = _mocks.DynamicMock<IMigrationInitializer>();
       _migrationFactory = _mocks.DynamicMock<IMigrationFactory>();
       _configuration = _mocks.DynamicMock<IConfiguration>();
       _transactionProvider = _mocks.DynamicMock<ITransactionProvider>();
-      _transaction = _mocks.CreateMock<IDbTransaction>();
+      _transaction = _mocks.StrictMock<IDbTransaction>();
       return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration, _transactionProvider);
     }
 
