@@ -1,5 +1,6 @@
 using System.Reflection;
 using Castle.Core.Interceptor;
+using System.Linq;
 
 namespace Machine.Mocks
 {
@@ -9,8 +10,10 @@ namespace Machine.Mocks
 
     public void Intercept(IInvocation invocation)
     {
-      //if 
+      if (ObjectMethods.Contains(invocation.Method))
+      {
         invocation.Proceed();
+      }
     }
   }
 }
