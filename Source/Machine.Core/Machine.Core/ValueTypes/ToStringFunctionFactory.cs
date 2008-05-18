@@ -31,6 +31,7 @@ namespace Machine.Core.ValueTypes
       il.Emit(OpCodes.Ldloc, sbLocal);
       il.Emit(OpCodes.Ldstr, type.Name + "<");
       il.Emit(OpCodes.Callvirt, appendString);
+      il.Emit(OpCodes.Pop);
 
       bool hasState = false;
       foreach (FieldInfo field in AllFields(type))
@@ -40,10 +41,12 @@ namespace Machine.Core.ValueTypes
           il.Emit(OpCodes.Ldloc, sbLocal);
           il.Emit(OpCodes.Ldstr, ", ");
           il.Emit(OpCodes.Callvirt, appendString);
+          il.Emit(OpCodes.Pop);
         }
         il.Emit(OpCodes.Ldloc, sbLocal);
         il.Emit(OpCodes.Ldstr, MakePrettyName(field.Name) + "=");
         il.Emit(OpCodes.Callvirt, appendString);
+        il.Emit(OpCodes.Pop);
         il.Emit(OpCodes.Ldloc, sbLocal);
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Castclass, type);
@@ -57,6 +60,7 @@ namespace Machine.Core.ValueTypes
           il.Emit(OpCodes.Ldfld, field);
         }
         il.Emit(OpCodes.Callvirt, appendObject);
+        il.Emit(OpCodes.Pop);
         hasState = true;
       }
       il.Emit(OpCodes.Ldloc, sbLocal);
