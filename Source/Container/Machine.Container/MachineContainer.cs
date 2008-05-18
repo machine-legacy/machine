@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
 
@@ -10,12 +11,18 @@ namespace Machine.Container
   public class MachineContainer : IHighLevelContainer
   {
     #region Member Data
+    private readonly IPluginManager _pluginManager;
     private IServiceEntryResolver _resolver;
     private IActivatorStrategy _activatorStrategy;
     private IActivatorStore _activatorStore;
     private ILifestyleFactory _lifestyleFactory;
     private IServiceGraph _serviceGraph;
     #endregion
+
+    public MachineContainer()
+    {
+      _pluginManager = new PluginManager(this);
+    }
 
     #region Methods
     public virtual void Initialize()
@@ -29,6 +36,7 @@ namespace Machine.Container
       _activatorStore = new ActivatorStore();
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
       AddService<IHighLevelContainer>(this);
+      _pluginManager.Initialize();
     }
 
     public virtual IActivatorResolver CreateDependencyResolver()
@@ -38,6 +46,11 @@ namespace Machine.Container
     #endregion
 
     #region IHighLevelContainer Members
+    public void AddPlugin(IServiceContainerPlugin plugin)
+    {
+      _pluginManager.AddPlugin(plugin);
+    }
+
     public void AddService<TService>()
     {
       AddService(typeof(TService), LifestyleType.Singleton);
@@ -121,6 +134,7 @@ namespace Machine.Container
     #region IDisposable Members
     public void Dispose()
     {
+      _pluginManager.Dispose();
     }
     #endregion
 
