@@ -1,7 +1,8 @@
 using System;
-using Machine.Mocks.Generation;
+using Machine.Mocks.Exceptions;
+using Machine.Mocks.Implementation.Generation;
 
-namespace Machine.Mocks.Generation
+namespace Machine.Mocks.Implementation.Generation
 {
   public class InterfaceGenerationStrategy : IMockGenerationStrategy
   {

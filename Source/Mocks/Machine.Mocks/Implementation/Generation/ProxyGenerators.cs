@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Castle.DynamicProxy;
 
-namespace Machine.Mocks.Generation
+namespace Machine.Mocks.Implementation.Generation
 {
   public class ProxyGenerators
   {

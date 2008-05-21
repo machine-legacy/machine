@@ -2,7 +2,7 @@ using System.Reflection;
 using Castle.Core.Interceptor;
 using System.Linq;
 
-namespace Machine.Mocks
+namespace Machine.Mocks.Implementation
 {
   public class MockInterceptor : IInterceptor
   {

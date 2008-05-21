@@ -1,6 +1,6 @@
 using System;
 
-namespace Machine.Mocks.Generation
+namespace Machine.Mocks.Implementation.Generation
 {
   public interface IMockGenerationStrategy
   {

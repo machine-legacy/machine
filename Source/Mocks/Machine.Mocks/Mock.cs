@@ -1,4 +1,4 @@
-using Machine.Mocks.Generation;
+using Machine.Mocks.Implementation.Generation;
 
 namespace Machine.Mocks
 {

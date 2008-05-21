@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Machine.Mocks.Generation;
+using Machine.Mocks.Implementation.Generation;
 
-namespace Machine.Mocks.Generation
+namespace Machine.Mocks.Implementation.Generation
 {
   public class MockGenerator
   {

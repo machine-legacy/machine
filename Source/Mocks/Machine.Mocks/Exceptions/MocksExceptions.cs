@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
+using Machine.Mocks.Properties;
 
-namespace Machine.Mocks
+namespace Machine.Mocks.Exceptions
 {
   [Serializable]
   public class MockVerificationException : Exception
