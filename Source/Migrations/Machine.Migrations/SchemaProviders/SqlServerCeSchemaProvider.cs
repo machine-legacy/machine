@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Machine.Migrations.DatabaseProviders;
 
@@ -24,13 +23,14 @@ namespace Machine.Migrations.SchemaProviders
       return null;
     }
 
-    public override string DotNetToSqlType(Type type, int size)
+	public override string ToMsSqlType(ColumnType type, int size)
     {
-      if (type == typeof(byte[]))
+      if (type == ColumnType.Binary)
       {
         return "IMAGE";
       }
-      if (type == typeof(String))
+	  
+	  if (type == ColumnType.Text || type == ColumnType.NVarChar)
       {
         if (size == 0)
         {
@@ -38,7 +38,8 @@ namespace Machine.Migrations.SchemaProviders
         }
         return String.Format("NVARCHAR({0})", size);
       }
-      return base.DotNetToSqlType(type, size);
+
+	  return base.ToMsSqlType(type, size);
     }
     #endregion
   }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 
@@ -13,6 +12,7 @@ namespace Machine.Migrations.Services.Impl
     private Type _databaseProviderType = typeof(SqlServerDatabaseProvider);
     private string _connectionString;
     private string _migrationsDirectory;
+  	private string _scope;
     private short _desiredVersion = -1;
     private bool _showDiagnostics;
     private string[] _references = new string[0];
@@ -52,6 +52,12 @@ namespace Machine.Migrations.Services.Impl
       get { return _references; }
       set { _references = value; }
     }
+
+	public string Scope
+	{
+		get { return _scope; }
+		set { _scope = value; }
+	}
 
     public bool ShowDiagnostics
     {

@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Machine.Migrations.DatabaseProviders;
+﻿using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 using Machine.Migrations.Services;
 
 namespace Machine.Migrations
 {
+
   public abstract class SimpleMigration : IDatabaseMigration
   {
     #region Member Data
@@ -15,6 +13,7 @@ namespace Machine.Migrations
     private IDatabaseProvider _databaseProvider;
     private ICommonTransformations _commonTransformations;
     private IConfiguration _configuration;
+    private IConnectionProvider _connectionProvider;
     #endregion
 
     #region Properties
@@ -43,6 +42,11 @@ namespace Machine.Migrations
       get { return _commonTransformations; }
     }
 
+	public IConnectionProvider ConnectionProvider
+	{
+		get { return _connectionProvider; }
+	}
+
     #endregion
 
     #region SimpleMigration()
@@ -53,12 +57,13 @@ namespace Machine.Migrations
     #endregion
 
     #region IDatabaseMigration Members
-    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider, ICommonTransformations commonTransformations)
+    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider, ICommonTransformations commonTransformations, IConnectionProvider connectionProvider)
     {
       _configuration = configuration;
       _schemaProvider = schemaProvider;
       _databaseProvider = databaseProvider;
       _commonTransformations = commonTransformations;
+      _connectionProvider = connectionProvider;
     }
 
     public void SetCommandTimeout(int timeout)
@@ -69,6 +74,7 @@ namespace Machine.Migrations
     public abstract void Up();
 
     public abstract void Down();
-    #endregion
+
+	#endregion
   }
 }

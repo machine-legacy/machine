@@ -17,6 +17,7 @@ namespace Machine.Migrations.Services.Impl
     private IDatabaseMigration _migration;
     private ICommonTransformations _commonTransformations;
     private IConfiguration _configuration;
+    private IConnectionProvider _connectionProvider;
 
     public override MigrationInitializer Create()
     {
@@ -25,7 +26,9 @@ namespace Machine.Migrations.Services.Impl
       _migration = _mocks.StrictMock<IDatabaseMigration>();
       _configuration = _mocks.StrictMock<IConfiguration>();
       _commonTransformations = _mocks.StrictMock<ICommonTransformations>();
-      return new MigrationInitializer(_configuration, _databaseProvider, _schemaProvider, _commonTransformations);
+      _connectionProvider = _mocks.StrictMock<IConnectionProvider>();
+
+      return new MigrationInitializer(_configuration, _databaseProvider, _schemaProvider, _commonTransformations, _connectionProvider);
     }
 
     [Test]
@@ -33,7 +36,7 @@ namespace Machine.Migrations.Services.Impl
     {
       using (_mocks.Record())
       {
-        _migration.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations);
+        _migration.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations, _connectionProvider);
       }
       _target.InitializeMigration(_migration);
       _mocks.VerifyAll();

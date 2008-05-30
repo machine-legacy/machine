@@ -1,10 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Machine.Migrations.Services
 {
   public interface IConfiguration
   {
+  	string Scope
+  	{
+  		get;
+  	}
+
     Type ConnectionProviderType
     {
       get;

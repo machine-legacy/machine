@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using Machine.Migrations.DatabaseProviders;
 
 namespace Machine.Migrations.Services.Impl
 {
@@ -20,7 +19,7 @@ namespace Machine.Migrations.Services.Impl
     #endregion
 
     #region MigrationRunner()
-    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, ITransactionProvider transactionProvider)
+	public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, ITransactionProvider transactionProvider)
     {
       _schemaStateManager = schemaStateManager;
       _transactionProvider = transactionProvider;
@@ -61,11 +60,11 @@ namespace Machine.Migrations.Services.Impl
               step.Apply();
               if (step.Reverting)
               {
-                _schemaStateManager.SetMigrationVersionUnapplied(step.Version);
+				  _schemaStateManager.SetMigrationVersionUnapplied(step.Version, _configuration.Scope);
               }
               else
               {
-                _schemaStateManager.SetMigrationVersionApplied(step.Version);
+				  _schemaStateManager.SetMigrationVersionApplied(step.Version, _configuration.Scope);
               }
               _log.InfoFormat("Comitting");
               transaction.Commit();
@@ -76,8 +75,8 @@ namespace Machine.Migrations.Services.Impl
               {
                 _log.InfoFormat("Rollback");
                 transaction.Rollback();
-              }
-              throw;
+			  }
+			  throw;
             }
           }
         }

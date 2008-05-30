@@ -12,6 +12,8 @@
     <AssemblyName>Machine.Container</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AssemblyOriginatorKeyFile>..\..\Machine.snk</AssemblyOriginatorKeyFile>
+    <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -92,6 +94,9 @@
     <Compile Include="Services\IServiceEntryResolver.cs" />
     <Compile Include="Services\IServiceGraph.cs" />
     <Compile Include="Utility\StackPopper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Machine.snk" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">

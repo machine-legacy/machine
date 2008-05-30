@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Machine.Migrations
 {
@@ -8,6 +7,7 @@ namespace Machine.Migrations
     private short _version;
     private string _name;
     private string _path;
+  	private Type _ref;
 
     public short Version
     {
@@ -27,7 +27,13 @@ namespace Machine.Migrations
       set { _path = value; }
     }
 
-    public MigrationReference()
+  	public Type Reference
+  	{
+  		get { return _ref; }
+  		set { _ref = value; }
+  	}
+
+  	public MigrationReference()
     {
     }
 

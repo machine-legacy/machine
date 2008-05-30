@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using Machine.Core;
-using Machine.Migrations.DatabaseProviders;
 using NUnit.Framework;
 using Rhino.Mocks;
 
@@ -66,7 +65,7 @@ namespace Machine.Migrations.Services.Impl
       {
         Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration1.Up();
-        _schemaStateManager.SetMigrationVersionApplied(1);
+        _schemaStateManager.SetMigrationVersionApplied(1, null);
         _transaction.Commit();
         Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration2.Up();
@@ -95,11 +94,11 @@ namespace Machine.Migrations.Services.Impl
       {
         Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration1.Up();
-        _schemaStateManager.SetMigrationVersionApplied(1);
+        _schemaStateManager.SetMigrationVersionApplied(1, null);
         _transaction.Commit();
         Expect.Call(_transactionProvider.Begin()).Return(_transaction);
         _migration2.Up();
-        _schemaStateManager.SetMigrationVersionApplied(2);
+        _schemaStateManager.SetMigrationVersionApplied(2, null);
         _transaction.Commit();
       }
       _target.Migrate(_steps);

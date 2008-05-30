@@ -28,9 +28,24 @@ namespace Machine.Migrations.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} ORDER BY {1}", "schema_info", "version")).Return(new Int16[] { 1, 2, 3 });
+        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>(
+          "SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} IS NULL ORDER BY {1}",
+          "schema_info", "version", "scope")).Return(new Int16[] { 1, 2, 3 });
       }
-      Assert.AreEqual(new Int16[] { 1, 2, 3 }, _target.GetAppliedMigrationVersions());
+      Assert.AreEqual(new Int16[] { 1, 2, 3 }, _target.GetAppliedMigrationVersions(null));
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void GetAppliedMigrationVersions_WithScope_Always_SelectAndReturnsArray()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>(
+          "SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} = '{3}' ORDER BY {1}",
+          "schema_info", "version", "scope", "core")).Return(new Int16[] { 1, 2, 3 });
+      }
+      Assert.AreEqual(new Int16[] { 1, 2, 3 }, _target.GetAppliedMigrationVersions("core"));
       _mocks.VerifyAll();
     }
 
@@ -64,9 +79,25 @@ namespace Machine.Migrations.Services.Impl
       short version = 1;
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("DELETE FROM {0} WHERE {1} = {2}", "schema_info", "version", version)).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery(
+          "DELETE FROM {0} WHERE {1} = {2} AND {3} IS NULL",
+          "schema_info", "version", version, "scope")).Return(true);
       }
-      _target.SetMigrationVersionUnapplied(version);
+      _target.SetMigrationVersionUnapplied(version, null);
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void SetMigrationVersionUnapplied_WithScope_Always_NukesRow()
+    {
+      short version = 1;
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery(
+          "DELETE FROM {0} WHERE {1} = {2} AND {3} = '{4}'",
+          "schema_info", "version", version, "scope", "core")).Return(true);
+      }
+      _target.SetMigrationVersionUnapplied(version, "core");
       _mocks.VerifyAll();
     }
 
@@ -76,10 +107,27 @@ namespace Machine.Migrations.Services.Impl
       short version = 2;
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("INSERT INTO {0} ({2}) VALUES ({4})", "schema_info", "id", "version", version, version)).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery(
+      "INSERT INTO {0} ({1}, {2}) VALUES ({3}, NULL)",
+      "schema_info", "version", "scope", version)).Return(true);
       }
-      _target.SetMigrationVersionApplied(version);
+      _target.SetMigrationVersionApplied(version, null);
+      _mocks.VerifyAll();
+    }
+
+    [Test]
+    public void SetMigrationVersionApplied_WithScope_Always_AddsRow()
+    {
+      short version = 2;
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery(
+      "INSERT INTO {0} ({1}, {2}) VALUES ({3}, '{4}')",
+      "schema_info", "version", "scope", version, "core")).Return(true);
+      }
+      _target.SetMigrationVersionApplied(version, "core");
       _mocks.VerifyAll();
     }
   }
 }
+

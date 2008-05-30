@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Collections.Generic;
 using Machine.Migrations.DatabaseProviders;
 
 namespace Machine.Migrations.Services.Impl

@@ -16,6 +16,7 @@ namespace Machine.Migrations
     private ISchemaProvider _schemaProvider;
     private IConfiguration _configuration;
     private ICommonTransformations _commonTransformations;
+  	private IConnectionProvider _connectionProvider;
 
     public override ConcreteSimpleMigration Create()
     {
@@ -23,13 +24,14 @@ namespace Machine.Migrations
       _databaseProvider = _mocks.DynamicMock<IDatabaseProvider>();
       _schemaProvider = _mocks.DynamicMock<ISchemaProvider>();
       _commonTransformations = _mocks.DynamicMock<ICommonTransformations>();
+	  _connectionProvider = _mocks.DynamicMock<IConnectionProvider>();
       return new ConcreteSimpleMigration();
     }
 
     [Test]
     public void Initialize_Always_SetsServices()
     {
-      _target.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations);
+      _target.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations, _connectionProvider);
       Assert.AreEqual(_databaseProvider, _target.Database);
       Assert.AreEqual(_schemaProvider, _target.Schema);
     }

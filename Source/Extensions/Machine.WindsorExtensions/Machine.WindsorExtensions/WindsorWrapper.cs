@@ -16,7 +16,7 @@ namespace Machine.WindsorExtensions
 
     public void AddService(Type service, LifestyleType lifestyleType)
     {
-      _container.AddComponentWithLifestyle(MakeKey(service), service, lifestyleType);
+      _container.AddComponentLifeStyle(MakeKey(service), service, lifestyleType);
     }
 
     public void AddService<TService>(Type implementation)
@@ -26,7 +26,7 @@ namespace Machine.WindsorExtensions
 
     public void AddService<TService>(Type implementation, LifestyleType lifestyleType)
     {
-      _container.AddComponentWithLifestyle(MakeKey(implementation), typeof(TService), implementation, lifestyleType);
+      _container.AddComponentLifeStyle(MakeKey(implementation), typeof(TService), implementation, lifestyleType);
     }
 
     public void AddService<TService, TImpl>()

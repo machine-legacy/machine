@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Machine.Core;
 using Machine.Migrations.DatabaseProviders;
@@ -25,7 +24,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("DROP TABLE \"{0}\"", "TheTable")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("DROP TABLE {0}", "TheTable")).Return(true);
       }
       _target.DropTable("TheTable");
     }
@@ -35,7 +34,7 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("ALTER TABLE \"{0}\" DROP COLUMN \"{1}\"", "TheTable", "TheColumn")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("ALTER TABLE {0} DROP COLUMN \"{1}\"", "TheTable", "TheColumn")).Return(true);
       }
       _target.RemoveColumn("TheTable", "TheColumn");
     }
@@ -75,7 +74,20 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE \"TheTable\" (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (\"Id\")\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\n\"Id\" INT NOT NULL,\r\nCONSTRAINT PK_THETABLE_ID PRIMARY KEY CLUSTERED (\"ID\")\r\n)")).Return(true);
+      }
+      Column[] columns = new Column[] {
+        new Column("Id", typeof(Int32), 4, true) { IsIdentity = false }, 
+      };
+      _target.AddTable("TheTable", columns);
+    }
+
+    [Test]
+    public void AddTable_OneColumnPrimaryKeyIdentity_IsSql()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\nCONSTRAINT PK_THETABLE_ID PRIMARY KEY CLUSTERED (\"ID\")\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
         new Column("Id", typeof(Int32), 4, true), 
@@ -88,10 +100,12 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE \"TheTable\" (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\n\"Name\" NVARCHAR(MAX) NOT NULL,\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (\"Id\")\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable " +
+      "(\r\n\"Id\" INT NOT NULL,\r\n\"Name\" NVARCHAR(150) NOT NULL,\r\n" +
+      "CONSTRAINT PK_THETABLE_ID PRIMARY KEY CLUSTERED (\"ID\")\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
-        new Column("Id", typeof(Int32), 4, true), 
+        new Column("Id", typeof(Int32), 4, true) { IsIdentity = false }, 
         new Column("Name", typeof(String), 0), 
       };
       _target.AddTable("TheTable", columns);
@@ -102,10 +116,12 @@ namespace Machine.Migrations.SchemaProviders
     {
       using (_mocks.Record())
       {
-        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE \"TheTable\" (\r\n\"Id\" INT NOT NULL IDENTITY(1, 1),\r\n\"Name\" NVARCHAR(100) NOT NULL,\r\nCONSTRAINT PK_TheTable PRIMARY KEY CLUSTERED (\"Id\")\r\n)")).Return(true);
+        SetupResult.For(_databaseProvider.ExecuteNonQuery("CREATE TABLE TheTable " +
+      "(\r\n\"Id\" INT NOT NULL,\r\n\"Name\" NVARCHAR(100) NOT NULL,\r\n" +
+      "CONSTRAINT PK_THETABLE_ID PRIMARY KEY CLUSTERED (\"ID\")\r\n)")).Return(true);
       }
       Column[] columns = new Column[] {
-        new Column("Id", typeof(Int32), 4, true), 
+        new Column("Id", typeof(Int32), 4, true) { IsIdentity = false}, 
         new Column("Name", typeof(String), 100), 
       };
       _target.AddTable("TheTable", columns);
@@ -129,6 +145,30 @@ namespace Machine.Migrations.SchemaProviders
         SetupResult.For(_databaseProvider.ExecuteNonQuery("EXEC sp_rename '{0}', '{1}'", "TheTable", "NewTable")).Return(true);
       }
       _target.RenameTable("TheTable", "NewTable");
+    }
+
+    [Test]
+    public void AddUniqueConstraint_Always_HandlesSingleColumn()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery(
+          "ALTER TABLE {0} ADD CONSTRAINT \"{1}\" UNIQUE NONCLUSTERED ({2})",
+          "TheTable", "UniqueKeyName", "\"Name\" ASC")).Return(true);
+      }
+      _target.AddUniqueConstraint("TheTable", "UniqueKeyName", "Name");
+    }
+
+    [Test]
+    public void AddUniqueConstraint_Always_HandlesMultipleColumns()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_databaseProvider.ExecuteNonQuery(
+          "ALTER TABLE {0} ADD CONSTRAINT \"{1}\" UNIQUE NONCLUSTERED ({2})",
+          "TheTable", "UniqueKeyName", "\"Name\" ASC, \"Email\" ASC, \"Key\" ASC")).Return(true);
+      }
+      _target.AddUniqueConstraint("TheTable", "UniqueKeyName", "Name", "Email", "Key");
     }
   }
 }

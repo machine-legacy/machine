@@ -12,6 +12,8 @@
     <AssemblyName>Machine.Migrations</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Machine.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -51,6 +53,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\MigrationAttribute.cs" />
+    <Compile Include="Builder\ColumnBuilder.cs" />
+    <Compile Include="Builder\Columns.cs" />
+    <Compile Include="Builder\ForeignKeyBuilder.cs" />
+    <Compile Include="Builder\IColumnBuilder.cs" />
+    <Compile Include="Builder\PrimaryKeyBuilder.cs" />
+    <Compile Include="Builder\SchemaBuilder.cs" />
+    <Compile Include="Builder\SchemaUtils.cs" />
+    <Compile Include="Builder\SimpleColumnBuilder.cs" />
+    <Compile Include="Builder\TableBuilder.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="DatabaseProviders\IDatabaseProvider.cs" />
     <Compile Include="DatabaseProviders\SqlServerDatabaseProvider.cs" />
@@ -71,6 +83,8 @@
     <Compile Include="Services\IMigrationSelector.cs" />
     <Compile Include="Services\IMigratorContainerFactory.cs" />
     <Compile Include="Services\Impl\AbstractConnectionProvider.cs" />
+    <Compile Include="Services\Impl\ActivatorBasedMigrationFactoryChooser.cs" />
+    <Compile Include="Services\Impl\AssemblyMigrationFinder.cs" />
     <Compile Include="Services\Impl\MigratorContainerFactory.cs" />
     <Compile Include="Services\Impl\StaticMigratorConfiguration.cs" />
     <Compile Include="Services\ITransactionProvider.cs" />
@@ -112,6 +126,9 @@
       <Project>{8DABCD9B-546A-4789-87C3-94FCEB38110D}</Project>
       <Name>Machine.WindsorExtensions</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Machine.snk" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 namespace Machine.Migrations.Services
 {
   public interface IWorkingDirectoryManager

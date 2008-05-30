@@ -33,7 +33,7 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)2);
-        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions(null)).Return(new short[] { 1, 2, 3 });
       }
       VersionState actual = _target.CreateVersionState(_migrations);
       CollectionAssert.AreEqual(new short[] { 1, 2, 3 }, new List<short>(actual.Applied));
@@ -45,7 +45,7 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)2);
-        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions(null)).Return(new short[] { 1, 2, 3 });
       }
       VersionState actual = _target.CreateVersionState(_migrations);
       Assert.AreEqual(4, actual.Last);
@@ -57,7 +57,7 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)-1);
-        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions(null)).Return(new short[] { 1, 2, 3 });
       }
       VersionState actual = _target.CreateVersionState(_migrations);
       Assert.AreEqual(4, actual.Desired);
@@ -70,9 +70,21 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_configuration.DesiredVersion).Return((short)5);
-        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions()).Return(new short[] { 1, 2, 3});
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions(null)).Return(new short[] { 1, 2, 3 });
       }
       _target.CreateVersionState(_migrations);
+    }
+
+    [Test]
+    public void CreateVersionState_PassAlongScopeFromConfiguration()
+    {
+      using (_mocks.Record())
+      {
+        SetupResult.For(_configuration.Scope).Return("core");
+        SetupResult.For(_schemaStateManager.GetAppliedMigrationVersions("core")).Return(new short[] { 1, 2, 3 });
+      }
+      VersionState actual = _target.CreateVersionState(_migrations);
+      Assert.AreEqual(0, actual.Desired);
     }
   }
 }

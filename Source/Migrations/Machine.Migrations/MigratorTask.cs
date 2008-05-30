@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-
 using Machine.Container.Services;
+using Machine.Core.MsBuildUtilities;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
-
+using Machine.Migrations.Services;
+using Machine.Migrations.Services.Impl;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
-
-using Machine.Core.MsBuildUtilities;
-using Machine.Migrations.Services.Impl;
-using Machine.Migrations.Services;
 
 namespace Machine.Migrations
 {
   public class MigratorTask : Task, IConfiguration
   {
     private string _migrationsDirectory;
+  	private string _scope;
     private string _connectionString;
     private short _desiredVersion;
     private int _commandTimeout = 30;
@@ -53,7 +50,13 @@ namespace Machine.Migrations
       set { _connectionString = value; }
     }
 
-    public string MigrationsDirectory
+  	public string Scope
+  	{
+		get { return _scope; }
+		set { _scope = value; }
+  	}
+
+  	public string MigrationsDirectory
     {
       get { return _migrationsDirectory; }
       set { _migrationsDirectory = value; }
