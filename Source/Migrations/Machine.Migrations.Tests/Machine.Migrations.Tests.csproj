@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Migrations</RootNamespace>
     <AssemblyName>Machine.Migrations.Tests</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -40,12 +40,17 @@
       <HintPath>..\..\..\Libraries\Testing\Rhino.Mocks.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DatabaseProviders\SqlServerDatabaseProviderTests.cs" />
+    <Compile Include="FluentMigrationTests.cs" />
     <Compile Include="MigrationStepTests.cs" />
+    <Compile Include="MockMigrationContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemaProviders\SqlServerSchemaProviderTests.cs" />
     <Compile Include="Services\Impl\CommonTransformationsTests.cs" />

@@ -5,7 +5,7 @@ namespace Machine.Migrations.Builders
 
   using SchemaProviders;
 
-  public class PrimaryKeyBuilder : ColumnBuilder<PrimaryKeyBuilder>
+  public class PrimaryKeyBuilder : ColumnBuilder
   {
     public PrimaryKeyBuilder(string name, Type columnType) : base(name, columnType)
     {

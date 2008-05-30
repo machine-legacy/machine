@@ -5,8 +5,7 @@ using Machine.Migrations.SchemaProviders;
 
 namespace Machine.Migrations.Builders
 {
-  public abstract class ColumnBuilder<T> : IColumnBuilder
-    where T : ColumnBuilder<T>
+  public abstract class ColumnBuilder : IColumnBuilder
   {
     protected string name;
     protected Type type;
@@ -62,22 +61,22 @@ namespace Machine.Migrations.Builders
       get { return size; }
     }
 
-    public T Identity()
+    public IColumnBuilder Identity()
     {
       identity = true;
-      return (T)this;
+      return this;
     }
 
-    public T Nullable()
+    public IColumnBuilder Nullable()
     {
       nullable = true;
-      return (T)this;
+      return this;
     }
 
-    public T MakeUnique()
+    public IColumnBuilder Unique()
     {
       unique = true;
-      return (T)this;
+      return this;
     }
 
     public virtual Column Build(TableBuilder table, ISchemaProvider schemaProvider, IList<PostProcess> posts)

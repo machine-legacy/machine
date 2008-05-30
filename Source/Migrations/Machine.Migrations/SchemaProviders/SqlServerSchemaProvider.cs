@@ -47,6 +47,7 @@ namespace Machine.Migrations.SchemaProviders
           sb.AppendLine().Append(ColumnToCreateTableSql(column));
           first = false;
         }
+
         foreach (Column column in columns)
         {
           string sql = ColumnToConstraintsSql(table, column);
@@ -55,6 +56,7 @@ namespace Machine.Migrations.SchemaProviders
             sb.Append(",").AppendLine().Append(sql);
           }
         }
+
         sb.AppendLine().Append(")");
         _databaseProvider.ExecuteNonQuery(sb.ToString());
       }

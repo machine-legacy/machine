@@ -58,14 +58,15 @@
     <Compile Include="Builders\Columns.cs" />
     <Compile Include="Builders\ForeignKeyBuilder.cs" />
     <Compile Include="Builders\IColumnBuilder.cs" />
+    <Compile Include="Builders\ITableBuilder.cs" />
     <Compile Include="Builders\PrimaryKeyBuilder.cs" />
-    <Compile Include="Builders\SchemaBuilder.cs" />
     <Compile Include="Builders\SchemaUtils.cs" />
     <Compile Include="Builders\SimpleColumnBuilder.cs" />
     <Compile Include="Builders\TableBuilder.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="DatabaseProviders\IDatabaseProvider.cs" />
     <Compile Include="DatabaseProviders\SqlServerDatabaseProvider.cs" />
+    <Compile Include="FluentMigration.cs" />
     <Compile Include="IDatabaseMigration.cs" />
     <Compile Include="Core\MigrationReference.cs" />
     <Compile Include="Core\MigrationStep.cs" />
@@ -111,7 +112,7 @@
     <Compile Include="Services\IVersionStateFactory.cs" />
     <Compile Include="Services\IWorkingDirectoryManager.cs" />
     <Compile Include="SimpleMigration.cs" />
-    <Compile Include="Model\Table.cs" />
+    <Compile Include="Model\TableInfo.cs" />
     <Compile Include="Core\VersionState.cs" />
   </ItemGroup>
   <ItemGroup>

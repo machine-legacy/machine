@@ -5,7 +5,7 @@ using Machine.Migrations.SchemaProviders;
 
 namespace Machine.Migrations.Builders
 {
-  public class SimpleColumnBuilder : ColumnBuilder<SimpleColumnBuilder>
+  public class SimpleColumnBuilder : ColumnBuilder
   {
     public SimpleColumnBuilder(string name, Type columnType, short? size) : base(name, columnType, size)
     {

@@ -5,20 +5,18 @@ using Machine.Migrations.SchemaProviders;
 
 namespace Machine.Migrations.Builders
 {
-  public class ForeignKeyBuilder : ColumnBuilder<ForeignKeyBuilder>
+  public class ForeignKeyBuilder : ColumnBuilder
   {
     readonly string targetTable;
     readonly string targetColName;
 
-    public ForeignKeyBuilder(string name, TableBuilder referencedTable) : base(name)
+    public ForeignKeyBuilder(string name, TableInfo referencedTable) : base(name)
     {
-      IColumnBuilder referencedPK = referencedTable.PrimaryKeyColumn;
-
       targetTable = referencedTable.Name;
-      targetColName = referencedTable.PrimaryKeyColumn.Name;
+      targetColName = referencedTable.PrimaryKeyName;
 
-      base.colType = referencedPK.ColumnType;
-      base.size = referencedPK.Size;
+      base.colType = referencedTable.PrimaryKeyType;
+      base.size = referencedTable.PrimaryKeySize;
     }
 
     public ForeignKeyBuilder(string name, Type type, string targetTable, string targetColName) : base(name)

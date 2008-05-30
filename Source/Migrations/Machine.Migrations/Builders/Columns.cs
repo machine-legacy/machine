@@ -7,7 +7,7 @@ namespace Machine.Migrations.Builders
       return new PrimaryKeyBuilder(name, typeof(T));
     }
 
-    public static ForeignKeyBuilder ForeignKey(string name, TableBuilder referencedTable)
+    public static ForeignKeyBuilder ForeignKey(string name, TableInfo referencedTable)
     {
       return new ForeignKeyBuilder(name, referencedTable);
     }
