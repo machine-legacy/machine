@@ -1,7 +1,7 @@
-namespace Machine.Migrations.Builder
-{
-  using SchemaProviders;
+using Machine.Migrations.SchemaProviders;
 
+namespace Machine.Migrations.Builders
+{
   public class SchemaBuilder
   {
     readonly ISchemaProvider schemaProvider;

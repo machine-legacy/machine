@@ -1,4 +1,4 @@
-namespace Machine.Migrations.Builder
+namespace Machine.Migrations.Builders
 {
   using System.Collections.Generic;
 

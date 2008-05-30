@@ -7,7 +7,7 @@ using Machine.Migrations.DatabaseProviders;
 
 namespace Machine.Migrations.SchemaProviders
 {
-  using Builder;
+  using Builders;
 
   public class SqlServerSchemaProvider : ISchemaProvider
   {

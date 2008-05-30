@@ -54,15 +54,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\MigrationAttribute.cs" />
-    <Compile Include="Builder\ColumnBuilder.cs" />
-    <Compile Include="Builder\Columns.cs" />
-    <Compile Include="Builder\ForeignKeyBuilder.cs" />
-    <Compile Include="Builder\IColumnBuilder.cs" />
-    <Compile Include="Builder\PrimaryKeyBuilder.cs" />
-    <Compile Include="Builder\SchemaBuilder.cs" />
-    <Compile Include="Builder\SchemaUtils.cs" />
-    <Compile Include="Builder\SimpleColumnBuilder.cs" />
-    <Compile Include="Builder\TableBuilder.cs" />
+    <Compile Include="Builders\ColumnBuilder.cs" />
+    <Compile Include="Builders\Columns.cs" />
+    <Compile Include="Builders\ForeignKeyBuilder.cs" />
+    <Compile Include="Builders\IColumnBuilder.cs" />
+    <Compile Include="Builders\PrimaryKeyBuilder.cs" />
+    <Compile Include="Builders\SchemaBuilder.cs" />
+    <Compile Include="Builders\SchemaUtils.cs" />
+    <Compile Include="Builders\SimpleColumnBuilder.cs" />
+    <Compile Include="Builders\TableBuilder.cs" />
     <Compile Include="Column.cs" />
     <Compile Include="DatabaseProviders\IDatabaseProvider.cs" />
     <Compile Include="DatabaseProviders\SqlServerDatabaseProvider.cs" />

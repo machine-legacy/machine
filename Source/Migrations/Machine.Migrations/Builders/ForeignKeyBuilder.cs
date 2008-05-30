@@ -1,10 +1,10 @@
-namespace Machine.Migrations.Builder
+using System;
+using System.Collections.Generic;
+
+using Machine.Migrations.SchemaProviders;
+
+namespace Machine.Migrations.Builders
 {
-  using System;
-  using System.Collections.Generic;
-
-  using SchemaProviders;
-
   public class ForeignKeyBuilder : ColumnBuilder<ForeignKeyBuilder>
   {
     readonly string targetTable;

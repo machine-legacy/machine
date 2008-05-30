@@ -1,4 +1,4 @@
-namespace Machine.Migrations.Builder
+namespace Machine.Migrations.Builders
 {
   public static class SchemaUtils
   {
