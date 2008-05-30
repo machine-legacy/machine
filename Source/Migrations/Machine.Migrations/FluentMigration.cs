@@ -1,21 +1,31 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 using Machine.Migrations.Builders;
+using Machine.Migrations.SchemaProviders;
 
 namespace Machine.Migrations
 {
   public abstract class FluentMigration : SimpleMigration
   {
-    public TableInfo CreateTable(string tableName, Action<ITableBuilder> buildAction)
+    IFluentSchemaProvider _fluentSchema;
+
+    public new IFluentSchemaProvider Schema
     {
-      var builder = new TableBuilder(tableName);
-      buildAction(builder);
+      get { return _fluentSchema; }
+    }
 
-      var tableInfo = builder.Build(this.Schema);
+    public new ISchemaProvider SimpleSchema
+    {
+      get { return base.Schema; }
+    }
 
-      return tableInfo;
+    public override void Initialize(Machine.Migrations.Core.MigrationContext context)
+    {
+      base.Initialize(context);
+
+      _fluentSchema = new FluentSchemaProvider(base.Schema);
     }
   }
 }
