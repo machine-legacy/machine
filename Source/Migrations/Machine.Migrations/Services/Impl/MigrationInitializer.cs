@@ -1,4 +1,5 @@
-﻿using Machine.Migrations.DatabaseProviders;
+﻿using Machine.Migrations.Core;
+using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 
 namespace Machine.Migrations.Services.Impl
@@ -29,8 +30,8 @@ namespace Machine.Migrations.Services.Impl
     #region IMigrationInitializer Members
     public void InitializeMigration(IDatabaseMigration migration)
     {
-      migration.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations,
-        _connectionProvider);
+      migration.Initialize(new MigrationContext(_configuration, _databaseProvider, _schemaProvider, _commonTransformations,
+        _connectionProvider));
     }
     #endregion
   }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Core;
+using Machine.Migrations.Core;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
@@ -11,9 +13,9 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class MigrationSelectorTests : StandardFixture<MigrationSelector>
   {
-    private IVersionStateFactory _versionStateFactory;
-    private IMigrationFinder _migrationFinder;
-    private List<MigrationReference> _migrations;
+    IVersionStateFactory _versionStateFactory;
+    IMigrationFinder _migrationFinder;
+    List<MigrationReference> _migrations;
 
     [Test]
     public void SelectMigrations_DesiredVersionIs4_CurrentVersionIs0_LastMigrationIs4_IsAll()
@@ -24,14 +26,15 @@ namespace Machine.Migrations.Services.Impl
       }
       List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
       CollectionAssert.AreEqual(
-        new MigrationStep[] {
+        new MigrationStep[]
+        {
           new MigrationStep(_migrations[0], false),
           new MigrationStep(_migrations[1], false),
           new MigrationStep(_migrations[2], false),
           new MigrationStep(_migrations[3], false),
         },
         actual
-      );
+        );
     }
 
     [Test]
@@ -39,17 +42,18 @@ namespace Machine.Migrations.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupMocks(4, new short[] { 2 });
+        SetupMocks(4, new short[] {2});
       }
       List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
       CollectionAssert.AreEqual(
-        new MigrationStep[] {
+        new MigrationStep[]
+        {
           new MigrationStep(_migrations[0], false),
           new MigrationStep(_migrations[2], false),
           new MigrationStep(_migrations[3], false),
         },
         actual
-      );
+        );
     }
 
     [Test]
@@ -72,12 +76,13 @@ namespace Machine.Migrations.Services.Impl
       }
       List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
       CollectionAssert.AreEqual(
-        new MigrationStep[] {
+        new MigrationStep[]
+        {
           new MigrationStep(_migrations[2], false),
           new MigrationStep(_migrations[3], false),
         },
         actual
-      );
+        );
     }
 
     [Test]
@@ -89,11 +94,12 @@ namespace Machine.Migrations.Services.Impl
       }
       List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
       CollectionAssert.AreEqual(
-        new MigrationStep[] {
+        new MigrationStep[]
+        {
           new MigrationStep(_migrations[1], true),
         },
         actual
-      );
+        );
     }
 
     [Test]
@@ -105,14 +111,15 @@ namespace Machine.Migrations.Services.Impl
       }
       List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
       CollectionAssert.AreEqual(
-        new MigrationStep[] {
+        new MigrationStep[]
+        {
           new MigrationStep(_migrations[3], true),
           new MigrationStep(_migrations[2], true),
           new MigrationStep(_migrations[1], true),
           new MigrationStep(_migrations[0], true),
         },
         actual
-      );
+        );
     }
 
     [Test]
@@ -124,12 +131,13 @@ namespace Machine.Migrations.Services.Impl
       }
       List<MigrationStep> actual = new List<MigrationStep>(_target.SelectMigrations());
       CollectionAssert.AreEqual(
-        new MigrationStep[] {
+        new MigrationStep[]
+        {
           new MigrationStep(_migrations[1], true),
           new MigrationStep(_migrations[0], true),
         },
         actual
-      );
+        );
     }
 
     [Test]
@@ -144,7 +152,7 @@ namespace Machine.Migrations.Services.Impl
       CollectionAssert.IsEmpty(actual);
     }
 
-    private void SetupMocks(short desired, short current)
+    void SetupMocks(short desired, short current)
     {
       List<short> applied = new List<short>();
       for (short i = 1; i <= current; ++i)
@@ -154,7 +162,7 @@ namespace Machine.Migrations.Services.Impl
       SetupMocks(desired, applied.ToArray());
     }
 
-    private void SetupMocks(short desired, IList<short> applied)
+    void SetupMocks(short desired, IList<short> applied)
     {
       SetupResult.For(_versionStateFactory.CreateVersionState(_migrations)).Return(new VersionState(4, desired, applied));
       SetupResult.For(_migrationFinder.FindMigrations()).Return(_migrations);

@@ -5,6 +5,7 @@ using Machine.Core;
 using Machine.Core.Services;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
@@ -12,8 +13,8 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class WorkingDirectoryManagerTests : StandardFixture<WorkingDirectoryManager>
   {
-    private IFileSystem _fileSystem;
-    private IConfiguration _configuration;
+    IFileSystem _fileSystem;
+    IConfiguration _configuration;
 
     [Test]
     public void Create_Always_CreatesDirectory()
@@ -35,7 +36,7 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_configuration.MigrationsDirectory).Return("Migrations");
         _fileSystem.CreateDirectory(@"Migrations\WorkingTemp");
-        SetupResult.For(_configuration.References).Return(new string[] { "AFile" });
+        SetupResult.For(_configuration.References).Return(new string[] {"AFile"});
         SetupResult.For(_fileSystem.IsFile("AFile")).Return(true);
         _fileSystem.CopyFile("AFile", @"Migrations\WorkingTemp\AFile", true);
       }
@@ -50,7 +51,7 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_configuration.MigrationsDirectory).Return("Migrations");
         _fileSystem.CreateDirectory(@"Migrations\WorkingTemp");
-        SetupResult.For(_configuration.References).Return(new string[] { "AGacedOne" });
+        SetupResult.For(_configuration.References).Return(new string[] {"AGacedOne"});
         SetupResult.For(_fileSystem.IsFile("AGacedOne")).Return(false);
       }
       _target.Create();

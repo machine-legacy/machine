@@ -5,6 +5,7 @@ using System.Data;
 using Machine.Core;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
@@ -12,7 +13,7 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class ConnectionProviderTests : StandardFixture<SqlServerConnectionProvider>
   {
-    private IConfiguration _configuration;
+    IConfiguration _configuration;
 
     public override SqlServerConnectionProvider Create()
     {

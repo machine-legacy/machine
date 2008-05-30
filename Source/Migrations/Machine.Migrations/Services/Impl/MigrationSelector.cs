@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 
+using Machine.Migrations.Core;
+
 namespace Machine.Migrations.Services.Impl
 {
   public class MigrationSelector : IMigrationSelector

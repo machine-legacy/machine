@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Machine.Core;
 using Machine.Core.Services;
+
 using NUnit.Framework;
 
 namespace Machine.Migrations.Services.Impl
@@ -10,22 +11,24 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class MigrationFactoryChooserTests : StandardFixture<MigrationFactoryChooser>
   {
-    private CSharpMigrationFactory _cSharpMigrationFactory;
-    private BooMigrationFactory _booMigrationFactory;
-    private IConfiguration _configuration;
-    private IWorkingDirectoryManager _workingDirectoryManager;
-    private IFileSystem _fileSystem;
+    CSharpMigrationFactory _cSharpMigrationFactory;
+    BooMigrationFactory _booMigrationFactory;
+    IConfiguration _configuration;
+    IWorkingDirectoryManager _workingDirectoryManager;
+    IFileSystem _fileSystem;
 
     [Test]
     public void ChooseFactory_IsCSharp_ReturnsFactory()
     {
-      Assert.AreEqual(_cSharpMigrationFactory, _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.cs")));
+      Assert.AreEqual(_cSharpMigrationFactory,
+        _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.cs")));
     }
 
     [Test]
     public void ChooseFactory_IsBoo_ReturnsFactory()
     {
-      Assert.AreEqual(_booMigrationFactory, _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.boo")));
+      Assert.AreEqual(_booMigrationFactory,
+        _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.boo")));
     }
 
     [Test]

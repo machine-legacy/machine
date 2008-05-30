@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Data.SqlTypes;
 
 namespace Machine.Migrations
 {
-  using System.Data.SqlTypes;
-
   public enum ColumnType
   {
     Undefined,

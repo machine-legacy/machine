@@ -5,6 +5,7 @@ using Machine.Core;
 using Machine.Core.Services;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
@@ -12,15 +13,15 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class MigrationFinderTests : StandardFixture<MigrationFinder>
   {
-    private IFileSystem _fileSystem;
-    private INamer _namer;
-    private IConfiguration _configuration;
-    private List<string> _files;
+    IFileSystem _fileSystem;
+    INamer _namer;
+    IConfiguration _configuration;
+    List<string> _files;
 
     public override MigrationFinder Create()
     {
       _files = new List<string>();
-      _files.AddRange(new String[] { "some_file.txt", "something.cs", "034veryclose.cs" });
+      _files.AddRange(new String[] {"some_file.txt", "something.cs", "034veryclose.cs"});
       _fileSystem = _mocks.DynamicMock<IFileSystem>();
       _namer = _mocks.DynamicMock<INamer>();
       _configuration = _mocks.DynamicMock<IConfiguration>();

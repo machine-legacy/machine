@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Core;
+using Machine.Migrations.Core;
 
 using NUnit.Framework;
 

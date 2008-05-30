@@ -2,10 +2,13 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Core;
+using Machine.Migrations.Core;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 
 using NUnit.Framework;
+
+using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
 {
@@ -37,8 +40,10 @@ namespace Machine.Migrations.Services.Impl
     {
       using (_mocks.Record())
       {
-        _migration.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations,
-          _connectionProvider);
+        _migration.Initialize(new MigrationContext(
+          _configuration, _databaseProvider, _schemaProvider, _commonTransformations,
+          _connectionProvider));
+        LastCall.IgnoreArguments();
       }
       _target.InitializeMigration(_migration);
       _mocks.VerifyAll();

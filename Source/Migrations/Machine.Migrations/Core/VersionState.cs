@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Machine.Migrations
+namespace Machine.Migrations.Core
 {
   public class VersionState
   {

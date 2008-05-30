@@ -1,4 +1,5 @@
-﻿using Machine.Migrations.DatabaseProviders;
+﻿using Machine.Migrations.Core;
+using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 using Machine.Migrations.Services;
 
@@ -55,15 +56,13 @@ namespace Machine.Migrations
     #endregion
 
     #region IDatabaseMigration Members
-    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider,
-      ISchemaProvider schemaProvider, ICommonTransformations commonTransformations,
-      IConnectionProvider connectionProvider)
+    public virtual void Initialize(MigrationContext context)
     {
-      _configuration = configuration;
-      _schemaProvider = schemaProvider;
-      _databaseProvider = databaseProvider;
-      _commonTransformations = commonTransformations;
-      _connectionProvider = connectionProvider;
+      _configuration = context.Configuration;
+      _schemaProvider = context.SchemaProvider;
+      _databaseProvider = context.DatabaseProvider;
+      _commonTransformations = context.CommonTransformations;
+      _connectionProvider = context.ConnectionProvider;
     }
 
     public void SetCommandTimeout(int timeout)
