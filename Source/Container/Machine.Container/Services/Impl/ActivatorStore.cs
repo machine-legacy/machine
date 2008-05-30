@@ -8,11 +8,11 @@ namespace Machine.Container.Services.Impl
   public class ActivatorStore : IActivatorStore
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStore));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStore));
     #endregion
 
     #region Member Data
-    private readonly Dictionary<ServiceEntry, IActivator> _cache = new Dictionary<ServiceEntry, IActivator>();
+    readonly Dictionary<ServiceEntry, IActivator> _cache = new Dictionary<ServiceEntry, IActivator>();
     #endregion
 
     #region IActivatorStore Members

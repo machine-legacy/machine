@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.IO;
@@ -10,7 +10,7 @@ namespace Machine.Core.Services.Impl
   [TestFixture]
   public class FileSystemTests : StandardFixture<FileSystem>
   {
-    private string _testDirectory;
+    string _testDirectory;
 
     public override FileSystem Create()
     {

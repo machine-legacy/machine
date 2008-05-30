@@ -1,5 +1,4 @@
 using Castle.MonoRail.TestSupport;
-
 using NUnit.Framework;
 
 namespace Machine.MonoRail.Extensions.Controllers

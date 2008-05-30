@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+
 using NHibernate;
 
 namespace Machine.Migrations.NHibernate.Services.Impl
@@ -7,7 +8,7 @@ namespace Machine.Migrations.NHibernate.Services.Impl
   public class NHibernateTransactionWrapper : IDbTransaction
   {
     #region Member Data
-    private readonly ITransaction _transaction;
+    readonly ITransaction _transaction;
     #endregion
 
     #region NHibernateTransactionWrapper()

@@ -24,13 +24,13 @@ namespace Machine.Migrations
 
   public class Column
   {
-    private string _name;
-    private short _size;
-    private ColumnType _columnType;
-    private bool _isPrimaryKey;
-    private bool _allowNull;
-    private bool _isIdentity;
-    private bool _isUnique;
+    string _name;
+    short _size;
+    ColumnType _columnType;
+    bool _isPrimaryKey;
+    bool _allowNull;
+    bool _isIdentity;
+    bool _isUnique;
 
     public string Name
     {
@@ -143,7 +143,7 @@ namespace Machine.Migrations
       _columnType = type;
     }
 
-    private static ColumnType ToColumnType(Type type)
+    static ColumnType ToColumnType(Type type)
     {
       if (type == typeof(Int16))
       {

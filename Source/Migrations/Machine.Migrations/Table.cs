@@ -4,8 +4,8 @@ namespace Machine.Migrations
 {
   public class Table
   {
-    private string _name;
-    private readonly List<Column> _columns = new List<Column>();
+    string _name;
+    readonly List<Column> _columns = new List<Column>();
 
     public string Name
     {

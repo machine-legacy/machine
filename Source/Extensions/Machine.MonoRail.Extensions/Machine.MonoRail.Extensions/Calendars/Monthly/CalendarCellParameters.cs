@@ -4,10 +4,10 @@ namespace Machine.MonoRail.Extensions.Calendars.Monthly
 {
   public class CalendarCellParameters
   {
-    private readonly DateTime _date;
-    private readonly bool _isSelected;
-    private readonly bool _isToday;
-    private readonly bool _isDayOfVisibleMonth;
+    readonly DateTime _date;
+    readonly bool _isSelected;
+    readonly bool _isToday;
+    readonly bool _isDayOfVisibleMonth;
 
     public DateTime Date
     {

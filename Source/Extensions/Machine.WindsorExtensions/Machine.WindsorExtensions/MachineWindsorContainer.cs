@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -11,10 +11,10 @@ namespace Machine.WindsorExtensions
 {
   public class MachineWindsorContainer : WindsorContainer
   {
-    private long _counter;
+    long _counter;
 
     public MachineWindsorContainer(IConfigurationInterpreter interpreter)
-     : base(interpreter)
+      : base(interpreter)
     {
     }
 
@@ -54,7 +54,8 @@ namespace Machine.WindsorExtensions
 
     public void AddServiceWithProvides(Type type)
     {
-      ProvidesServiceAttribute[] attributes = ((ProvidesServiceAttribute[])type.GetCustomAttributes(typeof (ProvidesServiceAttribute), true));
+      ProvidesServiceAttribute[] attributes =
+        ((ProvidesServiceAttribute[])type.GetCustomAttributes(typeof(ProvidesServiceAttribute), true));
       if (attributes.Length == 0)
       {
         return;
@@ -85,7 +86,7 @@ namespace Machine.WindsorExtensions
       return Kernel.HasComponent(MakeKey(typeof(TService)));
     }
 
-    private string MakeKey(Type implementation)
+    string MakeKey(Type implementation)
     {
       return implementation.FullName + (_counter++);
     }

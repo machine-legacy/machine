@@ -8,11 +8,11 @@ namespace Machine.Container.Services.Impl
   public class ServiceGraph : IServiceGraph
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
     #endregion
 
     #region Member Data
-    private readonly Dictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
+    readonly Dictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     #endregion
 
     #region IServiceGraph Members

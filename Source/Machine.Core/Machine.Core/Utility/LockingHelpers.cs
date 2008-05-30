@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -18,9 +18,10 @@ namespace Machine.Core.Utility
       return new RWLockWrapper(theLock);
     }
   }
+
   public class RWLockWrapper : IDisposable
   {
-    private readonly ReaderWriterLock _readerWriterLock;
+    readonly ReaderWriterLock _readerWriterLock;
 
     public RWLockWrapper(ReaderWriterLock readerWriterLock)
     {

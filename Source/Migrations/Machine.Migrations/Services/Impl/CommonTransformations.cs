@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 
@@ -7,8 +8,8 @@ namespace Machine.Migrations.Services.Impl
   public class CommonTransformations : ICommonTransformations
   {
     #region Member Data
-    private readonly IDatabaseProvider _databaseProvider;
-    private readonly ISchemaProvider _schemaProvider;
+    readonly IDatabaseProvider _databaseProvider;
+    readonly ISchemaProvider _schemaProvider;
     #endregion
 
     #region CommonTransformations()
@@ -16,7 +17,7 @@ namespace Machine.Migrations.Services.Impl
     {
       _databaseProvider = databaseProvider;
       _schemaProvider = schemaProvider;
-    } 
+    }
     #endregion
 
     #region ICommonTransformations Members
@@ -45,10 +46,11 @@ namespace Machine.Migrations.Services.Impl
     }
     #endregion
   }
+
   public class DisableIdentityInsertion : IDisposable
   {
-    private readonly ICommonTransformations _commonTransformations;
-    private readonly string _table;
+    readonly ICommonTransformations _commonTransformations;
+    readonly string _table;
 
     public DisableIdentityInsertion(ICommonTransformations commonTransformations, string table)
     {

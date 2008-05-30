@@ -1,16 +1,17 @@
 namespace Machine.Migrations.Builder
 {
-	using System.Collections.Generic;
-	using SchemaProviders;
+  using System.Collections.Generic;
 
-	public interface IColumnBuilder
-	{
-		string Name { get; }
+  using SchemaProviders;
 
-		short? Size { get; }
+  public interface IColumnBuilder
+  {
+    string Name { get; }
 
-		ColumnType ColumnType { get; }
+    short? Size { get; }
 
-		Column Build(TableBuilder table, ISchemaProvider schemaBuilder, IList<PostProcess> posts);
-	}
+    ColumnType ColumnType { get; }
+
+    Column Build(TableBuilder table, ISchemaProvider schemaBuilder, IList<PostProcess> posts);
+  }
 }

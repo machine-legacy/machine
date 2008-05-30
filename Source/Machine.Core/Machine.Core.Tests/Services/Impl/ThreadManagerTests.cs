@@ -9,8 +9,8 @@ namespace Machine.Core.Services.Impl
   [TestFixture]
   public class ThreadManagerTests : StandardFixture<ThreadManager>
   {
-    private bool _invoked;
-    private ManualResetEvent _event;
+    bool _invoked;
+    ManualResetEvent _event;
 
     public override ThreadManager Create()
     {
@@ -46,16 +46,17 @@ namespace Machine.Core.Services.Impl
       Assert.IsTrue(_invoked);
     }
 
-    private void MyThreadMain()
+    void MyThreadMain()
     {
       _invoked = true;
       _event.Set();
     }
   }
+
   public class MyRunnable : IRunnable
   {
     #region Member Data
-    private readonly ManualResetEvent _event;
+    readonly ManualResetEvent _event;
     #endregion
 
     #region MyRunnable()

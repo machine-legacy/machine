@@ -7,11 +7,11 @@ namespace Machine.Migrations.NHibernate.Services.Impl
   public class NHibernateConnectionProvider : IConnectionProvider
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(NHibernateConnectionProvider));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(NHibernateConnectionProvider));
     #endregion
 
     #region Member Data
-    private readonly INHibernateSessionProvider _sessionProvider;
+    readonly INHibernateSessionProvider _sessionProvider;
     #endregion
 
     #region NHibernateConnectionProvider()

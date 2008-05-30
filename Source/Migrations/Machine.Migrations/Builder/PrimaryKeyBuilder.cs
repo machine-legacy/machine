@@ -1,25 +1,26 @@
 namespace Machine.Migrations.Builder
 {
-	using System;
-	using System.Collections.Generic;
-	using SchemaProviders;
+  using System;
+  using System.Collections.Generic;
 
-	public class PrimaryKeyBuilder : ColumnBuilder<PrimaryKeyBuilder>
-	{
-		public PrimaryKeyBuilder(string name, Type columnType) : base(name, columnType)
-		{
-		}
+  using SchemaProviders;
 
-		public PrimaryKeyBuilder(string name, Type columnType, short? size) : base(name, columnType, size)
-		{
-		}
+  public class PrimaryKeyBuilder : ColumnBuilder<PrimaryKeyBuilder>
+  {
+    public PrimaryKeyBuilder(string name, Type columnType) : base(name, columnType)
+    {
+    }
 
-		public override Column Build(TableBuilder table, ISchemaProvider schemaBuilder, IList<PostProcess> posts)
-		{
-			Column col = base.Build(table, schemaBuilder, posts);
-			col.IsPrimaryKey = true;
-			col.AllowNull = false;
-			return col;
-		}
-	}
+    public PrimaryKeyBuilder(string name, Type columnType, short? size) : base(name, columnType, size)
+    {
+    }
+
+    public override Column Build(TableBuilder table, ISchemaProvider schemaBuilder, IList<PostProcess> posts)
+    {
+      Column col = base.Build(table, schemaBuilder, posts);
+      col.IsPrimaryKey = true;
+      col.AllowNull = false;
+      return col;
+    }
+  }
 }

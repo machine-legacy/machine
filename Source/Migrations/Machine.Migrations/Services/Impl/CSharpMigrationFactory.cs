@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Reflection;
+
 using Machine.Core.Services;
 
 namespace Machine.Migrations.Services.Impl
@@ -10,17 +11,18 @@ namespace Machine.Migrations.Services.Impl
   public class CSharpMigrationFactory : AbstractMigrationCompilerFactory, IMigrationFactory
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(CSharpMigrationFactory));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(CSharpMigrationFactory));
     #endregion
 
     #region Member Data
-    private readonly IConfiguration _configuration;
-    private readonly IFileSystem _fileSystem;
-    private readonly IWorkingDirectoryManager _workingDirectoryManager;
+    readonly IConfiguration _configuration;
+    readonly IFileSystem _fileSystem;
+    readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region CSharpMigrationFactory()
-    public CSharpMigrationFactory(IConfiguration configuration, IFileSystem fileSystem, IWorkingDirectoryManager workingDirectoryManager)
+    public CSharpMigrationFactory(IConfiguration configuration, IFileSystem fileSystem,
+      IWorkingDirectoryManager workingDirectoryManager)
     {
       _configuration = configuration;
       _workingDirectoryManager = workingDirectoryManager;
@@ -40,7 +42,8 @@ namespace Machine.Migrations.Services.Impl
       CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
-      parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
+      parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory,
+        Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
       parameters.ReferencedAssemblies.Add(typeof(SqlMoney).Assembly.Location);
       parameters.IncludeDebugInformation = true;

@@ -7,7 +7,7 @@ namespace Machine.WindsorExtensions
 {
   public class WindsorWrapper
   {
-    private readonly IWindsorContainer _container;
+    readonly IWindsorContainer _container;
 
     public WindsorWrapper(IWindsorContainer container)
     {
@@ -69,7 +69,7 @@ namespace Machine.WindsorExtensions
       return _container.Resolve<TService>();
     }
 
-    private static string MakeKey(Type implementation)
+    static string MakeKey(Type implementation)
     {
       return implementation.FullName;
     }

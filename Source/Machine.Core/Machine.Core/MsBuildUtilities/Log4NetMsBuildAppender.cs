@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using log4net.Appender;
@@ -12,7 +12,7 @@ namespace Machine.Core.MsBuildUtilities
   public class Log4NetMsBuildAppender : AppenderSkeleton
   {
     #region Member Data
-    private readonly TaskLoggingHelper _loggingHelper;
+    readonly TaskLoggingHelper _loggingHelper;
     #endregion
 
     #region Log4NetMsBuildAppender()
@@ -30,7 +30,8 @@ namespace Machine.Core.MsBuildUtilities
       {
         _loggingHelper.LogWarning(RenderLoggingEvent(loggingEvent));
       }
-      else if (loggingEvent.Level == Level.Fatal || loggingEvent.Level == Level.Error || loggingEvent.Level == Level.Emergency || loggingEvent.Level == Level.Critical)
+      else if (loggingEvent.Level == Level.Fatal || loggingEvent.Level == Level.Error ||
+        loggingEvent.Level == Level.Emergency || loggingEvent.Level == Level.Critical)
       {
         _loggingHelper.LogError(RenderLoggingEvent(loggingEvent));
       }

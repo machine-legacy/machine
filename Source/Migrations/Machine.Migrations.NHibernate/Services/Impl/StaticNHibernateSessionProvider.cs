@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using NHibernate;
@@ -8,7 +8,7 @@ namespace Machine.Migrations.NHibernate.Services.Impl
   public class StaticNHibernateSessionProvider : INHibernateSessionProvider
   {
     #region Member Data
-    private readonly ISession _session;
+    readonly ISession _session;
     #endregion
 
     #region StaticNHibernateSessionProvider()

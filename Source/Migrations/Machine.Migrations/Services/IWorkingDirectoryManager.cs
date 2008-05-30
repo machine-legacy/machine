@@ -1,12 +1,8 @@
-﻿
-namespace Machine.Migrations.Services
+﻿namespace Machine.Migrations.Services
 {
   public interface IWorkingDirectoryManager
   {
-    string WorkingDirectory
-    {
-      get;
-    }
+    string WorkingDirectory { get; }
     void Create();
     void Destroy();
   }

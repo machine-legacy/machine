@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -17,14 +17,14 @@ namespace Machine.Core.ValueTypes
 
     public ToStringFunction CreateToStringFunction(Type type)
     {
-      DynamicMethod method = NewMethod(type, typeof(string), new Type[] { typeof(object) });
+      DynamicMethod method = NewMethod(type, typeof(string), new Type[] {typeof(object)});
       ILGenerator il = method.GetILGenerator();
       LocalBuilder sbLocal = il.DeclareLocal(typeof(StringBuilder));
 
       ThrowIfArg0CastFailsOrNull(il, type);
 
-      MethodInfo appendString = typeof(StringBuilder).GetMethod("Append", new Type[] { typeof(string) });
-      MethodInfo appendObject = typeof(StringBuilder).GetMethod("Append", new Type[] { typeof(object) });
+      MethodInfo appendString = typeof(StringBuilder).GetMethod("Append", new Type[] {typeof(string)});
+      MethodInfo appendObject = typeof(StringBuilder).GetMethod("Append", new Type[] {typeof(object)});
 
       il.Emit(OpCodes.Newobj, typeof(StringBuilder).GetConstructor(new Type[0]));
       il.Emit(OpCodes.Stloc, sbLocal);
@@ -71,7 +71,7 @@ namespace Machine.Core.ValueTypes
       return (ToStringFunction)method.CreateDelegate(typeof(ToStringFunction));
     }
 
-    private string MakePrettyName(string name)
+    string MakePrettyName(string name)
     {
       StringBuilder sb = new StringBuilder();
       bool uppercaseNext = true;

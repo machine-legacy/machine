@@ -9,15 +9,16 @@ namespace Machine.Container.Services.Impl
   public class CreationServices : ICreationServices
   {
     #region Member Data
-    private readonly Stack<ServiceEntry> _progress = new Stack<ServiceEntry>();
-    private readonly IActivatorStrategy _activatorStrategy;
-    private readonly IActivatorStore _activatorStore;
-    private readonly ILifestyleFactory _lifestyleFactory;
-    private readonly IOverrideLookup _overrideLookup;
+    readonly Stack<ServiceEntry> _progress = new Stack<ServiceEntry>();
+    readonly IActivatorStrategy _activatorStrategy;
+    readonly IActivatorStore _activatorStore;
+    readonly ILifestyleFactory _lifestyleFactory;
+    readonly IOverrideLookup _overrideLookup;
     #endregion
 
     #region CreationServices()
-    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup)
+    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore,
+      ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup)
     {
       _activatorStore = activatorStore;
       _lifestyleFactory = lifestyleFactory;

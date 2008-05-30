@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class StaticOverrideLookup : IOverrideLookup
   {
     #region Member Data
-    private readonly object[] _objects;
+    readonly object[] _objects;
     #endregion
 
     #region StaticOverrideLookup()

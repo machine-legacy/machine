@@ -1,66 +1,67 @@
 namespace Machine.Migrations.Builder
 {
-	using System;
-	using System.Collections.Generic;
-	using SchemaProviders;
+  using System;
+  using System.Collections.Generic;
 
-	public class TableBuilder
-	{
-		private readonly string name;
-		private readonly IColumnBuilder[] columns;
-		private IColumnBuilder pkColumn;
+  using SchemaProviders;
 
-		public TableBuilder(string name, params IColumnBuilder[] columns)
-		{
-			if (string.IsNullOrEmpty(name))
-				throw new ArgumentNullException("name");
-			if (columns == null || columns.Length == 0)
-				throw new ArgumentException("Please specify at least one column", "columns");
+  public class TableBuilder
+  {
+    readonly string name;
+    readonly IColumnBuilder[] columns;
+    IColumnBuilder pkColumn;
 
-			this.name = name;
-			this.columns = columns;
-		}
+    public TableBuilder(string name, params IColumnBuilder[] columns)
+    {
+      if (string.IsNullOrEmpty(name))
+        throw new ArgumentNullException("name");
+      if (columns == null || columns.Length == 0)
+        throw new ArgumentException("Please specify at least one column", "columns");
 
-		public string Name
-		{
-			get { return name; }
-		}
+      this.name = name;
+      this.columns = columns;
+    }
 
-		public IColumnBuilder[] Columns
-		{
-			get { return columns; }
-		}
+    public string Name
+    {
+      get { return name; }
+    }
 
-		public IColumnBuilder PrimaryKeyColumn
-		{
-			get { return pkColumn; }
-		}
+    public IColumnBuilder[] Columns
+    {
+      get { return columns; }
+    }
 
-		public TableBuilder Build(ISchemaProvider schemaProvider)
-		{
-			List<Column> cols = new List<Column>();
-			List<PostProcess> post = new List<PostProcess>();
+    public IColumnBuilder PrimaryKeyColumn
+    {
+      get { return pkColumn; }
+    }
 
-			foreach(IColumnBuilder columnBuilder in columns)
-			{
-				Column col = columnBuilder.Build(this, schemaProvider, post);
+    public TableBuilder Build(ISchemaProvider schemaProvider)
+    {
+      List<Column> cols = new List<Column>();
+      List<PostProcess> post = new List<PostProcess>();
 
-				if (col.IsPrimaryKey)
-				{
-					pkColumn = columnBuilder;
-				}
+      foreach (IColumnBuilder columnBuilder in columns)
+      {
+        Column col = columnBuilder.Build(this, schemaProvider, post);
 
-				cols.Add(col);
-			}
+        if (col.IsPrimaryKey)
+        {
+          pkColumn = columnBuilder;
+        }
 
-			schemaProvider.AddTable(name, cols.ToArray());
+        cols.Add(col);
+      }
 
-			foreach(PostProcess process in post)
-			{
-				process.Action();
-			}
+      schemaProvider.AddTable(name, cols.ToArray());
 
-			return this;
-		}
-	}
+      foreach (PostProcess process in post)
+      {
+        process.Action();
+      }
+
+      return this;
+    }
+  }
 }

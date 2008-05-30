@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Core

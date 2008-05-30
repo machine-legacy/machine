@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class DefaultLifestyleAwareActivatorResolver : IActivatorResolver
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DefaultLifestyleAwareActivatorResolver));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DefaultLifestyleAwareActivatorResolver));
     #endregion
 
     #region IActivatorResolver Members

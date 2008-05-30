@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Machine.Container.Services;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Container.Activators
@@ -12,7 +13,7 @@ namespace Machine.Container.Activators
   public class LifestyleActivatorTests : ScaffoldTests<LifestyleActivator>
   {
     #region Member Data
-    private object _instance;
+    object _instance;
     #endregion
 
     #region Test Methods
@@ -20,10 +21,7 @@ namespace Machine.Container.Activators
     public void CanActivate_Always_DefersToLifestyle()
     {
       _instance = new object();
-      Run(delegate
-      {
-        Expect.Call(Get<ILifestyle>().CanActivate(Get<ICreationServices>())).Return(true);
-      });
+      Run(delegate { Expect.Call(Get<ILifestyle>().CanActivate(Get<ICreationServices>())).Return(true); });
       Assert.IsTrue(_target.CanActivate(Get<ICreationServices>()));
     }
 
@@ -31,10 +29,7 @@ namespace Machine.Container.Activators
     public void Create_Always_DefersToLifestyle()
     {
       _instance = new object();
-      Run(delegate
-      {
-        Expect.Call(Get<ILifestyle>().Activate(Get<ICreationServices>())).Return(_instance);
-      });
+      Run(delegate { Expect.Call(Get<ILifestyle>().Activate(Get<ICreationServices>())).Return(_instance); });
       object instance = _target.Activate(Get<ICreationServices>());
       Assert.AreEqual(_instance, instance);
     }

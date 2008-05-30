@@ -5,7 +5,7 @@ namespace Machine.MsMvc
   [AttributeUsage(AttributeTargets.Class)]
   public class ViewEngineAttribute : Attribute
   {
-    private readonly Type _type;
+    readonly Type _type;
 
     public Type ViewEngineType
     {

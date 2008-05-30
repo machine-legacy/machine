@@ -5,6 +5,7 @@ using Machine.Container.Model;
 using Machine.Container.Services;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Container.Lifestyles
@@ -13,18 +14,16 @@ namespace Machine.Container.Lifestyles
   public class SingletonLifestyleTests : ScaffoldTests<SingletonLifestyle>
   {
     #region Member Data
-    private readonly object _instance = new object();
-    private readonly ServiceEntry _serviceEntry = ServiceEntryHelper.NewEntry();
+    readonly object _instance = new object();
+    readonly ServiceEntry _serviceEntry = ServiceEntryHelper.NewEntry();
     #endregion
 
     #region Test Methods
     [Test]
     public void Initialize_Always_CreateDefaultActivator()
     {
-      Run(delegate
-      {
-        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-      });
+      Run(
+        delegate { SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>()); });
       _target.Initialize();
       _mocks.Verify(Get<IActivatorStrategy>());
     }

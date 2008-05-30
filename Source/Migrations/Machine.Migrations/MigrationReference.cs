@@ -4,10 +4,10 @@ namespace Machine.Migrations
 {
   public class MigrationReference
   {
-    private short _version;
-    private string _name;
-    private string _path;
-  	private Type _ref;
+    short _version;
+    string _name;
+    string _path;
+    Type _ref;
 
     public short Version
     {
@@ -27,13 +27,13 @@ namespace Machine.Migrations
       set { _path = value; }
     }
 
-  	public Type Reference
-  	{
-  		get { return _ref; }
-  		set { _ref = value; }
-  	}
+    public Type Reference
+    {
+      get { return _ref; }
+      set { _ref = value; }
+    }
 
-  	public MigrationReference()
+    public MigrationReference()
     {
     }
 

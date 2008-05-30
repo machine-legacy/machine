@@ -1,4 +1,5 @@
 using System;
+
 using Machine.BackgroundJobs.Services;
 using Machine.BackgroundJobs.Services.Impl;
 using Machine.Core.Services;
@@ -8,8 +9,8 @@ namespace Machine.BackgroundJobs.Sample
   public class LongRunningJobHandler : AbstractBackgroundJobHandler<LongRunningJob>
   {
     #region Member Data
-    private readonly IThreadManager _threadManager;
-    private readonly IJobRepository _jobRepository;
+    readonly IThreadManager _threadManager;
+    readonly IJobRepository _jobRepository;
     #endregion
 
     #region LongRunningJobHandler()

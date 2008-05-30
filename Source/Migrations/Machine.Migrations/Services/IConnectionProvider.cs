@@ -5,9 +5,6 @@ namespace Machine.Migrations.Services
   public interface IConnectionProvider
   {
     IDbConnection OpenConnection();
-    IDbConnection CurrentConnection
-    {
-      get;
-    }
+    IDbConnection CurrentConnection { get; }
   }
 }

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+
 using Castle.Core;
 using Castle.Windsor;
 
@@ -9,8 +10,8 @@ namespace Machine.WindsorExtensions
 {
   public class MachineToWindsorBridge : IHighLevelContainer
   {
-    private readonly IWindsorContainer _windsor;
-    private readonly WindsorWrapper _wrapper;
+    readonly IWindsorContainer _windsor;
+    readonly WindsorWrapper _wrapper;
 
     public MachineToWindsorBridge(IWindsorContainer windsor)
     {
@@ -96,7 +97,7 @@ namespace Machine.WindsorExtensions
     }
     #endregion
 
-    private LifestyleType Convert(Machine.Container.Model.LifestyleType lifestyleType)
+    LifestyleType Convert(Machine.Container.Model.LifestyleType lifestyleType)
     {
       switch (lifestyleType)
       {

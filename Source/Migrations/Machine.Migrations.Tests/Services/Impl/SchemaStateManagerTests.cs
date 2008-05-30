@@ -6,6 +6,7 @@ using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
@@ -13,8 +14,8 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class SchemaStateManagerTests : StandardFixture<SchemaStateManager>
   {
-    private IDatabaseProvider _databaseProvider;
-    private ISchemaProvider _schemaProvider;
+    IDatabaseProvider _databaseProvider;
+    ISchemaProvider _schemaProvider;
 
     public override SchemaStateManager Create()
     {
@@ -30,9 +31,9 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>(
           "SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} IS NULL ORDER BY {1}",
-          "schema_info", "version", "scope")).Return(new Int16[] { 1, 2, 3 });
+          "schema_info", "version", "scope")).Return(new Int16[] {1, 2, 3});
       }
-      Assert.AreEqual(new Int16[] { 1, 2, 3 }, _target.GetAppliedMigrationVersions(null));
+      Assert.AreEqual(new Int16[] {1, 2, 3}, _target.GetAppliedMigrationVersions(null));
       _mocks.VerifyAll();
     }
 
@@ -43,9 +44,9 @@ namespace Machine.Migrations.Services.Impl
       {
         SetupResult.For(_databaseProvider.ExecuteScalarArray<Int16>(
           "SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} = '{3}' ORDER BY {1}",
-          "schema_info", "version", "scope", "core")).Return(new Int16[] { 1, 2, 3 });
+          "schema_info", "version", "scope", "core")).Return(new Int16[] {1, 2, 3});
       }
-      Assert.AreEqual(new Int16[] { 1, 2, 3 }, _target.GetAppliedMigrationVersions("core"));
+      Assert.AreEqual(new Int16[] {1, 2, 3}, _target.GetAppliedMigrationVersions("core"));
       _mocks.VerifyAll();
     }
 
@@ -108,8 +109,8 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_databaseProvider.ExecuteNonQuery(
-      "INSERT INTO {0} ({1}, {2}) VALUES ({3}, NULL)",
-      "schema_info", "version", "scope", version)).Return(true);
+          "INSERT INTO {0} ({1}, {2}) VALUES ({3}, NULL)",
+          "schema_info", "version", "scope", version)).Return(true);
       }
       _target.SetMigrationVersionApplied(version, null);
       _mocks.VerifyAll();
@@ -122,12 +123,11 @@ namespace Machine.Migrations.Services.Impl
       using (_mocks.Record())
       {
         SetupResult.For(_databaseProvider.ExecuteNonQuery(
-      "INSERT INTO {0} ({1}, {2}) VALUES ({3}, '{4}')",
-      "schema_info", "version", "scope", version, "core")).Return(true);
+          "INSERT INTO {0} ({1}, {2}) VALUES ({3}, '{4}')",
+          "schema_info", "version", "scope", version, "core")).Return(true);
       }
       _target.SetMigrationVersionApplied(version, "core");
       _mocks.VerifyAll();
     }
   }
 }
-

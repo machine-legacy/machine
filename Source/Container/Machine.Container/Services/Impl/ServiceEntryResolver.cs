@@ -8,17 +8,18 @@ namespace Machine.Container.Services.Impl
   public class ServiceEntryResolver : IServiceEntryResolver
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
     #endregion
 
     #region Member Data
-    private readonly IServiceGraph _serviceGraph;
-    private readonly IServiceEntryFactory _serviceEntryFactory;
-    private readonly IActivatorResolver _activatorResolver;
+    readonly IServiceGraph _serviceGraph;
+    readonly IServiceEntryFactory _serviceEntryFactory;
+    readonly IActivatorResolver _activatorResolver;
     #endregion
 
     #region ServiceEntryResolver()
-    public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, IActivatorResolver activatorResolver)
+    public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory,
+      IActivatorResolver activatorResolver)
     {
       _serviceGraph = serviceGraph;
       _activatorResolver = activatorResolver;

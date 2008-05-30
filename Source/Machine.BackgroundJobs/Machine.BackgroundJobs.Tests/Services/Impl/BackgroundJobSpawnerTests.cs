@@ -6,6 +6,7 @@ using Machine.Core.Services;
 using Machine.BackgroundJobs.Sample;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 using Rhino.Mocks.Constraints;
 
@@ -26,8 +27,10 @@ namespace Machine.BackgroundJobs.Services.Impl
       job.JobNumber = 1;
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobHandlerLocator>().LocateJobHandler(typeof(LongRunningJob))).Return(Get<IBackgroundJobHandler>());
-        Expect.Call(Get<IThreadManager>().CreateThread(Get<IRunnable>())).Constraints(Is.TypeOf(typeof(QueuedJob))).Return(Get<IThread>());
+        SetupResult.For(Get<IJobHandlerLocator>().LocateJobHandler(typeof(LongRunningJob))).Return(
+          Get<IBackgroundJobHandler>());
+        Expect.Call(Get<IThreadManager>().CreateThread(Get<IRunnable>())).Constraints(Is.TypeOf(typeof(QueuedJob))).
+          Return(Get<IThread>());
         Get<IThread>().Start();
       }
       _target.SpawnJob(job);

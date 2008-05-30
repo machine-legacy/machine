@@ -6,7 +6,7 @@ namespace Machine.Container.Utility
   public class StackPopper<T> : IDisposable
   {
     #region Member Data
-    private readonly Stack<T> _stack;
+    readonly Stack<T> _stack;
     #endregion
 
     #region StackPopper()

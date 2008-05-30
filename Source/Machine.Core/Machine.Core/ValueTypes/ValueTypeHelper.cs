@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 
@@ -6,18 +6,22 @@ namespace Machine.Core.ValueTypes
 {
   public class ValueTypeHelper
   {
-    private static readonly ObjectEqualityFunctionFactory _objectEqualityFunctionFactory = new ObjectEqualityFunctionFactory();
-    private static readonly CalculateHashCodeFunctionFactory _calculateHashCodeFunctionFactory = new CalculateHashCodeFunctionFactory();
-    private static readonly ToStringFunctionFactory _toStringFunctionFactory = new ToStringFunctionFactory();
-    private static readonly Dictionary<Type, CacheEntry> _cache = new Dictionary<Type, CacheEntry>();
-    private static readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    static readonly ObjectEqualityFunctionFactory _objectEqualityFunctionFactory = new ObjectEqualityFunctionFactory();
 
-    private class CacheEntry
+    static readonly CalculateHashCodeFunctionFactory _calculateHashCodeFunctionFactory =
+      new CalculateHashCodeFunctionFactory();
+
+    static readonly ToStringFunctionFactory _toStringFunctionFactory = new ToStringFunctionFactory();
+    static readonly Dictionary<Type, CacheEntry> _cache = new Dictionary<Type, CacheEntry>();
+    static readonly ReaderWriterLock _lock = new ReaderWriterLock();
+
+    class CacheEntry
     {
       public ObjectEqualityFunction AreEqual;
       public CalculateHashCodeFunction CalculateHashCode;
       public ToStringFunction MakeString;
     }
+
     /*
     public static bool AreEqual<TType>(TType a, TType b)
     {
@@ -33,6 +37,7 @@ namespace Machine.Core.ValueTypes
       return false;
     }
     */
+
     public static bool AreEqual(object a, object b)
     {
       if (a == null) throw new ArgumentNullException("a");
@@ -43,30 +48,34 @@ namespace Machine.Core.ValueTypes
       }
       return false;
     }
+
     /*
     public static Int32 CalculateHashCode<TType>(TType value)
     {
       return Lookup(typeof(TType)).CalculateHashCode(value);
     }
     */
+
     public static Int32 CalculateHashCode(object value)
     {
       if (value == null) throw new ArgumentNullException("value");
       return Lookup(value.GetType()).CalculateHashCode(value);
     }
+
     /*
     public static string ToString<TType>(TType a)
     {
       return Lookup(typeof(TType)).MakeString(a);
     }
     */
+
     public static string ToString(object value)
     {
       if (value == null) throw new ArgumentNullException("value");
       return Lookup(value.GetType()).MakeString(value);
     }
 
-    private static CacheEntry Lookup(Type type)
+    static CacheEntry Lookup(Type type)
     {
       CacheEntry entry;
       _lock.AcquireReaderLock(Timeout.Infinite);

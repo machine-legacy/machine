@@ -4,9 +4,9 @@ namespace Machine.Migrations
 {
   public class MigrationStep
   {
-    private readonly MigrationReference _migrationReference;
-    private readonly bool _reverting;
-    private IDatabaseMigration _databaseMigration;
+    readonly MigrationReference _migrationReference;
+    readonly bool _reverting;
+    IDatabaseMigration _databaseMigration;
 
     public MigrationReference MigrationReference
     {

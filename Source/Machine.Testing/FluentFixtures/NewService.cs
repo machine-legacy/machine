@@ -1,4 +1,4 @@
-﻿namespace Machine.Testing.FluentFixtures
+namespace Machine.Testing.FluentFixtures
 {
   public class NewService : FixtureContextAware
   {

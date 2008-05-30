@@ -16,9 +16,9 @@ namespace Machine.Core.ValueTypes
 
     public ObjectEqualityFunction CreateObjectEqualityFunction(Type type)
     {
-      DynamicMethod method = NewMethod(type, typeof(bool), new Type[] { typeof(object), typeof(object) });
+      DynamicMethod method = NewMethod(type, typeof(bool), new Type[] {typeof(object), typeof(object)});
       ILGenerator il = method.GetILGenerator();
-      MethodInfo objectEquals = typeof(Object).GetMethod("Equals", new Type[] { typeof(Object), typeof(Object) });
+      MethodInfo objectEquals = typeof(Object).GetMethod("Equals", new Type[] {typeof(Object), typeof(Object)});
       bool hasState = false;
       foreach (FieldInfo field in AllFields(type))
       {
@@ -27,7 +27,7 @@ namespace Machine.Core.ValueTypes
         il.Emit(OpCodes.Castclass, type);
         if (field.FieldType.IsValueType && !field.FieldType.IsEnum)
         {
-          MethodInfo valueEquals = field.FieldType.GetMethod("Equals", new Type[] { field.FieldType });
+          MethodInfo valueEquals = field.FieldType.GetMethod("Equals", new Type[] {field.FieldType});
           il.Emit(OpCodes.Ldflda, field);
           il.Emit(OpCodes.Ldarg_1);
           il.Emit(OpCodes.Castclass, type);

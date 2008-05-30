@@ -9,7 +9,7 @@ namespace Machine.Container.Services.Impl
   public class LifestyleFactory : ILifestyleFactory
   {
     #region Member Data
-    private readonly IActivatorStrategy _activatorStrategy;
+    readonly IActivatorStrategy _activatorStrategy;
     #endregion
 
     #region LifestyleFactory()

@@ -8,17 +8,17 @@ namespace Machine.Migrations.Services.Impl
   public class SchemaStateManager : ISchemaStateManager
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(SchemaStateManager));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(SchemaStateManager));
     #endregion
 
     #region Member Data
-    private readonly string TableName = "schema_info";
-    private readonly string IdColumnName = "id";
+    readonly string TableName = "schema_info";
+    readonly string IdColumnName = "id";
     // private readonly string ApplicationDateColumnName = "applied_at";
-    private readonly string VersionColumnName = "version";
-    private readonly string ScopeColumnName = "scope";
-    private readonly IDatabaseProvider _databaseProvider;
-    private readonly ISchemaProvider _schemaProvider;
+    readonly string VersionColumnName = "version";
+    readonly string ScopeColumnName = "scope";
+    readonly IDatabaseProvider _databaseProvider;
+    readonly ISchemaProvider _schemaProvider;
     #endregion
 
     #region SchemaStateManager()
@@ -45,7 +45,8 @@ namespace Machine.Migrations.Services.Impl
 
       _log.InfoFormat("Creating {0}...", TableName);
 
-      Column[] columns = new Column[] {
+      Column[] columns = new Column[]
+      {
         new Column(IdColumnName, typeof(Int32), 4, true),
         new Column(VersionColumnName, typeof(Int32), 4, false),
         new Column(ScopeColumnName, typeof(string), 25, false, true)
@@ -57,13 +58,17 @@ namespace Machine.Migrations.Services.Impl
     {
       if (string.IsNullOrEmpty(scope))
       {
-        return _databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} IS NULL ORDER BY {1}",
-          TableName, VersionColumnName, ScopeColumnName);
+        return
+          _databaseProvider.ExecuteScalarArray<Int16>(
+            "SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} IS NULL ORDER BY {1}",
+            TableName, VersionColumnName, ScopeColumnName);
       }
       else
       {
-        return _databaseProvider.ExecuteScalarArray<Int16>("SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} = '{3}' ORDER BY {1}",
-          TableName, VersionColumnName, ScopeColumnName, scope);
+        return
+          _databaseProvider.ExecuteScalarArray<Int16>(
+            "SELECT CAST({1} AS SMALLINT) FROM {0} WHERE {2} = '{3}' ORDER BY {1}",
+            TableName, VersionColumnName, ScopeColumnName, scope);
       }
     }
 

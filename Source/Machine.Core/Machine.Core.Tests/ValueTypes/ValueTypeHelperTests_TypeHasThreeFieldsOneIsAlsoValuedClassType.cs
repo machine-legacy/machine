@@ -18,13 +18,15 @@ namespace Machine.Core.ValueTypes
     [Test]
     public void AreEqual_AllEqual_IsTrue()
     {
-      Assert.IsTrue(ValueTypeHelper.AreEqual(new Message4("A", 1, new Message2("C")), new Message4("A", 1, new Message2("C"))));
+      Assert.IsTrue(ValueTypeHelper.AreEqual(new Message4("A", 1, new Message2("C")),
+        new Message4("A", 1, new Message2("C"))));
     }
 
     [Test]
     public void AreEqual_ClassMemberIsNotEqual_IsFalse()
     {
-      Assert.IsFalse(ValueTypeHelper.AreEqual(new Message4("A", 1, new Message2("D")), new Message4("A", 1, new Message2("C"))));
+      Assert.IsFalse(ValueTypeHelper.AreEqual(new Message4("A", 1, new Message2("D")),
+        new Message4("A", 1, new Message2("C"))));
     }
 
     [Test]

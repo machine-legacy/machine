@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
@@ -10,7 +10,7 @@ namespace Machine.MsWcf
   public class MachineServiceHostFactory : ServiceHostFactory
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(MachineServiceHostFactory));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(MachineServiceHostFactory));
     #endregion
 
     #region MachineServiceHostFactory()

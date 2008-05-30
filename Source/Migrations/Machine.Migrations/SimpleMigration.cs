@@ -4,16 +4,15 @@ using Machine.Migrations.Services;
 
 namespace Machine.Migrations
 {
-
   public abstract class SimpleMigration : IDatabaseMigration
   {
     #region Member Data
-    private readonly log4net.ILog _log;
-    private ISchemaProvider _schemaProvider;
-    private IDatabaseProvider _databaseProvider;
-    private ICommonTransformations _commonTransformations;
-    private IConfiguration _configuration;
-    private IConnectionProvider _connectionProvider;
+    readonly log4net.ILog _log;
+    ISchemaProvider _schemaProvider;
+    IDatabaseProvider _databaseProvider;
+    ICommonTransformations _commonTransformations;
+    IConfiguration _configuration;
+    IConnectionProvider _connectionProvider;
     #endregion
 
     #region Properties
@@ -42,11 +41,10 @@ namespace Machine.Migrations
       get { return _commonTransformations; }
     }
 
-	public IConnectionProvider ConnectionProvider
-	{
-		get { return _connectionProvider; }
-	}
-
+    public IConnectionProvider ConnectionProvider
+    {
+      get { return _connectionProvider; }
+    }
     #endregion
 
     #region SimpleMigration()
@@ -57,7 +55,9 @@ namespace Machine.Migrations
     #endregion
 
     #region IDatabaseMigration Members
-    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider, ISchemaProvider schemaProvider, ICommonTransformations commonTransformations, IConnectionProvider connectionProvider)
+    public virtual void Initialize(IConfiguration configuration, IDatabaseProvider databaseProvider,
+      ISchemaProvider schemaProvider, ICommonTransformations commonTransformations,
+      IConnectionProvider connectionProvider)
     {
       _configuration = configuration;
       _schemaProvider = schemaProvider;
@@ -74,7 +74,6 @@ namespace Machine.Migrations
     public abstract void Up();
 
     public abstract void Down();
-
-	#endregion
+    #endregion
   }
 }

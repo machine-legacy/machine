@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,7 +6,7 @@ namespace Machine.Core.Services.Impl
 {
   public class Namer : INamer
   {
-    private readonly Random _random = new Random();
+    readonly Random _random = new Random();
 
     public string ToCamelCase(string source)
     {

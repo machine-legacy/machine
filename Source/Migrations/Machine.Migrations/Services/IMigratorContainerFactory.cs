@@ -1,5 +1,4 @@
-﻿
-using Machine.Container.Services;
+﻿using Machine.Container.Services;
 
 namespace Machine.Migrations.Services
 {

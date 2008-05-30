@@ -10,9 +10,6 @@ namespace Machine.Container.Services
     ServiceEntry Lookup(Type type, bool throwIfAmbiguous);
     ServiceEntry Lookup(Type type);
     void Add(ServiceEntry entry);
-    IEnumerable<ServiceRegistration> RegisteredServices
-    {
-      get;
-    }
+    IEnumerable<ServiceRegistration> RegisteredServices { get; }
   }
 }

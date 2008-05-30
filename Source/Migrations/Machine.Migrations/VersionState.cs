@@ -1,15 +1,15 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Machine.Migrations
 {
   public class VersionState
   {
-    private readonly IList<short> _applied;
-    private readonly short _last;
-    private readonly short _desired;
-	private readonly string _scope;
+    readonly IList<short> _applied;
+    readonly short _last;
+    readonly short _desired;
+    readonly string _scope;
 
-  	public IList<short> Applied
+    public IList<short> Applied
     {
       get { return _applied; }
     }
@@ -24,12 +24,12 @@ namespace Machine.Migrations
       get { return _desired; }
     }
 
-  	public string Scope
-  	{
-  		get { return _scope; }
-  	}
+    public string Scope
+    {
+      get { return _scope; }
+    }
 
-  	public bool IsReverting
+    public bool IsReverting
     {
       get
       {
@@ -51,13 +51,13 @@ namespace Machine.Migrations
       _desired = desired;
     }
 
-	public VersionState(short last, short desired, IList<short> applied, string scope)
-		: this(last, desired, applied)
-	{
-		_scope = scope;
-	}
+    public VersionState(short last, short desired, IList<short> applied, string scope)
+      : this(last, desired, applied)
+    {
+      _scope = scope;
+    }
 
-  	public bool IsApplicable(MigrationReference migrationReference)
+    public bool IsApplicable(MigrationReference migrationReference)
     {
       bool isApplied = _applied.Contains(migrationReference.Version);
       if (isApplied)

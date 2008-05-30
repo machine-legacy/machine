@@ -1,4 +1,4 @@
-﻿using System.Reflection;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("NA")]
 [assembly: AssemblyProduct("Machine.MsMvc")]
-[assembly: AssemblyCopyright("Copyright © NA 2008")]
+[assembly: AssemblyCopyright("Copyright � NA 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
+
 using Boo.Lang.Compiler;
 using Boo.Lang.Compiler.IO;
 using Boo.Lang.Compiler.Pipelines;
@@ -10,12 +11,12 @@ namespace Machine.Migrations.Services.Impl
   public class BooMigrationFactory : AbstractMigrationCompilerFactory, IMigrationFactory
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(BooMigrationFactory));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(BooMigrationFactory));
     #endregion
 
     #region Member Data
-    private readonly IConfiguration _configuration;
-    private readonly IWorkingDirectoryManager _workingDirectoryManager;
+    readonly IConfiguration _configuration;
+    readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region BooMigrationFactory()
@@ -45,7 +46,8 @@ namespace Machine.Migrations.Services.Impl
       }
       compiler.Parameters.OutputType = CompilerOutputType.Library;
       compiler.Parameters.GenerateInMemory = true;
-      compiler.Parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
+      compiler.Parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory,
+        Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       compiler.Parameters.Ducky = true;
       compiler.Parameters.Pipeline = new CompileToFile();
       CompilerContext cc = compiler.Run();

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace log4net
 {
@@ -30,5 +30,3 @@ namespace Machine
   {
   }
 }
-
-  

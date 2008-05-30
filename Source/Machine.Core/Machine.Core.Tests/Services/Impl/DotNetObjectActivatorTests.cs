@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using NUnit.Framework;
@@ -18,7 +18,9 @@ namespace Machine.Core.Services.Impl
     [Test]
     public void LookupAndActivate_GoodType_Creates()
     {
-      ClassWithDefaultConstructor value = _target.LookupAndActivate<ClassWithDefaultConstructor>("Machine.Core.Services.Impl.ClassWithDefaultConstructor, Machine.Core.Tests");
+      ClassWithDefaultConstructor value =
+        _target.LookupAndActivate<ClassWithDefaultConstructor>(
+          "Machine.Core.Services.Impl.ClassWithDefaultConstructor, Machine.Core.Tests");
       Assert.IsNotNull(value);
     }
 
@@ -48,12 +50,15 @@ namespace Machine.Core.Services.Impl
       return new DotNetObjectActivator();
     }
   }
+
   public class ClassWithDefaultConstructor
   {
   }
+
   public class ClassWithConstructorParameter
   {
-    private string _name;
+    string _name;
+
     public ClassWithConstructorParameter(string name)
     {
       _name = name;

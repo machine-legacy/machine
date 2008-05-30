@@ -42,11 +42,12 @@ namespace Machine.Core.ValueTypes
     {
       il.Emit(OpCodes.Ldarg_0);
       il.Emit(OpCodes.Castclass, type);
-      IfNull(il, delegate() {
-           il.Emit(OpCodes.Newobj, typeof(ArgumentNullException).GetConstructor(new Type[0]));
-           il.Emit(OpCodes.Throw);
-         }, delegate() { }
-      );
+      IfNull(il, delegate()
+      {
+        il.Emit(OpCodes.Newobj, typeof(ArgumentNullException).GetConstructor(new Type[0]));
+        il.Emit(OpCodes.Throw);
+      }, delegate() { }
+        );
     }
   }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
@@ -11,8 +11,8 @@ namespace Machine.Testing.AutoMocking
   public class MockingDependencyResolver : IActivatorResolver
   {
     #region Member Data
-    private readonly MockRepository _mocks;
-    private readonly Dictionary<Type, object> _objects = new Dictionary<Type, object>();
+    readonly MockRepository _mocks;
+    readonly Dictionary<Type, object> _objects = new Dictionary<Type, object>();
     #endregion
 
     #region MockingDependencyResolver()
@@ -36,7 +36,7 @@ namespace Machine.Testing.AutoMocking
     #region Methods
     public TService Get<TService>()
     {
-      return (TService)Get(typeof (TService));
+      return (TService)Get(typeof(TService));
     }
 
     public object Get(Type serviceType)

@@ -5,6 +5,7 @@ using Machine.BackgroundJobs.Sample;
 using Machine.Core;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.BackgroundJobs.Services.Impl
@@ -23,7 +24,8 @@ namespace Machine.BackgroundJobs.Services.Impl
       LongRunningJob job = new LongRunningJob();
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(
+          Get<IJobRepository>());
         Get<IJobRepository>().SaveJob(job);
       }
       Assert.AreEqual(job, _target.QueueJob(job));

@@ -7,7 +7,7 @@ namespace Machine.Migrations.Services.Impl
   {
     #region SqlServerConnectionProvider()
     public SqlServerConnectionProvider(IConfiguration configuration)
-     : base(configuration)
+      : base(configuration)
     {
     }
     #endregion

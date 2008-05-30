@@ -1,5 +1,4 @@
-﻿
-namespace Machine.Migrations.Services
+﻿namespace Machine.Migrations.Services
 {
   public interface IMigrationFactoryChooser
   {

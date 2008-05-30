@@ -1,12 +1,12 @@
-﻿using System.Data;
+using System.Data;
 
 namespace Machine.Migrations.Services.Impl
 {
   public class TransactionProvider : ITransactionProvider
   {
     #region Member Data
-    private readonly IConnectionProvider _connectionProvider;
-    private IDbTransaction _transaction;
+    readonly IConnectionProvider _connectionProvider;
+    IDbTransaction _transaction;
     #endregion
 
     #region MigrationTransactionService()

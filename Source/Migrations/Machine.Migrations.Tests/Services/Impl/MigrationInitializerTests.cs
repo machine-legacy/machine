@@ -12,12 +12,12 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class MigrationInitializerTests : StandardFixture<MigrationInitializer>
   {
-    private IDatabaseProvider _databaseProvider;
-    private ISchemaProvider _schemaProvider;
-    private IDatabaseMigration _migration;
-    private ICommonTransformations _commonTransformations;
-    private IConfiguration _configuration;
-    private IConnectionProvider _connectionProvider;
+    IDatabaseProvider _databaseProvider;
+    ISchemaProvider _schemaProvider;
+    IDatabaseMigration _migration;
+    ICommonTransformations _commonTransformations;
+    IConfiguration _configuration;
+    IConnectionProvider _connectionProvider;
 
     public override MigrationInitializer Create()
     {
@@ -28,7 +28,8 @@ namespace Machine.Migrations.Services.Impl
       _commonTransformations = _mocks.StrictMock<ICommonTransformations>();
       _connectionProvider = _mocks.StrictMock<IConnectionProvider>();
 
-      return new MigrationInitializer(_configuration, _databaseProvider, _schemaProvider, _commonTransformations, _connectionProvider);
+      return new MigrationInitializer(_configuration, _databaseProvider, _schemaProvider, _commonTransformations,
+        _connectionProvider);
     }
 
     [Test]
@@ -36,7 +37,8 @@ namespace Machine.Migrations.Services.Impl
     {
       using (_mocks.Record())
       {
-        _migration.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations, _connectionProvider);
+        _migration.Initialize(_configuration, _databaseProvider, _schemaProvider, _commonTransformations,
+          _connectionProvider);
       }
       _target.InitializeMigration(_migration);
       _mocks.VerifyAll();

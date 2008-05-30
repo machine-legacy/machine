@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
+
 using Machine.Testing.AutoMocking;
+
 using NUnit.Framework;
+
 using Rhino.Mocks;
 using Rhino.Mocks.Impl;
 using Rhino.Mocks.Interfaces;
@@ -13,15 +16,16 @@ namespace Machine.Testing
 {
   public abstract class TestsFor<TType> where TType : class
   {
-    private AutoMockingContainer _container;
-    private TType _target;
-    private MockRepository _mocks;
-    private Dictionary<Type, object> _overrides;
-    private Dictionary<Type, IEventRaiser> _raisers;
-    [ThreadStatic]
-    private static Dictionary<int, EventFireExpectation> _eventsToVerify = new Dictionary<int, EventFireExpectation>();
-    [ThreadStatic]
-    private static int _currentEventId = 0;
+    AutoMockingContainer _container;
+    TType _target;
+    MockRepository _mocks;
+    Dictionary<Type, object> _overrides;
+    Dictionary<Type, IEventRaiser> _raisers;
+
+    [ThreadStatic] static Dictionary<int, EventFireExpectation> _eventsToVerify =
+      new Dictionary<int, EventFireExpectation>();
+
+    [ThreadStatic] static int _currentEventId = 0;
 
     public enum With
     {
@@ -38,7 +42,7 @@ namespace Machine.Testing
     {
       get
       {
-        CreateTargetIfNeedBe();  
+        CreateTargetIfNeedBe();
         return _target;
       }
     }
@@ -57,20 +61,26 @@ namespace Machine.Testing
     {
       get
       {
-        CreateTargetIfNeedBe();  
+        CreateTargetIfNeedBe();
         return new PlaybackAndVerifyEvents(this, Mocks.Playback());
       }
     }
 
     public IDisposable PlaybackOnly
     {
-      get { using (Record) { } return Playback; }
+      get
+      {
+        using (Record)
+        {
+        }
+        return Playback;
+      }
     }
 
-    private class EventFireExpectation
+    class EventFireExpectation
     {
-      private bool _wasFired;
-      private string _delegateName;
+      bool _wasFired;
+      string _delegateName;
 
       public bool WasFired
       {
@@ -90,10 +100,11 @@ namespace Machine.Testing
       }
     }
 
-    private class PlaybackAndVerifyEvents : IDisposable
+    class PlaybackAndVerifyEvents : IDisposable
     {
-      private readonly TestsFor<TType> _tests;
-      private readonly IDisposable _playback;
+      readonly TestsFor<TType> _tests;
+      readonly IDisposable _playback;
+
       public PlaybackAndVerifyEvents(TestsFor<TType> tests, IDisposable playback)
       {
         _tests = tests;
@@ -132,7 +143,7 @@ namespace Machine.Testing
       BeforeEachTest();
     }
 
-    private void CreateTargetIfNeedBe()
+    void CreateTargetIfNeedBe()
     {
       if (_target != null) return;
       _target = _container.New<TType>(new List<object>(_overrides.Values).ToArray());
@@ -170,7 +181,7 @@ namespace Machine.Testing
     {
       if (_overrides.ContainsKey(typeof(T)))
       {
-        return (T) _overrides[typeof(T)];
+        return (T)_overrides[typeof(T)];
       }
       return _container.Get<T>();
     }
@@ -179,7 +190,9 @@ namespace Machine.Testing
     {
       if (!_raisers.ContainsKey(typeof(T)))
       {
-        throw new Exception(String.Format("You must first call PrimeEventFiringOn<{0}>(x => x.Event += null) in the Record phase", typeof(T).Name));
+        throw new Exception(
+          String.Format("You must first call PrimeEventFiringOn<{0}>(x => x.Event += null) in the Record phase",
+            typeof(T).Name));
       }
       List<object> list = new List<object>(args);
       list.Insert(0, The<T>());
@@ -190,14 +203,17 @@ namespace Machine.Testing
     {
       if (_raisers.ContainsKey(typeof(T)))
       {
-        throw new Exception(String.Format("You can only prime one event at a time for {0}. If you must prime multiple, try using LastCall.GetEventRaiser the normal way.", typeof(T).Name));
+        throw new Exception(
+          String.Format(
+            "You can only prime one event at a time for {0}. If you must prime multiple, try using LastCall.GetEventRaiser the normal way.",
+            typeof(T).Name));
       }
 
       eventPlusEqualNull(The<T>());
       _raisers[typeof(T)] = LastCall.GetEventRaiser();
     }
 
-    private static void RegisterEventFiring(int eventId)
+    static void RegisterEventFiring(int eventId)
     {
       _eventsToVerify[eventId].WasFired = true;
     }
@@ -207,7 +223,7 @@ namespace Machine.Testing
       _eventsToVerify[_currentEventId] = new EventFireExpectation(typeof(T).Name);
 
       MethodInfo registerMethod = typeof(TestsFor<TType>).GetMethod("RegisterEventFiring",
-                                                      BindingFlags.Static | BindingFlags.NonPublic);
+        BindingFlags.Static | BindingFlags.NonPublic);
       MethodInfo invokeMethod = typeof(T).GetMethod("Invoke", BindingFlags.Public | BindingFlags.Instance);
       ParameterInfo[] parameters = invokeMethod.GetParameters();
       Type[] parameterTypes = new Type[parameters.Length];
@@ -221,7 +237,8 @@ namespace Machine.Testing
         throw new Exception(String.Format("Cannot find Invoke method on {0}, is it a Delegate?", typeof(T).Name));
       }
 
-      DynamicMethod method = new DynamicMethod("__FireEvent" + _currentEventId, invokeMethod.ReturnType, parameterTypes, this.GetType(), true);
+      DynamicMethod method = new DynamicMethod("__FireEvent" + _currentEventId, invokeMethod.ReturnType, parameterTypes,
+        this.GetType(), true);
 
       ILGenerator ilGenerator = method.GetILGenerator();
       ilGenerator.Emit(OpCodes.Ldc_I4, _currentEventId++);

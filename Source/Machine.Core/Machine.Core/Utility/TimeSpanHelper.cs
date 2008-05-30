@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -41,7 +41,7 @@ namespace Machine.Core.Utility
       {
         return "1 day";
       }
-      else if (delta < (14 * OneDay) )
+      else if (delta < (14 * OneDay))
       {
         return span.Days + " days";
       }

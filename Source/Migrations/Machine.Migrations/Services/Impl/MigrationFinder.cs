@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+
 using Machine.Core.Services;
 
 namespace Machine.Migrations.Services.Impl
@@ -9,10 +10,10 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationFinder : IMigrationFinder
   {
     #region Member Data
-    private readonly Regex _regex = new Regex(@"^(\d+)_([\w_]+)\.(cs|boo)$");
-    private readonly IConfiguration _configuration;
-    private readonly IFileSystem _fileSystem;
-    private readonly INamer _namer;
+    readonly Regex _regex = new Regex(@"^(\d+)_([\w_]+)\.(cs|boo)$");
+    readonly IConfiguration _configuration;
+    readonly IFileSystem _fileSystem;
+    readonly INamer _namer;
     #endregion
 
     #region MigrationFinder()
@@ -33,12 +34,12 @@ namespace Machine.Migrations.Services.Impl
         Match m = _regex.Match(Path.GetFileName(file));
         if (m.Success)
         {
-          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), _namer.ToCamelCase(m.Groups[2].Value), file));
+          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), _namer.ToCamelCase(m.Groups[2].Value),
+            file));
         }
       }
-      migrations.Sort(delegate (MigrationReference mr1, MigrationReference mr2) {
-        return mr1.Version.CompareTo(mr2.Version);
-      });
+      migrations.Sort(
+        delegate(MigrationReference mr1, MigrationReference mr2) { return mr1.Version.CompareTo(mr2.Version); });
       return migrations;
     }
     #endregion

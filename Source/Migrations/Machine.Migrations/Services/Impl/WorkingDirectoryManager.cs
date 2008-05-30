@@ -7,11 +7,11 @@ namespace Machine.Migrations.Services.Impl
   public class WorkingDirectoryManager : IWorkingDirectoryManager
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(WorkingDirectoryManager));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(WorkingDirectoryManager));
     #endregion
 
-    private readonly IFileSystem _fileSystem;
-    private readonly IConfiguration _configuration;
+    readonly IFileSystem _fileSystem;
+    readonly IConfiguration _configuration;
 
     public WorkingDirectoryManager(IFileSystem fileSystem, IConfiguration configuration)
     {
@@ -22,10 +22,7 @@ namespace Machine.Migrations.Services.Impl
     #region IWorkingDirectoryManager Members
     public string WorkingDirectory
     {
-      get
-      {
-        return Path.Combine(_configuration.MigrationsDirectory, "WorkingTemp");
-      }
+      get { return Path.Combine(_configuration.MigrationsDirectory, "WorkingTemp"); }
     }
 
     public void Create()
@@ -47,7 +44,7 @@ namespace Machine.Migrations.Services.Impl
       if (_fileSystem.IsDirectory(this.WorkingDirectory))
       {
         _fileSystem.RemoveDirectory(this.WorkingDirectory);
-      } 
+      }
     }
     #endregion
   }

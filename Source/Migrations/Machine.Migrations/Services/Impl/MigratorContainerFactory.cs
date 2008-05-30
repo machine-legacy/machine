@@ -1,5 +1,4 @@
-﻿
-using Machine.Container;
+﻿using Machine.Container;
 using Machine.Container.Services;
 using Machine.Core.Services;
 using Machine.Core.Services.Impl;

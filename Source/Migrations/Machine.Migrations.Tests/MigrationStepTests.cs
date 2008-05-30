@@ -1,4 +1,5 @@
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations
@@ -6,11 +7,11 @@ namespace Machine.Migrations
   [TestFixture]
   public class MigrationStepTests
   {
-    private MigrationReference _reference1;
-    private MigrationReference _reference2;
-    private MigrationStep _step1;
-    private MigrationStep _step2;
-    private MockRepository _mocks;
+    MigrationReference _reference1;
+    MigrationReference _reference2;
+    MigrationStep _step1;
+    MigrationStep _step2;
+    MockRepository _mocks;
 
     [Test]
     public void Equals_SameReference_SameReverting_IsTrue()

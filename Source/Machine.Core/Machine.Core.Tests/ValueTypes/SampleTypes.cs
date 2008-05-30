@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -7,9 +7,10 @@ namespace Machine.Core.ValueTypes
   public class Message1
   {
   }
+
   public class Message2 : ClassTypeAsValueType
   {
-    private string _name;
+    string _name;
 
     public string Name
     {
@@ -22,10 +23,11 @@ namespace Machine.Core.ValueTypes
       _name = name;
     }
   }
+
   public class Message3
   {
-    private string _name;
-    private short _size;
+    string _name;
+    short _size;
 
     public string Name
     {
@@ -45,11 +47,12 @@ namespace Machine.Core.ValueTypes
       _size = size;
     }
   }
+
   public class Message4
   {
-    private string _name;
-    private short _size;
-    private Message2 _message2;
+    string _name;
+    short _size;
+    Message2 _message2;
 
     public string Name
     {
@@ -70,21 +73,26 @@ namespace Machine.Core.ValueTypes
       _size = size;
     }
   }
+
   public enum YesNoMaybe
   {
-    Yes = 0, No, Maybe
+    Yes = 0,
+    No,
+    Maybe
   }
+
   public class TypeWithABunchOfTypes
   {
-    private readonly string _aString;
-    private readonly long _aLong;
-    private readonly short _aShort;
-    private readonly bool _aBool;
-    private readonly int _aInt;
-    private readonly YesNoMaybe _aEnum;
-    private readonly DateTime _aDateTime;
+    readonly string _aString;
+    readonly long _aLong;
+    readonly short _aShort;
+    readonly bool _aBool;
+    readonly int _aInt;
+    readonly YesNoMaybe _aEnum;
+    readonly DateTime _aDateTime;
 
-    public TypeWithABunchOfTypes(bool aBool, int aInt, long aLong, short aShort, string aString, YesNoMaybe aEnum, DateTime aDateTime)
+    public TypeWithABunchOfTypes(bool aBool, int aInt, long aLong, short aShort, string aString, YesNoMaybe aEnum,
+      DateTime aDateTime)
     {
       _aBool = aBool;
       _aDateTime = aDateTime;
@@ -95,9 +103,10 @@ namespace Machine.Core.ValueTypes
       _aEnum = aEnum;
     }
   }
+
   public class TypeWithOnlyEnum
   {
-    private readonly YesNoMaybe _maybe;
+    readonly YesNoMaybe _maybe;
 
     public TypeWithOnlyEnum(YesNoMaybe maybe)
     {

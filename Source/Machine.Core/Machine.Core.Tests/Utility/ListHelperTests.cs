@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using NUnit.Framework;
@@ -11,13 +11,13 @@ namespace Machine.Core.Utility
     [Test]
     public void Last_CollectionWithOneItem_IsLast()
     {
-      Assert.AreEqual("Jacob", ListHelper.Last(new String[] { "Jacob" }));
+      Assert.AreEqual("Jacob", ListHelper.Last(new String[] {"Jacob"}));
     }
 
     [Test]
     public void Last_CollectionWithTwoItems_IsLast()
     {
-      Assert.AreEqual("Andy", ListHelper.Last(new String[] { "Jacob", "Andy" }));
+      Assert.AreEqual("Andy", ListHelper.Last(new String[] {"Jacob", "Andy"}));
     }
 
     [Test]

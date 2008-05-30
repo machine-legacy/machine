@@ -5,6 +5,7 @@ using Machine.BackgroundJobs.Sample;
 using Machine.Core;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.BackgroundJobs.Services.Impl
@@ -12,7 +13,7 @@ namespace Machine.BackgroundJobs.Services.Impl
   [TestFixture]
   public class JobManagerTests : StandardFixture<JobManager>
   {
-    private readonly List<IBackgroundJob> _jobs = new List<IBackgroundJob>();
+    readonly List<IBackgroundJob> _jobs = new List<IBackgroundJob>();
 
     public override JobManager Create()
     {
@@ -25,7 +26,8 @@ namespace Machine.BackgroundJobs.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(
+          Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().FindActiveJobs()).Return(_jobs);
       }
       Assert.AreEqual(_jobs, _target.FindActiveJobs(typeof(LongRunningJob)));
@@ -36,7 +38,8 @@ namespace Machine.BackgroundJobs.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(
+          Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().FindCompletedJobs()).Return(_jobs);
       }
       Assert.AreEqual(_jobs, _target.FindCompletedJobs(typeof(LongRunningJob)));
@@ -47,7 +50,8 @@ namespace Machine.BackgroundJobs.Services.Impl
     {
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(
+          Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().FindJobs()).Return(_jobs);
       }
       Assert.AreEqual(_jobs, _target.FindJobs(typeof(LongRunningJob)));
@@ -59,7 +63,8 @@ namespace Machine.BackgroundJobs.Services.Impl
       LongRunningJob job = new LongRunningJob();
       using (_mocks.Record())
       {
-        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(Get<IJobRepository>());
+        SetupResult.For(Get<IJobRepositoryLocator>().LocateJobRepository(typeof(LongRunningJob))).Return(
+          Get<IJobRepository>());
         SetupResult.For(Get<IJobRepository>().FindJob(1)).Return(job);
       }
       Assert.AreEqual(job, _target.FindJob(typeof(LongRunningJob), 1));

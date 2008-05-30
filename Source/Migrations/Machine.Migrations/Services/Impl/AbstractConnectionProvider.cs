@@ -5,12 +5,12 @@ namespace Machine.Migrations.Services.Impl
   public abstract class AbstractConnectionProvider : IConnectionProvider
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(SqlServerConnectionProvider));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(SqlServerConnectionProvider));
     #endregion
 
     #region Member Data
-    private readonly IConfiguration _configuration;
-    private IDbConnection _connection;
+    readonly IConfiguration _configuration;
+    IDbConnection _connection;
     #endregion
 
     #region AbstractConnectionProvider()

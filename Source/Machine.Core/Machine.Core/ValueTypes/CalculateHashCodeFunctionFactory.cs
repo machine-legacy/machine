@@ -17,7 +17,7 @@ namespace Machine.Core.ValueTypes
 
     public CalculateHashCodeFunction CreateCalculateHashCodeFunction(Type type)
     {
-      DynamicMethod method = NewMethod(type, typeof(Int32), new Type[] { typeof(object) });
+      DynamicMethod method = NewMethod(type, typeof(Int32), new Type[] {typeof(object)});
       ILGenerator il = method.GetILGenerator();
 
       ThrowIfArg0CastFailsOrNull(il, type);
@@ -45,15 +45,14 @@ namespace Machine.Core.ValueTypes
         else
         {
           il.Emit(OpCodes.Ldfld, field);
-          IfNull(il, delegate() {
-               il.Emit(OpCodes.Ldc_I4_0);
-             }, delegate() {
-               il.Emit(OpCodes.Ldarg_0);
-               il.Emit(OpCodes.Castclass, type);
-               il.Emit(OpCodes.Ldfld, field);
-               il.Emit(OpCodes.Callvirt, getHashCode);
-             }
-          );
+          IfNull(il, delegate() { il.Emit(OpCodes.Ldc_I4_0); }, delegate()
+          {
+            il.Emit(OpCodes.Ldarg_0);
+            il.Emit(OpCodes.Castclass, type);
+            il.Emit(OpCodes.Ldfld, field);
+            il.Emit(OpCodes.Callvirt, getHashCode);
+          }
+            );
         }
         if (hasState)
         {

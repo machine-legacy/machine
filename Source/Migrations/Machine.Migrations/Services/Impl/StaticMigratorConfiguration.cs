@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 
@@ -7,16 +8,16 @@ namespace Machine.Migrations.Services.Impl
   public class StaticMigratorConfiguration : IConfiguration
   {
     #region Member Data
-    private Type _connectionProviderType = typeof(SqlServerConnectionProvider);
-    private Type _schemaProviderType = typeof(SqlServerSchemaProvider);
-    private Type _databaseProviderType = typeof(SqlServerDatabaseProvider);
-    private string _connectionString;
-    private string _migrationsDirectory;
-  	private string _scope;
-    private short _desiredVersion = -1;
-    private bool _showDiagnostics;
-    private string[] _references = new string[0];
-    private int _commandTimeout = 30;
+    Type _connectionProviderType = typeof(SqlServerConnectionProvider);
+    Type _schemaProviderType = typeof(SqlServerSchemaProvider);
+    Type _databaseProviderType = typeof(SqlServerDatabaseProvider);
+    string _connectionString;
+    string _migrationsDirectory;
+    string _scope;
+    short _desiredVersion = -1;
+    bool _showDiagnostics;
+    string[] _references = new string[0];
+    int _commandTimeout = 30;
     #endregion
 
     #region StaticMigratorConfiguration()
@@ -37,7 +38,8 @@ namespace Machine.Migrations.Services.Impl
       _schemaProviderType = schemaProviderType;
     }
 
-    public StaticMigratorConfiguration(string connectionString, string migrationsDirectory, Type schemaProviderType, Type connectionProviderType)
+    public StaticMigratorConfiguration(string connectionString, string migrationsDirectory, Type schemaProviderType,
+      Type connectionProviderType)
     {
       _connectionString = connectionString;
       _connectionProviderType = connectionProviderType;
@@ -53,11 +55,11 @@ namespace Machine.Migrations.Services.Impl
       set { _references = value; }
     }
 
-	public string Scope
-	{
-		get { return _scope; }
-		set { _scope = value; }
-	}
+    public string Scope
+    {
+      get { return _scope; }
+      set { _scope = value; }
+    }
 
     public bool ShowDiagnostics
     {
@@ -101,7 +103,7 @@ namespace Machine.Migrations.Services.Impl
       set { _connectionProviderType = value; }
     }
 
-    public int CommandTimeout 
+    public int CommandTimeout
     {
       get { return _commandTimeout; }
       set { _commandTimeout = value; }

@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+
 using Machine.Core;
+
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.Migrations.Services.Impl
@@ -10,16 +13,16 @@ namespace Machine.Migrations.Services.Impl
   [TestFixture]
   public class MigrationRunnerTests : StandardFixture<MigrationRunner>
   {
-    private ISchemaStateManager _schemaStateManager;
-    private IMigrationFactoryChooser _migrationFactoryChooser;
-    private IMigrationInitializer _migrationInitializer;
-    private IMigrationFactory _migrationFactory;
-    private IConfiguration _configuration;
-    private IDatabaseMigration _migration1;
-    private IDatabaseMigration _migration2;
-    private ITransactionProvider _transactionProvider;
-    private IDbTransaction _transaction;
-    private List<MigrationStep> _steps;
+    ISchemaStateManager _schemaStateManager;
+    IMigrationFactoryChooser _migrationFactoryChooser;
+    IMigrationInitializer _migrationInitializer;
+    IMigrationFactory _migrationFactory;
+    IConfiguration _configuration;
+    IDatabaseMigration _migration1;
+    IDatabaseMigration _migration2;
+    ITransactionProvider _transactionProvider;
+    IDbTransaction _transaction;
+    List<MigrationStep> _steps;
 
     public override MigrationRunner Create()
     {
@@ -35,7 +38,8 @@ namespace Machine.Migrations.Services.Impl
       _configuration = _mocks.DynamicMock<IConfiguration>();
       _transactionProvider = _mocks.DynamicMock<ITransactionProvider>();
       _transaction = _mocks.StrictMock<IDbTransaction>();
-      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration, _transactionProvider);
+      return new MigrationRunner(_migrationFactoryChooser, _migrationInitializer, _schemaStateManager, _configuration,
+        _transactionProvider);
     }
 
     [Test]

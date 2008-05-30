@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 
@@ -11,12 +11,12 @@ namespace Machine.Migrations.NHibernate.Services.Impl
   public class NHibernateTransactionProvider : ITransactionProvider
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(NHibernateTransactionProvider));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(NHibernateTransactionProvider));
     #endregion
 
     #region Member Data
-    private readonly INHibernateSessionProvider _sessionProvider;
-    private ITransaction _transaction;
+    readonly INHibernateSessionProvider _sessionProvider;
+    ITransaction _transaction;
     #endregion
 
     #region NHibernateTransactionProvider()

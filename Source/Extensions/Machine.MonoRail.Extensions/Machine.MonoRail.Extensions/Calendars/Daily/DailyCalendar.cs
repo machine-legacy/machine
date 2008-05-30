@@ -5,11 +5,11 @@ namespace Machine.MonoRail.Extensions.Calendars.Daily
   public class DailyCalendar : AbstractCalendarViewComponent
   {
     #region Member Data
-    private const string BeginSectionName = "Begin";
-    private const string EndSectionName = "End";
-    private const string CellSectionName = "Cell";
-    private const string HeaderSectionName = "Header";
-    private IDailyCalendarParameters _parameters;
+    const string BeginSectionName = "Begin";
+    const string EndSectionName = "End";
+    const string CellSectionName = "Cell";
+    const string HeaderSectionName = "Header";
+    IDailyCalendarParameters _parameters;
     #endregion
 
     #region Methods
@@ -44,7 +44,7 @@ namespace Machine.MonoRail.Extensions.Calendars.Daily
       RenderSection(EndSectionName);
     }
 
-    private void ValidateParameters()
+    void ValidateParameters()
     {
       if (_parameters.MinorStep <= TimeSpan.Zero)
       {

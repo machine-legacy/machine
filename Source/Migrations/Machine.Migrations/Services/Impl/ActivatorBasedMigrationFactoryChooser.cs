@@ -1,22 +1,22 @@
 namespace Machine.Migrations.Services.Impl
 {
-	using System;
+  using System;
 
-	public class ActivatorBasedMigrationFactoryChooser : IMigrationFactoryChooser
-	{
-		private readonly ActivatorFactory factory = new ActivatorFactory();
+  public class ActivatorBasedMigrationFactoryChooser : IMigrationFactoryChooser
+  {
+    readonly ActivatorFactory factory = new ActivatorFactory();
 
-		public IMigrationFactory ChooseFactory(MigrationReference migrationReference)
-		{
-			return factory;
-		}
+    public IMigrationFactory ChooseFactory(MigrationReference migrationReference)
+    {
+      return factory;
+    }
 
-		public class ActivatorFactory : IMigrationFactory
-		{
-			public IDatabaseMigration CreateMigration(MigrationReference migrationReference)
-			{
-				return (IDatabaseMigration) Activator.CreateInstance(migrationReference.Reference);
-			}
-		}
-	}
+    public class ActivatorFactory : IMigrationFactory
+    {
+      public IDatabaseMigration CreateMigration(MigrationReference migrationReference)
+      {
+        return (IDatabaseMigration)Activator.CreateInstance(migrationReference.Reference);
+      }
+    }
+  }
 }

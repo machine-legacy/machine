@@ -1,50 +1,51 @@
 namespace Machine.Migrations.Builder
 {
-	using System;
-	using System.Collections.Generic;
-	using SchemaProviders;
+  using System;
+  using System.Collections.Generic;
 
-	public class ForeignKeyBuilder : ColumnBuilder<ForeignKeyBuilder>
-	{
-		private readonly string targetTable;
-		private readonly string targetColName;
+  using SchemaProviders;
 
-		public ForeignKeyBuilder(string name, TableBuilder referencedTable) : base(name)
-		{
-			IColumnBuilder referencedPK = referencedTable.PrimaryKeyColumn;
+  public class ForeignKeyBuilder : ColumnBuilder<ForeignKeyBuilder>
+  {
+    readonly string targetTable;
+    readonly string targetColName;
 
-			targetTable = referencedTable.Name;
-			targetColName = referencedTable.PrimaryKeyColumn.Name;
+    public ForeignKeyBuilder(string name, TableBuilder referencedTable) : base(name)
+    {
+      IColumnBuilder referencedPK = referencedTable.PrimaryKeyColumn;
 
-			base.colType = referencedPK.ColumnType;
-			base.size = referencedPK.Size;
-		}
+      targetTable = referencedTable.Name;
+      targetColName = referencedTable.PrimaryKeyColumn.Name;
 
-		public ForeignKeyBuilder(string name, Type type, string targetTable, string targetColName) : base(name)
-		{
-			this.targetTable = targetTable;
-			this.targetColName = targetColName;
-			base.type = type;
-		}
+      base.colType = referencedPK.ColumnType;
+      base.size = referencedPK.Size;
+    }
 
-		public override Column Build(TableBuilder table, ISchemaProvider schemaProvider, IList<PostProcess> posts)
-		{
-			Column col = base.Build(table, schemaProvider, posts);
+    public ForeignKeyBuilder(string name, Type type, string targetTable, string targetColName) : base(name)
+    {
+      this.targetTable = targetTable;
+      this.targetColName = targetColName;
+      base.type = type;
+    }
 
-			posts.Add(new PostProcess(
-				delegate()
-				{
-					string fkName = "FK_" +
-					                SchemaUtils.Normalize(table.Name) + "_" +
-					                SchemaUtils.Normalize(col.Name) + "_" +
-									SchemaUtils.Normalize(targetColName);
+    public override Column Build(TableBuilder table, ISchemaProvider schemaProvider, IList<PostProcess> posts)
+    {
+      Column col = base.Build(table, schemaProvider, posts);
 
-					schemaProvider.AddForeignKeyConstraint(
-						table.Name, fkName, col.Name,
-						targetTable, targetColName);
-				}));
+      posts.Add(new PostProcess(
+        delegate()
+        {
+          string fkName = "FK_" +
+            SchemaUtils.Normalize(table.Name) + "_" +
+              SchemaUtils.Normalize(col.Name) + "_" +
+                SchemaUtils.Normalize(targetColName);
 
-			return col;
-		}
-	}
+          schemaProvider.AddForeignKeyConstraint(
+            table.Name, fkName, col.Name,
+            targetTable, targetColName);
+        }));
+
+      return col;
+    }
+  }
 }

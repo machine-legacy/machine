@@ -5,8 +5,8 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationSelector : IMigrationSelector
   {
     #region Member Data
-    private readonly IMigrationFinder _migrationFinder;
-    private readonly IVersionStateFactory _versionStateFactory;
+    readonly IMigrationFinder _migrationFinder;
+    readonly IVersionStateFactory _versionStateFactory;
     #endregion
 
     #region MigrationSelector()

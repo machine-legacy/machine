@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+
 using Machine.Migrations.DatabaseProviders;
 
 namespace Machine.Migrations.Services.Impl
@@ -6,15 +7,17 @@ namespace Machine.Migrations.Services.Impl
   public class Migrator : IMigrator
   {
     #region Member Data
-    private readonly IDatabaseProvider _databaseProvider;
-    private readonly IMigrationSelector _migrationSelector;
-    private readonly IMigrationRunner _migrationRunner;
-    private readonly ISchemaStateManager _schemaStateManager;
-    private readonly IWorkingDirectoryManager _workingDirectoryManager;
+    readonly IDatabaseProvider _databaseProvider;
+    readonly IMigrationSelector _migrationSelector;
+    readonly IMigrationRunner _migrationRunner;
+    readonly ISchemaStateManager _schemaStateManager;
+    readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region Migrator()
-    public Migrator(IMigrationSelector migrationSelector, IMigrationRunner migrationRunner, IDatabaseProvider databaseProvider, ISchemaStateManager schemaStateManager, IWorkingDirectoryManager workingDirectoryManager)
+    public Migrator(IMigrationSelector migrationSelector, IMigrationRunner migrationRunner,
+      IDatabaseProvider databaseProvider, ISchemaStateManager schemaStateManager,
+      IWorkingDirectoryManager workingDirectoryManager)
     {
       _migrationSelector = migrationSelector;
       _workingDirectoryManager = workingDirectoryManager;

@@ -1,4 +1,3 @@
-﻿
 namespace Machine.Migrations.Services
 {
   public interface IMigrationInitializer

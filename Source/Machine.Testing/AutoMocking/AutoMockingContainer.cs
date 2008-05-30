@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+
 using Machine.Container;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
@@ -10,8 +11,8 @@ namespace Machine.Testing.AutoMocking
 {
   public class AutoMockingContainer : MachineContainer
   {
-    private readonly MockRepository _mocks;
-    private MockingDependencyResolver _mockingDependencyResolver;
+    readonly MockRepository _mocks;
+    MockingDependencyResolver _mockingDependencyResolver;
 
     public AutoMockingContainer(MockRepository mocks)
     {
@@ -21,7 +22,8 @@ namespace Machine.Testing.AutoMocking
     public override IActivatorResolver CreateDependencyResolver()
     {
       _mockingDependencyResolver = new MockingDependencyResolver(_mocks);
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(),
+        _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
     }
 
     public virtual TService Get<TService>()

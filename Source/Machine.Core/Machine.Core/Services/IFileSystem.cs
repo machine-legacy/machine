@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -26,13 +26,14 @@ namespace Machine.Core.Services
     string GetTempFileName();
     void MoveFile(string source, string destination);
   }
+
   public class FileProperties
   {
-    private string _fullName;
-    private long _length;
-    private DateTime _lastAccessTime;
-    private DateTime _lastWriteTime;
-    private DateTime _creationTime;
+    string _fullName;
+    long _length;
+    DateTime _lastAccessTime;
+    DateTime _lastWriteTime;
+    DateTime _creationTime;
 #if !SILVERLIGHT
     private DateTime _lastWriteTimeUtc;
     private DateTime _lastAccessTimeUtc;

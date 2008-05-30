@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using Machine.Migrations.DatabaseProviders;
 
@@ -8,7 +8,7 @@ namespace Machine.Migrations.SchemaProviders
   {
     #region SqlServerCeSchemaProvider()
     public SqlServerCeSchemaProvider(IDatabaseProvider databaseProvider)
-     : base(databaseProvider)
+      : base(databaseProvider)
     {
     }
     #endregion
@@ -23,14 +23,14 @@ namespace Machine.Migrations.SchemaProviders
       return null;
     }
 
-	public override string ToMsSqlType(ColumnType type, int size)
+    public override string ToMsSqlType(ColumnType type, int size)
     {
       if (type == ColumnType.Binary)
       {
         return "IMAGE";
       }
-	  
-	  if (type == ColumnType.Text || type == ColumnType.NVarChar)
+
+      if (type == ColumnType.Text || type == ColumnType.NVarChar)
       {
         if (size == 0)
         {
@@ -39,7 +39,7 @@ namespace Machine.Migrations.SchemaProviders
         return String.Format("NVARCHAR({0})", size);
       }
 
-	  return base.ToMsSqlType(type, size);
+      return base.ToMsSqlType(type, size);
     }
     #endregion
   }

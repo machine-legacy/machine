@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class RootActivatorResolver : IActivatorResolver
   {
     #region Member Data
-    private readonly IActivatorResolver[] _resolvers;
+    readonly IActivatorResolver[] _resolvers;
     #endregion
 
     #region RootDependencyResolver()

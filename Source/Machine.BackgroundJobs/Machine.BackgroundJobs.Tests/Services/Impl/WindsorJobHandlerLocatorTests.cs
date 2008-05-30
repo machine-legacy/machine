@@ -7,6 +7,7 @@ using Machine.Core;
 using Machine.BackgroundJobs.Sample;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.BackgroundJobs.Services.Impl

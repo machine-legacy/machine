@@ -1,12 +1,12 @@
-﻿using System;
+using System;
 
 namespace Machine.MonoRail.Extensions.Calendars.Daily
 {
   public class DailyCalendarCellParameters
   {
-    private DateTime _dateAndTime;
-    private bool _isToday;
-    private bool _isMajorStep;
+    DateTime _dateAndTime;
+    bool _isToday;
+    bool _isMajorStep;
 
     public DateTime DateAndTime
     {

@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+
 using Machine.Container.Plugins;
 
 namespace Machine.Container.Services.Impl
 {
   public class PluginManager : IPluginManager
   {
-    private readonly IHighLevelContainer _container;
-    private readonly List<IServiceContainerPlugin> _plugins = new List<IServiceContainerPlugin>();
-    private bool _initialized;
+    readonly IHighLevelContainer _container;
+    readonly List<IServiceContainerPlugin> _plugins = new List<IServiceContainerPlugin>();
+    bool _initialized;
 
     public PluginManager(IHighLevelContainer container)
     {

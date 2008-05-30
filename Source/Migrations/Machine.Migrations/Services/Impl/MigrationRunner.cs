@@ -7,19 +7,20 @@ namespace Machine.Migrations.Services.Impl
   public class MigrationRunner : IMigrationRunner
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(MigrationRunner));
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(MigrationRunner));
     #endregion
 
     #region Member Data
-    private readonly IMigrationFactoryChooser _migrationFactoryChooser;
-    private readonly IMigrationInitializer _migrationInitializer;
-    private readonly ISchemaStateManager _schemaStateManager;
-    private readonly IConfiguration _configuration;
-    private readonly ITransactionProvider _transactionProvider;
+    readonly IMigrationFactoryChooser _migrationFactoryChooser;
+    readonly IMigrationInitializer _migrationInitializer;
+    readonly ISchemaStateManager _schemaStateManager;
+    readonly IConfiguration _configuration;
+    readonly ITransactionProvider _transactionProvider;
     #endregion
 
     #region MigrationRunner()
-	public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer, ISchemaStateManager schemaStateManager, IConfiguration configuration, ITransactionProvider transactionProvider)
+    public MigrationRunner(IMigrationFactoryChooser migrationFactoryChooser, IMigrationInitializer migrationInitializer,
+      ISchemaStateManager schemaStateManager, IConfiguration configuration, ITransactionProvider transactionProvider)
     {
       _schemaStateManager = schemaStateManager;
       _transactionProvider = transactionProvider;
@@ -60,11 +61,11 @@ namespace Machine.Migrations.Services.Impl
               step.Apply();
               if (step.Reverting)
               {
-				  _schemaStateManager.SetMigrationVersionUnapplied(step.Version, _configuration.Scope);
+                _schemaStateManager.SetMigrationVersionUnapplied(step.Version, _configuration.Scope);
               }
               else
               {
-				  _schemaStateManager.SetMigrationVersionApplied(step.Version, _configuration.Scope);
+                _schemaStateManager.SetMigrationVersionApplied(step.Version, _configuration.Scope);
               }
               _log.InfoFormat("Comitting");
               transaction.Commit();
@@ -75,8 +76,8 @@ namespace Machine.Migrations.Services.Impl
               {
                 _log.InfoFormat("Rollback");
                 transaction.Rollback();
-			  }
-			  throw;
+              }
+              throw;
             }
           }
         }

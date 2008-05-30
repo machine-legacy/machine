@@ -6,8 +6,8 @@ namespace Machine.Migrations.Services.Impl
   public class VersionStateFactory : IVersionStateFactory
   {
     #region Member Data
-    private readonly IConfiguration _configuration;
-    private readonly ISchemaStateManager _schemaStateManager;
+    readonly IConfiguration _configuration;
+    readonly ISchemaStateManager _schemaStateManager;
     #endregion
 
     #region VersionStateFactory()
@@ -21,7 +21,7 @@ namespace Machine.Migrations.Services.Impl
     #region IVersionStateFactory Members
     public VersionState CreateVersionState(ICollection<MigrationReference> migrations)
     {
-		short[] applied = _schemaStateManager.GetAppliedMigrationVersions(_configuration.Scope);
+      short[] applied = _schemaStateManager.GetAppliedMigrationVersions(_configuration.Scope);
       short desired = _configuration.DesiredVersion;
       short last = 0;
       if (migrations.Count > 0)

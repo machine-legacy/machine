@@ -1,10 +1,12 @@
 ﻿using System;
+
 using Machine.Container.Services;
 using Machine.Core.MsBuildUtilities;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 using Machine.Migrations.Services;
 using Machine.Migrations.Services.Impl;
+
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
@@ -12,13 +14,13 @@ namespace Machine.Migrations
 {
   public class MigratorTask : Task, IConfiguration
   {
-    private string _migrationsDirectory;
-  	private string _scope;
-    private string _connectionString;
-    private short _desiredVersion;
-    private int _commandTimeout = 30;
-    private bool _diagnostics;
-    private string[] _references;
+    string _migrationsDirectory;
+    string _scope;
+    string _connectionString;
+    short _desiredVersion;
+    int _commandTimeout = 30;
+    bool _diagnostics;
+    string[] _references;
 
     public MigratorTask()
     {
@@ -33,7 +35,8 @@ namespace Machine.Migrations
     public override bool Execute()
     {
       IMigratorContainerFactory migratorContainerFactory = CreateContainerFactory();
-      log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %x %m")));
+      log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log,
+        new log4net.Layout.PatternLayout("%-5p %x %m")));
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
         IHighLevelContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
@@ -50,13 +53,13 @@ namespace Machine.Migrations
       set { _connectionString = value; }
     }
 
-  	public string Scope
-  	{
-		get { return _scope; }
-		set { _scope = value; }
-  	}
+    public string Scope
+    {
+      get { return _scope; }
+      set { _scope = value; }
+    }
 
-  	public string MigrationsDirectory
+    public string MigrationsDirectory
     {
       get { return _migrationsDirectory; }
       set { _migrationsDirectory = value; }

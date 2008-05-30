@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+
 using Machine.BackgroundJobs.Sample;
 using Machine.Core;
 
 using NUnit.Framework;
+
 using Rhino.Mocks;
 
 namespace Machine.BackgroundJobs.Services.Impl
@@ -11,9 +13,9 @@ namespace Machine.BackgroundJobs.Services.Impl
   [TestFixture]
   public class SimpleJobRepositoryTests : StandardFixture<SimpleJobRepository>
   {
-    private LongRunningJob _job1;
-    private LongRunningJob _job2;
-    private LongRunningJob _job3;
+    LongRunningJob _job1;
+    LongRunningJob _job2;
+    LongRunningJob _job3;
 
     public override SimpleJobRepository Create()
     {
@@ -33,7 +35,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       _target.AddJob(_job1);
       _target.AddJob(_job2);
       _target.AddJob(_job3);
-      CollectionAssert.AreEqual(new IBackgroundJob[] { _job2 }, new List<IBackgroundJob>(_target.FindCompletedJobs()));
+      CollectionAssert.AreEqual(new IBackgroundJob[] {_job2}, new List<IBackgroundJob>(_target.FindCompletedJobs()));
       _mocks.VerifyAll();
     }
 
@@ -47,7 +49,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       _target.AddJob(_job1);
       _target.AddJob(_job2);
       _target.AddJob(_job3);
-      CollectionAssert.AreEqual(new IBackgroundJob[] { _job1, _job3 }, new List<IBackgroundJob>(_target.FindActiveJobs()));
+      CollectionAssert.AreEqual(new IBackgroundJob[] {_job1, _job3}, new List<IBackgroundJob>(_target.FindActiveJobs()));
       _mocks.VerifyAll();
     }
 
@@ -61,7 +63,7 @@ namespace Machine.BackgroundJobs.Services.Impl
       _target.AddJob(_job1);
       _target.AddJob(_job2);
       _target.AddJob(_job3);
-      CollectionAssert.AreEqual(new IBackgroundJob[] { _job1, _job2, _job3 }, new List<IBackgroundJob>(_target.FindJobs()));
+      CollectionAssert.AreEqual(new IBackgroundJob[] {_job1, _job2, _job3}, new List<IBackgroundJob>(_target.FindJobs()));
       _mocks.VerifyAll();
     }
 

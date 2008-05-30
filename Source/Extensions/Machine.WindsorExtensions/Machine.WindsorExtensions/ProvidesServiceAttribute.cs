@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Castle.Core;
@@ -8,7 +8,7 @@ namespace Machine.WindsorExtensions
   [AttributeUsage(AttributeTargets.Class)]
   public class ProvidesServiceAttribute : LifestyleAttribute
   {
-    private readonly Type _serviceType;
+    readonly Type _serviceType;
 
     public Type ServiceType
     {
