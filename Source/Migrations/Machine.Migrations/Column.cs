@@ -18,7 +18,8 @@ namespace Machine.Migrations
     Real,
     Money,
     Decimal,
-    Image
+    Image,
+    Guid
   }
 
   public class Column
@@ -142,8 +143,12 @@ namespace Machine.Migrations
       _columnType = type;
     }
 
-    static ColumnType ToColumnType(Type type)
+    private static ColumnType ToColumnType(Type type)
     {
+      if (type == typeof(Guid))
+      {
+        return ColumnType.Guid;
+      }
       if (type == typeof(Int16))
       {
         return ColumnType.Int16;

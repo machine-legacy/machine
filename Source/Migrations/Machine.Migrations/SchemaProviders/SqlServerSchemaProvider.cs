@@ -249,7 +249,7 @@ namespace Machine.Migrations.SchemaProviders
         case ColumnType.NVarChar:
           if (size == 0)
           {
-            return "NVARCHAR(150)";
+            return "NVARCHAR(150)"; // Why 150? Kind of arbitrary? -jlewalle
           }
           return String.Format("NVARCHAR({0})", size);
         case ColumnType.Real:
@@ -268,6 +268,8 @@ namespace Machine.Migrations.SchemaProviders
           return "DECIMAL";
         case ColumnType.Image:
           return "IMAGE";
+        case ColumnType.Guid:
+          return "UNIQUEIDENTIFIER";
       }
 
       throw new ArgumentException("type");

@@ -56,6 +56,7 @@
     <Compile Include="ValueTypes\SampleTypes.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ValueTypes\ValueTypeHelperTests_Performance.cs" />
     <Compile Include="ValueTypes\ValueTypeHelperTests_TypeHasNoState.cs">
       <SubType>Code</SubType>
     </Compile>
