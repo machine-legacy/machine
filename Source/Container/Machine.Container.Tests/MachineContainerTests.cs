@@ -21,6 +21,8 @@ namespace Machine.Container
       base.Setup();
       _machineContainer = new MachineContainer();
       _machineContainer.Initialize();
+      _machineContainer.PrepareForServices();
+      _machineContainer.Start();
     }
     #endregion
 

@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 using NUnit.Framework;
 
-namespace Machine.Container.Utility
+namespace Machine.Core.Utility
 {
   [TestFixture]
-  public class StackPopperTests : MachineContainerTestsFixture
+  public class StackPopperTests
   {
     #region Member Data
     private Stack<string> _stack;
     #endregion
 
     #region Test Setup and Teardown Methods
-    public override void Setup()
+    [SetUp]
+    public virtual void Setup()
     {
-      base.Setup();
       _stack = new Stack<string>();
     }
     #endregion

@@ -138,6 +138,8 @@ namespace Machine.Testing
 
       SetupContainer();
       _container.Initialize();
+      _container.PrepareForServices();
+      _container.Start();
 
       _target = null;
       BeforeEachTest();

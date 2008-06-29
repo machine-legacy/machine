@@ -6,7 +6,30 @@ namespace Machine.Container
 {
   [Serializable]
   [CoverageExclude]
-  public class ServiceResolutionException : Exception
+  public class ServiceContainerException : Exception
+  {
+    public ServiceContainerException()
+    {
+    }
+
+    public ServiceContainerException(string message) : base(message)
+    {
+    }
+
+    public ServiceContainerException(string message, Exception innerException) : base(message, innerException)
+    {
+    }
+
+    #if !SILVERLIGHT
+    protected ServiceContainerException(SerializationInfo info, StreamingContext context) : base(info, context)
+    {
+    }
+    #endif
+  }
+
+  [Serializable]
+  [CoverageExclude]
+  public class ServiceResolutionException : ServiceContainerException
   {
     public ServiceResolutionException()
     {
@@ -29,7 +52,7 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
-  public class YouFoundABugException : Exception
+  public class YouFoundABugException : ServiceContainerException
   {
     public YouFoundABugException()
     {
@@ -52,7 +75,7 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
-  public class CircularDependencyException : Exception
+  public class CircularDependencyException : ServiceContainerException
   {
     public CircularDependencyException()
     {
@@ -75,7 +98,7 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
-  public class PendingDependencyException : Exception
+  public class PendingDependencyException : ServiceContainerException
   {
     public PendingDependencyException()
     {
@@ -98,7 +121,7 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
-  public class MissingServiceException : Exception
+  public class MissingServiceException : ServiceContainerException
   {
     public MissingServiceException()
     {
@@ -121,7 +144,7 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
-  public class AmbiguousServicesException : Exception
+  public class AmbiguousServicesException : ServiceContainerException
   {
     public AmbiguousServicesException()
     {

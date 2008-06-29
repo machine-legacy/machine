@@ -63,7 +63,7 @@ namespace Machine.Container.Services.Impl
       else if (!services.ActivatorStore.HasActivator(entry))
       {
         ILifestyle lifestyle = services.LifestyleFactory.CreateLifestyle(entry);
-        IActivator lifestyleActivator = lifestyle /*services.ActivatorStrategy.CreateLifestyleActivator(lifestyle)*/;
+        IActivator lifestyleActivator = lifestyle/*services.ActivatorStrategy.CreateLifestyleActivator(lifestyle)*/;
         services.ActivatorStore.AddActivator(entry, lifestyleActivator);
       }
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Machine.Container.Utility
+namespace Machine.Core.Utility
 {
   public class StackPopper<T> : IDisposable
   {

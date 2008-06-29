@@ -52,6 +52,7 @@
     <Compile Include="Services\Impl\ThreadManagerTests.cs" />
     <Compile Include="StandardFixture.cs" />
     <Compile Include="Utility\ListHelperTests.cs" />
+    <Compile Include="Utility\StackPopperTests.cs" />
     <Compile Include="Utility\TimeSpanHelperTests.cs" />
     <Compile Include="ValueTypes\SampleTypes.cs">
       <SubType>Code</SubType>

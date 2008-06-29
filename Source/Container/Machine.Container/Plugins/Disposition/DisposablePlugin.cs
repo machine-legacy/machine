@@ -14,12 +14,6 @@ namespace Machine.Container.Plugins.Disposition
     }
     #endregion
 
-    #region IDisposable Members
-    public void Dispose()
-    {
-    }
-    #endregion
-
     #region IServiceContainerListener Members
     public void ServiceRegistered(ServiceEntry entry)
     {
@@ -30,6 +24,20 @@ namespace Machine.Container.Plugins.Disposition
     }
 
     public void InstanceReleased(ServiceEntry entry, object instance)
+    {
+    }
+
+    public void PreparedForServices()
+    {
+    }
+
+    public void Started()
+    {
+    }
+    #endregion
+
+    #region IDisposable Members
+    public void Dispose()
     {
     }
     #endregion

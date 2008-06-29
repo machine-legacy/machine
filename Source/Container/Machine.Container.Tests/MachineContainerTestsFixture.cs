@@ -33,6 +33,8 @@ namespace Machine.Container
       _mocks = new MockRepository();
       _container = new AutoMockingContainer(_mocks);
       _container.Initialize();
+      _container.PrepareForServices();
+      _container.Start();
     }
     #endregion
 

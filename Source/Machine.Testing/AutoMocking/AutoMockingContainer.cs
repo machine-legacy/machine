@@ -19,7 +19,7 @@ namespace Machine.Testing.AutoMocking
       _mocks = mocks;
     }
 
-    public override IActivatorResolver CreateDependencyResolver()
+    protected override IActivatorResolver CreateDependencyResolver()
     {
       _mockingDependencyResolver = new MockingDependencyResolver(_mocks);
       return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(),

@@ -1,24 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
-using Machine.Core.Utility;
 
 namespace Machine.Container
 {
-  public interface IServiceRegisterer
-  {
-  }
-  public class ServiceRegisterer : IServiceRegisterer
-  {
-  }
   public class MachineContainer : IHighLevelContainer
   {
     #region Member Data
+    private readonly ContainerStatePolicy _state = new ContainerStatePolicy();
     private readonly IPluginManager _pluginManager;
     private IServiceEntryResolver _resolver;
     private IActivatorStrategy _activatorStrategy;
@@ -32,32 +25,18 @@ namespace Machine.Container
       _pluginManager = new PluginManager(this);
     }
 
-    #region Methods
-    public virtual void Initialize()
-    {
-      IActivatorResolver activatorResolver = CreateDependencyResolver();
-      IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
-      IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
-      _serviceGraph = new ServiceGraph();
-      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
-      _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
-      _activatorStore = new ActivatorStore();
-      _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
-      AddService<IHighLevelContainer>(this);
-      _pluginManager.Initialize();
-    }
-
-    public virtual IActivatorResolver CreateDependencyResolver()
-    {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(), new ThrowsPendingActivatorResolver());
-    }
-    #endregion
-
     #region IHighLevelContainer Members
     // Plugins / Listeners
     public void AddPlugin(IServiceContainerPlugin plugin)
     {
+      _state.AssertCanAddPlugins();
       _pluginManager.AddPlugin(plugin);
+    }
+
+    public void AddListener(IServiceContainerListener listener)
+    {
+      _state.AssertCanAddListeners();
+      _pluginManager.AddListener(listener);
     }
 
     // Adding Services / Registration
@@ -73,6 +52,7 @@ namespace Machine.Container
 
     public void AddService(Type serviceType, LifestyleType lifestyleType)
     {
+      _state.AssertCanAddServices();
       ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType);
       entry.LifestyleType = lifestyleType;
     }
@@ -94,12 +74,14 @@ namespace Machine.Container
 
     public void AddService(Type serviceType, Type implementationType, LifestyleType lifestyleType)
     {
+      _state.AssertCanAddServices();
       ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType, implementationType);
       entry.LifestyleType = lifestyleType;
     }
 
     public void AddService<TService>(object instance)
     {
+      _state.AssertCanAddServices();
       ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
       IActivator activator = _activatorStrategy.CreateStaticActivator(entry, instance);
       _activatorStore.AddActivator(entry, activator);
@@ -129,6 +111,7 @@ namespace Machine.Container
 
     public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
     {
+      _state.AssertCanResolve();
       ICreationServices services = CreateCreationServices(serviceOverrides);
       ResolvedServiceEntry entry = _resolver.ResolveEntry(services, serviceType, true);
       return entry.Activator.Activate(services);
@@ -137,6 +120,7 @@ namespace Machine.Container
     // Releasing
     public void Release(object instance)
     {
+      _state.AssertCanRelease();
     }
 
     // Miscellaneous
@@ -159,12 +143,40 @@ namespace Machine.Container
     }
     #endregion
 
-    #region Methods
     protected virtual ICreationServices CreateCreationServices(params object[] serviceOverrides)
     {
       IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
       return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver);
     }
-    #endregion
+
+    protected virtual IActivatorResolver CreateDependencyResolver()
+    {
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(), new ThrowsPendingActivatorResolver());
+    }
+
+    public virtual void Initialize()
+    {
+      IActivatorResolver activatorResolver = CreateDependencyResolver();
+      IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
+      IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
+      _serviceGraph = new ServiceGraph();
+      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
+      _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
+      _activatorStore = new ActivatorStore();
+      _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
+      _state.Initialize();
+    }
+
+    public virtual void PrepareForServices()
+    {
+      _state.PrepareForServices();
+      _pluginManager.Initialize();
+      AddService<IHighLevelContainer>(this);
+    }
+
+    public virtual void Start()
+    {
+      _state.Start();
+    }
   }
 }

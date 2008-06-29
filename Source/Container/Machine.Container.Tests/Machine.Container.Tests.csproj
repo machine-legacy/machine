@@ -62,7 +62,6 @@
     <Compile Include="Services\Impl\DefaultActivatorStrategyTests.cs" />
     <Compile Include="Activators\DefaultActivatorTests.cs" />
     <Compile Include="Services\Impl\DotNetObjectFactoryTests.cs" />
-    <Compile Include="Services\Impl\EmptyOverridesTests.cs" />
     <Compile Include="Activators\LifestyleActivatorTests.cs" />
     <Compile Include="Services\Impl\LifestyleFactoryTests.cs" />
     <Compile Include="Services\Impl\PluginManagerTests.cs" />
@@ -75,7 +74,6 @@
     <Compile Include="Activators\StaticActivatorTests.cs" />
     <Compile Include="Services\Impl\StaticOverrideLookupTests.cs" />
     <Compile Include="Services\Impl\ThrowsPendingActivatorResolverTests.cs" />
-    <Compile Include="Utility\StackPopperTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Machine.Testing\Machine.Testing.csproj">
@@ -86,6 +84,9 @@
       <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
       <Name>Machine.Container</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Utility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
