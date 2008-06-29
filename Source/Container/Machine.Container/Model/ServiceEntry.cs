@@ -11,7 +11,7 @@ namespace Machine.Container.Model
     private readonly Type _serviceType;
     private readonly Type _implementationType;
     private LifestyleType _lifestyleType;
-    private ConstructorCandidate _constructorCandidate;
+    private ResolvedConstructorCandidate _constructorCandidate;
     #endregion
 
     #region Properties
@@ -47,7 +47,7 @@ namespace Machine.Container.Model
       }
     }
 
-    public ConstructorCandidate ConstructorCandidate
+    public ResolvedConstructorCandidate ConstructorCandidate
     {
       get { return _constructorCandidate; }
       set { _constructorCandidate = value; }

@@ -28,6 +28,11 @@ namespace Machine.Container.Activators
     {
       return _lifestyle.Activate(services);
     }
+
+    public void Release(object instance)
+    {
+      _lifestyle.Release(instance);
+    }
     #endregion
   }
 }

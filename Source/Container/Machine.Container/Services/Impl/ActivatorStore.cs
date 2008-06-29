@@ -1,35 +1,47 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Machine.Container.Model;
+using Machine.Core.Utility;
 
 namespace Machine.Container.Services.Impl
 {
   public class ActivatorStore : IActivatorStore
   {
     #region Logging
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStore));
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStore));
     #endregion
 
     #region Member Data
-    readonly Dictionary<ServiceEntry, IActivator> _cache = new Dictionary<ServiceEntry, IActivator>();
+    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    private readonly Dictionary<ServiceEntry, IActivator> _cache = new Dictionary<ServiceEntry, IActivator>();
     #endregion
 
     #region IActivatorStore Members
     public IActivator ResolveActivator(ServiceEntry entry)
     {
-      return _cache[entry];
+      using (RWLock.AsReader(_lock))
+      {
+        return _cache[entry];
+      }
     }
 
     public void AddActivator(ServiceEntry entry, IActivator activator)
     {
-      _log.Info("Adding: " + entry + " " + activator);
-      _cache[entry] = activator;
+      using (RWLock.AsWriter(_lock))
+      {
+        _log.Info("Adding: " + entry + " " + activator);
+        _cache[entry] = activator;
+      }
     }
 
     public bool HasActivator(ServiceEntry entry)
     {
-      return _cache.ContainsKey(entry);
+      using (RWLock.AsReader(_lock))
+      {
+        return _cache.ContainsKey(entry);
+      }
     }
     #endregion
   }

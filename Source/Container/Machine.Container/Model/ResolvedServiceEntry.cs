@@ -30,5 +30,20 @@ namespace Machine.Container.Model
     {
       return String.Format("ResolvedEntry<{0}, {1}>", _serviceEntry, _activator);
     }
+
+    public override bool Equals(object obj)
+    {
+      ResolvedServiceEntry other = obj as ResolvedServiceEntry;
+      if (other != null)
+      {
+        return other.ServiceEntry.Equals(this.ServiceEntry) && other.Activator.Equals(this.Activator);
+      }
+      return false;
+    }
+
+    public override Int32 GetHashCode()
+    {
+      return this.ServiceEntry.GetHashCode() ^ this.Activator.GetHashCode();
+    }
   }
 }

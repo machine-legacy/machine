@@ -1,18 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Machine.Container.Model;
+using Machine.Core.Utility;
 
 namespace Machine.Container.Services.Impl
 {
   public class ServiceGraph : IServiceGraph
   {
     #region Logging
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
     #endregion
 
     #region Member Data
-    readonly Dictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
+    private readonly Dictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
+    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
     #endregion
 
     #region IServiceGraph Members
@@ -28,17 +31,25 @@ namespace Machine.Container.Services.Impl
 
     public void Add(ServiceEntry entry)
     {
-      _log.Info("Adding: " + entry);
-      _map[entry.ServiceType] = entry;
+      using (RWLock.AsWriter(_lock))
+      {
+        _log.Info("Adding: " + entry);
+        _map[entry.ServiceType] = entry;
+      }
     }
 
     public IEnumerable<ServiceRegistration> RegisteredServices
     {
       get
       {
-        foreach (ServiceEntry serviceEntry in _map.Values)
+        using (RWLock.AsReader(_lock))
         {
-          yield return new ServiceRegistration(serviceEntry.ServiceType, serviceEntry.ImplementationType);
+          List<ServiceRegistration> registrations = new List<ServiceRegistration>();
+          foreach (ServiceEntry serviceEntry in _map.Values)
+          {
+            registrations.Add(new ServiceRegistration(serviceEntry.ServiceType, serviceEntry.ImplementationType));
+          }
+          return registrations;
         }
       }
     }
@@ -46,23 +57,26 @@ namespace Machine.Container.Services.Impl
 
     public ServiceEntry LookupLazily(Type type, bool throwIfAmbiguous)
     {
-      List<ServiceEntry> matches = new List<ServiceEntry>();
-      foreach (ServiceEntry entry in _map.Values)
+      using (RWLock.AsReader(_lock))
       {
-        if (type.IsAssignableFrom(entry.ServiceType))
+        List<ServiceEntry> matches = new List<ServiceEntry>();
+        foreach (ServiceEntry entry in _map.Values)
         {
-          matches.Add(entry);
+          if (type.IsAssignableFrom(entry.ServiceType))
+          {
+            matches.Add(entry);
+          }
         }
+        if (matches.Count == 1)
+        {
+          return matches[0];
+        }
+        else if (matches.Count > 1 && throwIfAmbiguous)
+        {
+          throw new AmbiguousServicesException(type.ToString());
+        }
+        return null;
       }
-      if (matches.Count == 1)
-      {
-        return matches[0];
-      }
-      else if (matches.Count > 1 && throwIfAmbiguous)
-      {
-        throw new AmbiguousServicesException(type.ToString());
-      }
-      return null;
     }
   }
 }

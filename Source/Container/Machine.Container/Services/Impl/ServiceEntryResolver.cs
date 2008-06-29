@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 
 using Machine.Container.Model;
 
@@ -8,13 +7,13 @@ namespace Machine.Container.Services.Impl
   public class ServiceEntryResolver : IServiceEntryResolver
   {
     #region Logging
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
     #endregion
 
     #region Member Data
-    readonly IServiceGraph _serviceGraph;
-    readonly IServiceEntryFactory _serviceEntryFactory;
-    readonly IActivatorResolver _activatorResolver;
+    private readonly IServiceGraph _serviceGraph;
+    private readonly IServiceEntryFactory _serviceEntryFactory;
+    private readonly IActivatorResolver _activatorResolver;
     #endregion
 
     #region ServiceEntryResolver()
@@ -64,7 +63,8 @@ namespace Machine.Container.Services.Impl
       else if (!services.ActivatorStore.HasActivator(entry))
       {
         ILifestyle lifestyle = services.LifestyleFactory.CreateLifestyle(entry);
-        services.ActivatorStore.AddActivator(entry, services.ActivatorStrategy.CreateLifestyleActivator(lifestyle));
+        IActivator lifestyleActivator = lifestyle /*services.ActivatorStrategy.CreateLifestyleActivator(lifestyle)*/;
+        services.ActivatorStore.AddActivator(entry, lifestyleActivator);
       }
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);
       if (activator != null)

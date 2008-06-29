@@ -1,13 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
+using Machine.Core.Utility;
 
 namespace Machine.Container
 {
+  public interface IServiceRegisterer
+  {
+  }
+  public class ServiceRegisterer : IServiceRegisterer
+  {
+  }
   public class MachineContainer : IHighLevelContainer
   {
     #region Member Data
@@ -46,14 +54,21 @@ namespace Machine.Container
     #endregion
 
     #region IHighLevelContainer Members
+    // Plugins / Listeners
     public void AddPlugin(IServiceContainerPlugin plugin)
     {
       _pluginManager.AddPlugin(plugin);
     }
 
+    // Adding Services / Registration
     public void AddService<TService>()
     {
-      AddService(typeof(TService), LifestyleType.Singleton);
+      AddService<TService>(LifestyleType.Singleton);
+    }
+
+    public void AddService<TService>(LifestyleType lifestyleType)
+    {
+      AddService(typeof(TService), lifestyleType);
     }
 
     public void AddService(Type serviceType, LifestyleType lifestyleType)
@@ -64,7 +79,7 @@ namespace Machine.Container
 
     public void AddService<TService>(Type implementationType)
     {
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService), implementationType);
+      AddService(typeof(TService), implementationType, LifestyleType.Singleton);
     }
 
     public void AddService<TService, TImpl>()
@@ -74,13 +89,12 @@ namespace Machine.Container
 
     public void AddService<TService, TImpl>(LifestyleType lifestyleType)
     {
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService), typeof(TImpl));
-      entry.LifestyleType = lifestyleType;
+      AddService(typeof(TService), typeof(TImpl), lifestyleType);
     }
 
-    public void AddService<TService>(LifestyleType lifestyleType)
+    public void AddService(Type serviceType, Type implementationType, LifestyleType lifestyleType)
     {
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType, implementationType);
       entry.LifestyleType = lifestyleType;
     }
 
@@ -91,6 +105,7 @@ namespace Machine.Container
       _activatorStore.AddActivator(entry, activator);
     }
 
+    // Resolving
     public T Resolve<T>()
     {
       return (T)Resolve(typeof(T));
@@ -119,6 +134,12 @@ namespace Machine.Container
       return entry.Activator.Activate(services);
     }
 
+    // Releasing
+    public void Release(object instance)
+    {
+    }
+
+    // Miscellaneous
     public bool HasService<T>()
     {
       ServiceEntry entry = _resolver.LookupEntry(typeof(T));
@@ -142,7 +163,7 @@ namespace Machine.Container
     protected virtual ICreationServices CreateCreationServices(params object[] serviceOverrides)
     {
       IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides);
+      return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver);
     }
     #endregion
   }

@@ -26,7 +26,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void NoArguments_Always_Works()
     {
-      List<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleNoArguments)).Dependencies;
+      IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleNoArguments)).Dependencies;
       CollectionAssert.IsEmpty(actual);
     }
 
@@ -34,14 +34,14 @@ namespace Machine.Container.Services.Impl
     [ExpectedException(typeof(InvalidOperationException))]
     public void TwoArgumentsPrivate_Always_Throws()
     {
-      List<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoArgumentsPrivate)).Dependencies;
+      IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoArgumentsPrivate)).Dependencies;
       CollectionAssert.IsEmpty(actual);
     }
 
     [Test]
     public void OneArgument_Always_Works()
     {
-      List<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleOneArgument)).Dependencies;
+      IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleOneArgument)).Dependencies;
       Assert.AreEqual(1, actual.Count);
       Assert.AreEqual(typeof(IService1), actual[0].DependencyType);
     }
@@ -49,7 +49,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void TwoArguments_Always_Works()
     {
-      List<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoArguments)).Dependencies;
+      IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoArguments)).Dependencies;
       Assert.AreEqual(2, actual.Count);
       Assert.AreEqual(typeof(IService1), actual[0].DependencyType);
       Assert.AreEqual(typeof(IService2), actual[1].DependencyType);
@@ -58,7 +58,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void TwoWithSeparateArguments_FewerFirst_Works()
     {
-      List<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoWithSeparateArgument1)).Dependencies;
+      IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoWithSeparateArgument1)).Dependencies;
       Assert.AreEqual(1, actual.Count);
       Assert.AreEqual(typeof(IService1), actual[0].DependencyType);
     }
@@ -66,7 +66,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void TwoWithSeparateArguments_FewerLast_Works()
     {
-      List<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoWithSeparateArgument2)).Dependencies;
+      IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoWithSeparateArgument2)).Dependencies;
       Assert.AreEqual(1, actual.Count);
       Assert.AreEqual(typeof(IService1), actual[0].DependencyType);
     }

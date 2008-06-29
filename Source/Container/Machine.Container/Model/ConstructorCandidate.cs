@@ -1,33 +1,54 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Reflection;
 
 namespace Machine.Container.Model
 {
   public class ConstructorCandidate
   {
-    #region Member Data
     private readonly List<ServiceDependency> _dependencies = new List<ServiceDependency>();
     private readonly ConstructorInfo _runtimeInfo;
-    #endregion
 
-    #region Properties
-    public List<ServiceDependency> Dependencies
+    public ReadOnlyCollection<ServiceDependency> Dependencies
     {
-      get { return _dependencies; }
+      get { return new ReadOnlyCollection<ServiceDependency>(_dependencies); }
     }
 
     public ConstructorInfo RuntimeInfo
     {
       get { return _runtimeInfo; }
     }
-    #endregion
 
-    #region ConstructorCandidate()
     public ConstructorCandidate(ConstructorInfo runtimeInfo)
     {
       _runtimeInfo = runtimeInfo;
     }
-    #endregion
+
+    public void AddParameterDependency(ServiceDependency dependency)
+    {
+      _dependencies.Add(dependency);
+    }
+  }
+  public class ResolvedConstructorCandidate
+  {
+    private readonly ConstructorCandidate _candidate;
+    private readonly IList<ResolvedServiceEntry> _resolvedDependencies;
+
+    public ConstructorCandidate Candidate
+    {
+      get { return _candidate; }
+    }
+
+    public IList<ResolvedServiceEntry> ResolvedDependencies
+    {
+      get { return _resolvedDependencies; }
+    }
+
+    public ResolvedConstructorCandidate(ConstructorCandidate candidate, IList<ResolvedServiceEntry> resolvedDependencies)
+    {
+      _candidate = candidate;
+      _resolvedDependencies = resolvedDependencies;
+    }
   }
 }

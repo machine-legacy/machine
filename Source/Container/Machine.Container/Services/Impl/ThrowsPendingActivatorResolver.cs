@@ -10,7 +10,7 @@ namespace Machine.Container.Services.Impl
     #region IActivatorResolver Members
     public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
     {
-      throw new PendingDependencyException(ResolutionMessageBuilder.BuildMessage(serviceEntry, services.Progress));
+      throw new PendingDependencyException(services.DependencyGraphTracker.BuildProgressMessage(serviceEntry));
     }
     #endregion
   }

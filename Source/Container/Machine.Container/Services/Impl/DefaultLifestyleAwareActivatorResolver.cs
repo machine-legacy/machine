@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class DefaultLifestyleAwareActivatorResolver : IActivatorResolver
   {
     #region Logging
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DefaultLifestyleAwareActivatorResolver));
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DefaultLifestyleAwareActivatorResolver));
     #endregion
 
     #region IActivatorResolver Members
@@ -24,7 +24,7 @@ namespace Machine.Container.Services.Impl
       {
         return activator;
       }
-      return null;
+      throw new ServiceResolutionException("Unable to activate!");
     }
     #endregion
   }

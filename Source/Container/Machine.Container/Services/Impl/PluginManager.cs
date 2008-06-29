@@ -7,9 +7,10 @@ namespace Machine.Container.Services.Impl
 {
   public class PluginManager : IPluginManager
   {
-    readonly IHighLevelContainer _container;
-    readonly List<IServiceContainerPlugin> _plugins = new List<IServiceContainerPlugin>();
-    bool _initialized;
+    private readonly IHighLevelContainer _container;
+    private readonly List<IServiceContainerPlugin> _plugins = new List<IServiceContainerPlugin>();
+    private readonly List<IServiceContainerListener> _listeners = new List<IServiceContainerListener>();
+    private bool _initialized;
 
     public PluginManager(IHighLevelContainer container)
     {
@@ -17,17 +18,21 @@ namespace Machine.Container.Services.Impl
     }
 
     #region IPluginManager Members
+    public void AddListener(IServiceContainerListener listener)
+    {
+      AssertNotInitialized();
+      _listeners.Add(listener);
+    }
+
     public void AddPlugin(IServiceContainerPlugin plugin)
     {
-      if (_initialized)
-      {
-        throw new InvalidOperationException("Plugins may only be added before the container is initialized!");
-      }
+      AssertNotInitialized();
       _plugins.Add(plugin);
     }
 
     public void Initialize()
     {
+      AssertNotInitialized();
       foreach (IServiceContainerPlugin plugin in _plugins)
       {
         plugin.Initialize(_container);
@@ -46,6 +51,22 @@ namespace Machine.Container.Services.Impl
         plugin.Dispose();
       }
     }
+
+    public IEnumerable<IServiceContainerListener> AllListeners
+    {
+      get
+      {
+        return _listeners;
+      }
+    }
     #endregion
+
+    private void AssertNotInitialized()
+    {
+      if (_initialized)
+      {
+        throw new InvalidOperationException("Plugins may only be added before the container is initialized!");
+      }
+    }
   }
 }

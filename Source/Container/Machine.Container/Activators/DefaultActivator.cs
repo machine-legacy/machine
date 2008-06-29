@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Machine.Container.Model;
 using Machine.Container.Services;
-using Machine.Container.Services.Impl;
 using Machine.Container.Utility;
 
 namespace Machine.Container.Activators
@@ -19,7 +18,6 @@ namespace Machine.Container.Activators
     private readonly IServiceDependencyInspector _serviceDependencyInspector;
     private readonly IServiceEntryResolver _serviceEntryResolver;
     private readonly ServiceEntry _entry;
-    private readonly List<ResolvedServiceEntry> _resolvedDependencies = new List<ResolvedServiceEntry>();
     #endregion
 
     #region DefaultActivator()
@@ -35,29 +33,17 @@ namespace Machine.Container.Activators
     #region IActivator Members
     public bool CanActivate(ICreationServices services)
     {
-      if (services.Progress.Contains(_entry))
+      using (services.DependencyGraphTracker.Push(_entry))
       {
-        throw new CircularDependencyException(ResolutionMessageBuilder.BuildMessage(_entry, services.Progress));
-      }
-      using (StackPopper<ServiceEntry>.Push(services.Progress, _entry))
-      {
-        if (_entry.ConcreteType == null || _entry.ConcreteType.IsPrimitive)
+        if (!TypeCanBeActivated())
         {
           return false;
         }
-        _resolvedDependencies.Clear();
-        ConstructorCandidate candidate = _serviceDependencyInspector.SelectConstructor(_entry.ConcreteType);
-        foreach (ServiceDependency dependency in candidate.Dependencies)
+        _entry.ConstructorCandidate = CreateConstructorParameters(services);
+        if (_entry.ConstructorCandidate == null)
         {
-          ResolvedServiceEntry dependencyEntry = _serviceEntryResolver.ResolveEntry(services, dependency.DependencyType, false);
-          if (dependencyEntry == null)
-          {
-            return false;
-          }
-          _log.Info("Dependency: " + dependencyEntry);
-          _resolvedDependencies.Add(dependencyEntry);
+          return false;
         }
-        _entry.ConstructorCandidate = candidate;
         return true;
       }
     }
@@ -68,13 +54,45 @@ namespace Machine.Container.Activators
       {
         throw new YouFoundABugException();
       }
+      object[] parameters = ResolveConstructorDependencies(services);
+      return _objectFactory.CreateObject(_entry.ConstructorCandidate.Candidate, parameters);
+    }
+
+    public void Release(object instance)
+    {
+    }
+    #endregion
+
+    protected virtual ResolvedConstructorCandidate CreateConstructorParameters(ICreationServices services)
+    {
+      List<ResolvedServiceEntry> resolved = new List<ResolvedServiceEntry>();
+      ConstructorCandidate candidate = _serviceDependencyInspector.SelectConstructor(_entry.ConcreteType);
+      foreach (ServiceDependency dependency in candidate.Dependencies)
+      {
+        ResolvedServiceEntry dependencyEntry = _serviceEntryResolver.ResolveEntry(services, dependency.DependencyType, false);
+        if (dependencyEntry == null)
+        {
+          return null;
+        }
+        _log.Info("Dependency: " + dependencyEntry);
+        resolved.Add(dependencyEntry);
+      }
+      return new ResolvedConstructorCandidate(candidate, resolved);
+    }
+
+    protected virtual bool TypeCanBeActivated()
+    {
+      return _entry.ConcreteType != null && !_entry.ConcreteType.IsPrimitive;
+    }
+
+    protected virtual object[] ResolveConstructorDependencies(ICreationServices services)
+    {
       List<object> parameters = new List<object>();
-      foreach (ResolvedServiceEntry dependency in _resolvedDependencies)
+      foreach (ResolvedServiceEntry dependency in _entry.ConstructorCandidate.ResolvedDependencies)
       {
         parameters.Add(dependency.Activator.Activate(services));
       }
-      return _objectFactory.CreateObject(_entry.ConstructorCandidate, parameters.ToArray());
+      return parameters.ToArray();
     }
-    #endregion
   }
 }

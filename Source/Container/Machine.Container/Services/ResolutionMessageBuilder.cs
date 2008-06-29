@@ -4,7 +4,7 @@ using System.Text;
 
 using Machine.Container.Model;
 
-namespace Machine.Container.Services.Impl
+namespace Machine.Container.Services
 {
   public class ResolutionMessageBuilder
   {

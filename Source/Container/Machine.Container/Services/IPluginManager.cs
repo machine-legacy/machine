@@ -7,8 +7,13 @@ namespace Machine.Container.Services
 {
   public interface IPluginManager
   {
+    void AddListener(IServiceContainerListener listener);
     void AddPlugin(IServiceContainerPlugin plugin);
     void Initialize();
     void Dispose();
+    IEnumerable<IServiceContainerListener> AllListeners
+    {
+      get;
+    }
   }
 }

@@ -75,6 +75,11 @@ namespace Machine.WindsorExtensions
       throw new NotImplementedException();
     }
 
+    public void Release(object instance)
+    {
+      _windsor.Release(instance);
+    }
+
     public bool HasService<T>()
     {
       return _windsor.Kernel.HasComponent(typeof(T));

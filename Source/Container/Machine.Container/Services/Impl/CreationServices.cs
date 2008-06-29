@@ -9,18 +9,19 @@ namespace Machine.Container.Services.Impl
   public class CreationServices : ICreationServices
   {
     #region Member Data
-    readonly Stack<ServiceEntry> _progress = new Stack<ServiceEntry>();
+    readonly DependencyGraphTracker _dependencyGraphTracker = new DependencyGraphTracker();
     readonly IActivatorStrategy _activatorStrategy;
     readonly IActivatorStore _activatorStore;
     readonly ILifestyleFactory _lifestyleFactory;
     readonly IOverrideLookup _overrideLookup;
+    readonly IServiceEntryResolver _serviceEntryResolver;
     #endregion
 
     #region CreationServices()
-    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore,
-      ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup)
+    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup, IServiceEntryResolver serviceEntryResolver)
     {
       _activatorStore = activatorStore;
+      _serviceEntryResolver = serviceEntryResolver;
       _lifestyleFactory = lifestyleFactory;
       _activatorStrategy = activatorStrategy;
       _overrideLookup = overrideLookup;
@@ -28,9 +29,9 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region ICreationServices Members
-    public Stack<ServiceEntry> Progress
+    public DependencyGraphTracker DependencyGraphTracker
     {
-      get { return _progress; }
+      get { return _dependencyGraphTracker; }
     }
 
     public IActivatorStrategy ActivatorStrategy
@@ -51,6 +52,11 @@ namespace Machine.Container.Services.Impl
     public IOverrideLookup Overrides
     {
       get { return _overrideLookup; }
+    }
+
+    public IServiceEntryResolver ServiceEntryResolver
+    {
+      get { return _serviceEntryResolver; }
     }
     #endregion
   }

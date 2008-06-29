@@ -55,7 +55,7 @@ namespace Machine.Container
       ConstructorCandidate constructorCandidate = new ConstructorCandidate(ctor);
       foreach (Type parameterType in parameterTypes)
       {
-        constructorCandidate.Dependencies.Add(new ServiceDependency(parameterType, DependencyType.Constructor));
+        constructorCandidate.AddParameterDependency(new ServiceDependency(parameterType, DependencyType.Constructor));
       }
       return constructorCandidate;
     }

@@ -37,6 +37,10 @@ namespace Machine.Container.Lifestyles
     {
       return _defaultActivator.Activate(services);
     }
+
+    public void Release(object instance)
+    {
+    }
     #endregion
   }
 }
