@@ -189,6 +189,28 @@ namespace Machine.Container
       _listenerInvoker.Started();
     }
   }
+  public class ContainerResolver
+  {
+    private readonly IHighLevelContainer _container;
+
+    public ContainerResolver(IHighLevelContainer container)
+    {
+      _container = container;
+    }
+
+    public IList<T> ResolveAll<T>()
+    {
+      List<T> found = new List<T>();
+      foreach (ServiceRegistration registration in _container.RegisteredServices)
+      {
+        if (typeof(T).IsAssignableFrom(registration.ImplementationType))
+        {
+          found.Add((T)_container.Resolve(registration.ImplementationType));
+        }
+      }
+      return found;
+    }
+  }
   /*
   public class CompartmentalizedMachineContainer : IMachineContainer
   {

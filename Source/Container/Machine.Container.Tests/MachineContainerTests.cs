@@ -196,12 +196,40 @@ namespace Machine.Container
       _machineContainer.Release(disposable);
       Assert.IsTrue(disposable.IsDisposed);
     }
+
+    [Test]
+    [ExpectedException(typeof(AmbiguousServicesException))]
+    public void LotsOfServicesWithAmbigiousDependency_Throws()
+    {
+      _machineContainer.AddService<IService1, Service1>();
+      _machineContainer.AddService<Service2DependsOn1>();
+      _machineContainer.AddService<SimpleService1>();
+      IService2 service2 = _machineContainer.Resolve<IService2>();
+    }
+
+    [Test]
+    public void LotsOfServices_Works()
+    {
+      ContainerResolver resolver = new ContainerResolver(_machineContainer);
+      _machineContainer.AddService<IService1, Service1>();
+      _machineContainer.AddService<Service2DependsOn1>();
+      _machineContainer.AddService<SimpleService2>();
+      IService1 service1a = _machineContainer.Resolve<Service1>();
+      IService1 service1b = _machineContainer.Resolve<IService1>();
+      IService2 service2a = _machineContainer.Resolve<Service2DependsOn1>();
+      IService2 service2b = _machineContainer.Resolve<SimpleService2>();
+      List<IService2> services = new List<IService2>(resolver.ResolveAll<IService2>());
+      Assert.AreEqual(2, services.Count);
+    }
     #endregion
   }
-  public class Service1 : IService1
+  public interface IExampleService
   {
   }
-  public class Service2DependsOn1 : IService2
+  public class Service1 : IService1, IExampleService
+  {
+  }
+  public class Service2DependsOn1 : IService2, IExampleService
   {
     private readonly IService1 _s1;
     public Service2DependsOn1(IService1 s1)
@@ -220,7 +248,7 @@ namespace Machine.Container
   public class SimpleService1 : IService1
   {
   }
-  public class SimpleService2 : IService2
+  public class SimpleService2 : IService2, IExampleService
   {
   }
   public interface IDisposableService

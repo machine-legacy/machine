@@ -70,7 +70,7 @@ namespace Machine.Container.Services.Impl
         List<ServiceEntry> matches = new List<ServiceEntry>();
         foreach (ServiceEntry entry in _map.Values)
         {
-          if (type.IsAssignableFrom(entry.ServiceType))
+          if (type.IsAssignableFrom(entry.ImplementationType))
           {
             matches.Add(entry);
           }

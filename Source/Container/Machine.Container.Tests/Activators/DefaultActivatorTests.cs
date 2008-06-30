@@ -67,11 +67,9 @@ namespace Machine.Container.Activators
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
-        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IContainerServices>(), typeof(IService1), false)).
-          Return(resolvedServiceEntry);
+        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IContainerServices>(), typeof(IService1), true)).Return(resolvedServiceEntry);
         Expect.Call(Get<IActivator>().Activate(Get<IContainerServices>())).Return(_parameter1);
-        Expect.Call(Get<IObjectFactory>().CreateObject(_entry.ConstructorCandidate.Candidate, new object[] {_parameter1})).Return(
-          _instance);
+        Expect.Call(Get<IObjectFactory>().CreateObject(_entry.ConstructorCandidate.Candidate, new object[] {_parameter1})).Return(_instance);
       }
       using (_mocks.Playback())
       {
@@ -87,14 +85,12 @@ namespace Machine.Container.Activators
       _entry.ConstructorCandidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(Service1DependsOn2), dependencies), new List<ResolvedServiceEntry>());
       SetupResult.For(Get<IContainerServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
       SetupResult.For(Get<IContainerServices>().ActivatorStore).Return(Get<IActivatorStore>());
-      SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(
-        _entry.ConstructorCandidate.Candidate);
+      SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(_entry.ConstructorCandidate.Candidate);
     }
 
     protected override DefaultActivator Create()
     {
-      return new DefaultActivator(Get<IObjectFactory>(), Get<IServiceDependencyInspector>(),
-        Get<IServiceEntryResolver>(), _entry);
+      return new DefaultActivator(Get<IObjectFactory>(), Get<IServiceDependencyInspector>(), Get<IServiceEntryResolver>(), _entry);
     }
     #endregion
   }
