@@ -19,17 +19,17 @@ namespace Machine.Container.Activators
     #endregion
 
     #region IActivator Members
-    public bool CanActivate(ICreationServices services)
+    public bool CanActivate(IContainerServices services)
     {
       return _lifestyle.CanActivate(services);
     }
 
-    public object Activate(ICreationServices services)
+    public object Activate(IContainerServices services)
     {
       return _lifestyle.Activate(services);
     }
 
-    public void Release(ICreationServices services, object instance)
+    public void Release(IContainerServices services, object instance)
     {
       _lifestyle.Release(services, instance);
     }

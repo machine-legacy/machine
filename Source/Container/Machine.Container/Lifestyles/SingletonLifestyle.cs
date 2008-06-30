@@ -20,7 +20,7 @@ namespace Machine.Container.Lifestyles
     #endregion
 
     #region ILifestyle Members
-    public override bool CanActivate(ICreationServices services)
+    public override bool CanActivate(IContainerServices services)
     {
       if (_instance == null)
       {
@@ -29,7 +29,7 @@ namespace Machine.Container.Lifestyles
       return true;
     }
 
-    public override object Activate(ICreationServices services)
+    public override object Activate(IContainerServices services)
     {
       if (_instance == null)
       {

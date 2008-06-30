@@ -7,6 +7,6 @@ namespace Machine.Container.Services
 {
   public interface IActivatorResolver
   {
-    IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry);
+    IActivator ResolveActivator(IContainerServices services, ServiceEntry serviceEntry);
   }
 }

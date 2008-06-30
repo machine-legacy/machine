@@ -2,11 +2,10 @@ using System;
 
 using Machine.Container.Activators;
 using Machine.Container.Plugins;
-using Machine.Container.Services.Impl;
 
 namespace Machine.Container.Services
 {
-  public interface ICreationServices
+  public interface IContainerServices
   {
     IActivatorStore ActivatorStore
     {

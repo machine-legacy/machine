@@ -32,7 +32,7 @@ namespace Machine.Container.Services.Impl
       }
     }
 
-    public void Release(ICreationServices services, object instance)
+    public void Release(IContainerServices services, object instance)
     {
       using (RWLock.AsWriter(_lock))
       {

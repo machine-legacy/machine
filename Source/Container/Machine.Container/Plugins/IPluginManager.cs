@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Machine.Container.Plugins;
 
-namespace Machine.Container.Services
+namespace Machine.Container.Plugins
 {
   public interface IPluginManager
   {

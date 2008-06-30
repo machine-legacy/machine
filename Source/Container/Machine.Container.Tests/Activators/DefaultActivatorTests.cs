@@ -41,7 +41,7 @@ namespace Machine.Container.Activators
       }
       using (_mocks.Playback())
       {
-        _target.Activate(Get<ICreationServices>());
+        _target.Activate(Get<IContainerServices>());
       }
     }
 
@@ -55,8 +55,8 @@ namespace Machine.Container.Activators
       }
       using (_mocks.Playback())
       {
-        _target.CanActivate(Get<ICreationServices>());
-        Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
+        _target.CanActivate(Get<IContainerServices>());
+        Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
       }
     }
 
@@ -67,16 +67,16 @@ namespace Machine.Container.Activators
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
-        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<ICreationServices>(), typeof(IService1), false)).
+        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IContainerServices>(), typeof(IService1), false)).
           Return(resolvedServiceEntry);
-        Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(_parameter1);
+        Expect.Call(Get<IActivator>().Activate(Get<IContainerServices>())).Return(_parameter1);
         Expect.Call(Get<IObjectFactory>().CreateObject(_entry.ConstructorCandidate.Candidate, new object[] {_parameter1})).Return(
           _instance);
       }
       using (_mocks.Playback())
       {
-        _target.CanActivate(Get<ICreationServices>());
-        Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
+        _target.CanActivate(Get<IContainerServices>());
+        Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
       }
     }
     #endregion
@@ -85,8 +85,8 @@ namespace Machine.Container.Activators
     protected virtual void SetupMocks(params Type[] dependencies)
     {
       _entry.ConstructorCandidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(Service1DependsOn2), dependencies), new List<ResolvedServiceEntry>());
-      SetupResult.For(Get<ICreationServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
-      SetupResult.For(Get<ICreationServices>().ActivatorStore).Return(Get<IActivatorStore>());
+      SetupResult.For(Get<IContainerServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
+      SetupResult.For(Get<IContainerServices>().ActivatorStore).Return(Get<IActivatorStore>());
       SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(
         _entry.ConstructorCandidate.Candidate);
     }

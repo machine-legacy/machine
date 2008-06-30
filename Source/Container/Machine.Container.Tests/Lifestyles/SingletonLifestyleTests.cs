@@ -34,10 +34,10 @@ namespace Machine.Container.Lifestyles
       Run(delegate
       {
         SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-        Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(_instance);
+        Expect.Call(Get<IActivator>().Activate(Get<IContainerServices>())).Return(_instance);
       });
       _target.Initialize();
-      Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
+      Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
     }
 
     [Test]
@@ -46,11 +46,11 @@ namespace Machine.Container.Lifestyles
       Run(delegate
       {
         SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-        Expect.Call(Get<IActivator>().Activate(Get<ICreationServices>())).Return(_instance);
+        Expect.Call(Get<IActivator>().Activate(Get<IContainerServices>())).Return(_instance);
       });
       _target.Initialize();
-      Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
-      Assert.AreEqual(_instance, _target.Activate(Get<ICreationServices>()));
+      Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
+      Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
     }
     #endregion
 

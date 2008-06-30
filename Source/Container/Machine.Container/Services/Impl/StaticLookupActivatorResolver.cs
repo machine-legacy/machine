@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class StaticLookupActivatorResolver : IActivatorResolver
   {
     #region IActivatorResolver Members
-    public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
+    public IActivator ResolveActivator(IContainerServices services, ServiceEntry serviceEntry)
     {
       object value = services.Overrides.LookupOverride(serviceEntry);
       if (value == null)

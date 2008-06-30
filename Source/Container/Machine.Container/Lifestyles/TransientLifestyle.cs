@@ -28,17 +28,17 @@ namespace Machine.Container.Lifestyles
       _defaultActivator = _activatorStrategy.CreateDefaultActivator(_serviceEntry);
     }
 
-    public virtual bool CanActivate(ICreationServices services)
+    public virtual bool CanActivate(IContainerServices services)
     {
       return _defaultActivator.CanActivate(services);
     }
 
-    public virtual object Activate(ICreationServices services)
+    public virtual object Activate(IContainerServices services)
     {
       return _defaultActivator.Activate(services);
     }
 
-    public void Release(ICreationServices services, object instance)
+    public void Release(IContainerServices services, object instance)
     {
       _defaultActivator.Release(services, instance);
     }

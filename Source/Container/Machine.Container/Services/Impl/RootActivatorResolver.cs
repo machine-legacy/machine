@@ -19,7 +19,7 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region IActivatorResolver Members
-    public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
+    public IActivator ResolveActivator(IContainerServices services, ServiceEntry serviceEntry)
     {
       foreach (IActivatorResolver resolver in _resolvers)
       {

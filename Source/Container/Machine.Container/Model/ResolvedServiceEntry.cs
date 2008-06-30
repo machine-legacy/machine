@@ -49,14 +49,14 @@ namespace Machine.Container.Model
       return this.ServiceEntry.GetHashCode() ^ this.Activator.GetHashCode();
     }
 
-    public object Activate(ICreationServices services)
+    public object Activate(IContainerServices services)
     {
       object instance = _activator.Activate(services);
       _objectInstances.Remember(this, instance);
       return instance;
     }
 
-    public void Release(ICreationServices services, object instance)
+    public void Release(IContainerServices services, object instance)
     {
       _objectInstances.Release(services, instance);
     }

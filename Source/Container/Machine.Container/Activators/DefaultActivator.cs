@@ -30,7 +30,7 @@ namespace Machine.Container.Activators
     #endregion
 
     #region IActivator Members
-    public bool CanActivate(ICreationServices services)
+    public bool CanActivate(IContainerServices services)
     {
       using (services.DependencyGraphTracker.Push(_entry))
       {
@@ -47,7 +47,7 @@ namespace Machine.Container.Activators
       }
     }
 
-    public object Activate(ICreationServices services)
+    public object Activate(IContainerServices services)
     {
       if (_entry.ConstructorCandidate == null)
       {
@@ -57,12 +57,12 @@ namespace Machine.Container.Activators
       return _objectFactory.CreateObject(_entry.ConstructorCandidate.Candidate, parameters);
     }
 
-    public void Release(ICreationServices services, object instance)
+    public void Release(IContainerServices services, object instance)
     {
     }
     #endregion
 
-    protected virtual ResolvedConstructorCandidate CreateConstructorParameters(ICreationServices services)
+    protected virtual ResolvedConstructorCandidate CreateConstructorParameters(IContainerServices services)
     {
       List<ResolvedServiceEntry> resolved = new List<ResolvedServiceEntry>();
       ConstructorCandidate candidate = _serviceDependencyInspector.SelectConstructor(_entry.ConcreteType);
@@ -84,7 +84,7 @@ namespace Machine.Container.Activators
       return _entry.ConcreteType != null && !_entry.ConcreteType.IsPrimitive;
     }
 
-    protected virtual object[] ResolveConstructorDependencies(ICreationServices services)
+    protected virtual object[] ResolveConstructorDependencies(IContainerServices services)
     {
       List<object> parameters = new List<object>();
       foreach (ResolvedServiceEntry dependency in _entry.ConstructorCandidate.ResolvedDependencies)

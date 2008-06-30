@@ -115,7 +115,7 @@ namespace Machine.Container
     public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
     {
       _state.AssertCanResolve();
-      ICreationServices services = CreateCreationServices(serviceOverrides);
+      IContainerServices services = CreateCreationServices(serviceOverrides);
       ResolvedServiceEntry entry = _resolver.ResolveEntry(services, serviceType, true);
       return entry.Activate(services);
     }
@@ -124,7 +124,7 @@ namespace Machine.Container
     public void Release(object instance)
     {
       _state.AssertCanRelease();
-      ICreationServices services = CreateCreationServices();
+      IContainerServices services = CreateCreationServices();
       _objectInstances.Release(services, instance);
     }
 
@@ -149,10 +149,10 @@ namespace Machine.Container
     }
     #endregion
 
-    protected virtual ICreationServices CreateCreationServices(params object[] serviceOverrides)
+    protected virtual IContainerServices CreateCreationServices(params object[] serviceOverrides)
     {
       IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver, _listenerInvoker, _objectInstances);
+      return new ContainerServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver, _listenerInvoker, _objectInstances);
     }
 
     protected virtual IActivatorResolver CreateDependencyResolver()

@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Plugins;
+using Machine.Container.Services;
 
-namespace Machine.Container.Services.Impl
+namespace Machine.Container.Plugins
 {
   public class PluginManager : IPluginManager
   {

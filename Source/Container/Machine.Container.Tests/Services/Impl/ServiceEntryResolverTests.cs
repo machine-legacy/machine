@@ -16,7 +16,7 @@ namespace Machine.Container.Services.Impl
     private IServiceGraph _serviceGraph;
     private IServiceDependencyInspector _serviceDependencyInspector;
     private IServiceEntryFactory _serviceEntryFactory;
-    private ICreationServices _creationServices;
+    private IContainerServices _services;
     #endregion
 
     #region Test Setup and Teardown Methods
@@ -26,7 +26,7 @@ namespace Machine.Container.Services.Impl
       _serviceGraph = Get<IServiceGraph>();
       _serviceDependencyInspector = Get<IServiceDependencyInspector>();
       _serviceEntryFactory = Get<IServiceEntryFactory>();
-      _creationServices = new CreationServices(Get<IActivatorStrategy>(), Get<IActivatorStore>(), Get<ILifestyleFactory>(), Get<IOverrideLookup>(), Get<IServiceEntryResolver>(), Get<IListenerInvoker>(), Get<IObjectInstances>());
+      _services = new ContainerServices(Get<IActivatorStrategy>(), Get<IActivatorStore>(), Get<ILifestyleFactory>(), Get<IOverrideLookup>(), Get<IServiceEntryResolver>(), Get<IListenerInvoker>(), Get<IObjectInstances>());
     }
     #endregion
 

@@ -6,7 +6,7 @@ using Machine.Container.Plugins;
 namespace Machine.Container.Services.Impl
 {
   [CoverageExclude]
-  public class CreationServices : ICreationServices
+  public class ContainerServices : IContainerServices
   {
     #region Member Data
     private readonly DependencyGraphTracker _dependencyGraphTracker = new DependencyGraphTracker();
@@ -20,7 +20,7 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region CreationServices()
-    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup, IServiceEntryResolver serviceEntryResolver, IListenerInvoker listenerInvoker, IObjectInstances objectInstances)
+    public ContainerServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup, IServiceEntryResolver serviceEntryResolver, IListenerInvoker listenerInvoker, IObjectInstances objectInstances)
     {
       _activatorStore = activatorStore;
       _objectInstances = objectInstances;

@@ -12,7 +12,7 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region IActivatorResolver Members
-    public IActivator ResolveActivator(ICreationServices services, ServiceEntry serviceEntry)
+    public IActivator ResolveActivator(IContainerServices services, ServiceEntry serviceEntry)
     {
       _log.Info("ResolveActivator: " + serviceEntry);
       if (!services.ActivatorStore.HasActivator(serviceEntry))

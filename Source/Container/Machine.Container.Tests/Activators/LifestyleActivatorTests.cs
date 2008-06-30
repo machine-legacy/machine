@@ -21,16 +21,16 @@ namespace Machine.Container.Activators
     public void CanActivate_Always_DefersToLifestyle()
     {
       _instance = new object();
-      Run(delegate { Expect.Call(Get<ILifestyle>().CanActivate(Get<ICreationServices>())).Return(true); });
-      Assert.IsTrue(_target.CanActivate(Get<ICreationServices>()));
+      Run(delegate { Expect.Call(Get<ILifestyle>().CanActivate(Get<IContainerServices>())).Return(true); });
+      Assert.IsTrue(_target.CanActivate(Get<IContainerServices>()));
     }
 
     [Test]
     public void Create_Always_DefersToLifestyle()
     {
       _instance = new object();
-      Run(delegate { Expect.Call(Get<ILifestyle>().Activate(Get<ICreationServices>())).Return(_instance); });
-      object instance = _target.Activate(Get<ICreationServices>());
+      Run(delegate { Expect.Call(Get<ILifestyle>().Activate(Get<IContainerServices>())).Return(_instance); });
+      object instance = _target.Activate(Get<IContainerServices>());
       Assert.AreEqual(_instance, instance);
     }
     #endregion

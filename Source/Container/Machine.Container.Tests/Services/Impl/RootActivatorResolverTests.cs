@@ -23,10 +23,10 @@ namespace Machine.Container.Services.Impl
     {
       Run(delegate
       {
-        Expect.Call(_resolver1.ResolveActivator(Get<ICreationServices>(), _entry)).Return(null);
-        Expect.Call(_resolver2.ResolveActivator(Get<ICreationServices>(), _entry)).Return(null);
+        Expect.Call(_resolver1.ResolveActivator(Get<IContainerServices>(), _entry)).Return(null);
+        Expect.Call(_resolver2.ResolveActivator(Get<IContainerServices>(), _entry)).Return(null);
       });
-      Assert.IsNull(_target.ResolveActivator(Get<ICreationServices>(), _entry));
+      Assert.IsNull(_target.ResolveActivator(Get<IContainerServices>(), _entry));
     }
 
     [Test]
@@ -34,9 +34,9 @@ namespace Machine.Container.Services.Impl
     {
       Run(delegate
       {
-        Expect.Call(_resolver1.ResolveActivator(Get<ICreationServices>(), _entry)).Return(Get<IActivator>());
+        Expect.Call(_resolver1.ResolveActivator(Get<IContainerServices>(), _entry)).Return(Get<IActivator>());
       });
-      Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(Get<ICreationServices>(), _entry));
+      Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(Get<IContainerServices>(), _entry));
     }
     #endregion
 
