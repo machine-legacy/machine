@@ -63,8 +63,7 @@ namespace Machine.Container.Activators
     [Test]
     public void Create_OneDependency_CallsConstructor()
     {
-      ResolvedServiceEntry resolvedServiceEntry = new ResolvedServiceEntry(ServiceEntryHelper.NewEntry(),
-        Get<IActivator>());
+      ResolvedServiceEntry resolvedServiceEntry = new ResolvedServiceEntry(ServiceEntryHelper.NewEntry(), Get<IActivator>(), Get<IObjectInstances>());
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));

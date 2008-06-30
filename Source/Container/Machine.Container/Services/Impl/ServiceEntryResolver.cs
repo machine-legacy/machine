@@ -69,7 +69,7 @@ namespace Machine.Container.Services.Impl
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);
       if (activator != null)
       {
-        return new ResolvedServiceEntry(entry, activator);
+        return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
       }
       return null;
     }

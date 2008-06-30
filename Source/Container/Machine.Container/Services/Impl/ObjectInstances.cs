@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Threading;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins;
 using Machine.Core.Utility;
 
 namespace Machine.Container.Services.Impl
 {
-  public class InstanceManager
+  public class ObjectInstances : IObjectInstances
   {
-    private readonly IPluginManager _pluginManager;
     private readonly ReaderWriterLock _lock = new ReaderWriterLock();
     private readonly Dictionary<object, ResolvedServiceEntry> _map = new Dictionary<object, ResolvedServiceEntry>();
+    private readonly IListenerInvoker _listenerInvoker;
 
-    public InstanceManager(IPluginManager pluginManager)
+    public ObjectInstances(IListenerInvoker listenerInvoker)
     {
-      _pluginManager = pluginManager;
+      _listenerInvoker = listenerInvoker;
     }
 
     public void Remember(ResolvedServiceEntry entry, object instance)
@@ -27,22 +28,19 @@ namespace Machine.Container.Services.Impl
           throw new InvalidOperationException("Already have instance!");
         }
         _map[instance] = entry;
+        _listenerInvoker.InstanceCreated(entry, instance);
       }
     }
 
-    public void Release(object instance)
+    public void Release(ICreationServices services, object instance)
     {
       using (RWLock.AsWriter(_lock))
       {
-        _map[instance].Activator.Release(instance);
-        _map.Remove(instance);
-      }
-    }
-
-    public void Forget(object instance)
-    {
-      using (RWLock.AsWriter(_lock))
-      {
+        if (!_map.ContainsKey(instance))
+        {
+          throw new ServiceContainerException("Cannot release instances not created by the container!");
+        }
+        _listenerInvoker.InstanceReleased(_map[instance], instance);
         _map.Remove(instance);
       }
     }

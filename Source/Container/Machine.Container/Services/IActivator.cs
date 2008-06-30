@@ -7,6 +7,6 @@ namespace Machine.Container.Services
   {
     bool CanActivate(ICreationServices services);
     object Activate(ICreationServices services);
-    void Release(object instance);
+    void Release(ICreationServices services, object instance);
   }
 }

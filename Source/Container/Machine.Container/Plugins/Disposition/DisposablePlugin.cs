@@ -6,39 +6,24 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Plugins.Disposition
 {
-  public class DisposablePlugin : IServiceContainerPlugin, IServiceContainerListener
+  public class DisposablePlugin : AbstractServiceContainerListener, IServiceContainerPlugin
   {
-    #region IServiceContainerPlugin Members
-    public void Initialize(IHighLevelContainer container)
-    {
-    }
-    #endregion
-
     #region IServiceContainerListener Members
-    public void ServiceRegistered(ServiceEntry entry)
+    public override void InstanceCreated(ResolvedServiceEntry entry, object instance)
     {
+      base.InstanceCreated(entry, instance);
     }
 
-    public void InstanceCreated(ServiceEntry entry, object instance)
+    public override void InstanceReleased(ResolvedServiceEntry entry, object instance)
     {
-    }
-
-    public void InstanceReleased(ServiceEntry entry, object instance)
-    {
-    }
-
-    public void PreparedForServices()
-    {
-    }
-
-    public void Started()
-    {
+      base.InstanceReleased(entry, instance);
     }
     #endregion
 
     #region IDisposable Members
-    public void Dispose()
+    public override void Dispose()
     {
+      base.Dispose();
     }
     #endregion
   }

@@ -32,7 +32,7 @@ namespace Machine.Container.Activators
       return _instance;
     }
 
-    public void Release(object instance)
+    public void Release(ICreationServices services, object instance)
     {
     }
     #endregion

@@ -93,6 +93,14 @@ namespace Machine.WindsorExtensions
     public void Initialize()
     {
     }
+
+    public void PrepareForServices()
+    {
+    }
+
+    public void Start()
+    {
+    }
     #endregion
 
     #region IDisposable Members

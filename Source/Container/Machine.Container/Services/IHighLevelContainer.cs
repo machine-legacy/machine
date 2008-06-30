@@ -5,6 +5,21 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services
 {
+  /*
+  public interface IServiceRegisterer
+  {
+  }
+  public interface IMachineContainer : IDisposable
+  {
+    IServiceRegisterer Register
+    {
+      get;
+    }
+    void Initialize();
+    void PrepareForServices();
+    void Start();
+  }
+  */
   public interface IHighLevelContainer : IDisposable
   {
     void AddService(Type serviceType, LifestyleType lifestyleType);
@@ -22,5 +37,7 @@ namespace Machine.Container.Services
     bool HasService<T>();
     IEnumerable<ServiceRegistration> RegisteredServices { get; }
     void Initialize();
+    void PrepareForServices();
+    void Start();
   }
 }

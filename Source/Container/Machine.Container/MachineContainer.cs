@@ -13,6 +13,8 @@ namespace Machine.Container
     #region Member Data
     private readonly ContainerStatePolicy _state = new ContainerStatePolicy();
     private readonly IPluginManager _pluginManager;
+    private readonly IListenerInvoker _listenerInvoker;
+    private IObjectInstances _objectInstances;
     private IServiceEntryResolver _resolver;
     private IActivatorStrategy _activatorStrategy;
     private IActivatorStore _activatorStore;
@@ -23,6 +25,7 @@ namespace Machine.Container
     public MachineContainer()
     {
       _pluginManager = new PluginManager(this);
+      _listenerInvoker = new ListenerInvoker(_pluginManager);
     }
 
     #region IHighLevelContainer Members
@@ -114,13 +117,15 @@ namespace Machine.Container
       _state.AssertCanResolve();
       ICreationServices services = CreateCreationServices(serviceOverrides);
       ResolvedServiceEntry entry = _resolver.ResolveEntry(services, serviceType, true);
-      return entry.Activator.Activate(services);
+      return entry.Activate(services);
     }
 
     // Releasing
     public void Release(object instance)
     {
       _state.AssertCanRelease();
+      ICreationServices services = CreateCreationServices();
+      _objectInstances.Release(services, instance);
     }
 
     // Miscellaneous
@@ -139,6 +144,7 @@ namespace Machine.Container
     #region IDisposable Members
     public void Dispose()
     {
+      _listenerInvoker.Dispose();
       _pluginManager.Dispose();
     }
     #endregion
@@ -146,7 +152,7 @@ namespace Machine.Container
     protected virtual ICreationServices CreateCreationServices(params object[] serviceOverrides)
     {
       IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver);
+      return new CreationServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver, _listenerInvoker, _objectInstances);
     }
 
     protected virtual IActivatorResolver CreateDependencyResolver()
@@ -159,24 +165,38 @@ namespace Machine.Container
       IActivatorResolver activatorResolver = CreateDependencyResolver();
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
       IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
-      _serviceGraph = new ServiceGraph();
+      _serviceGraph = new ServiceGraph(_listenerInvoker);
       _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
       _activatorStore = new ActivatorStore();
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
+      _objectInstances = new ObjectInstances(_listenerInvoker);
       _state.Initialize();
     }
 
     public virtual void PrepareForServices()
     {
       _state.PrepareForServices();
-      _pluginManager.Initialize();
       AddService<IHighLevelContainer>(this);
+      _pluginManager.Initialize();
+      _listenerInvoker.Initialize(this);
+      _listenerInvoker.PreparedForServices();
     }
 
     public virtual void Start()
     {
       _state.Start();
+      _listenerInvoker.Started();
     }
   }
+  /*
+  public class CompartmentalizedMachineContainer : IMachineContainer
+  {
+    #region IDisposable Members
+    public void Dispose()
+    {
+    }
+    #endregion
+  }
+  */
 }

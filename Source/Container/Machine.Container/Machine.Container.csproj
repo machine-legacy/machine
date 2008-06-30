@@ -57,9 +57,13 @@
     <Compile Include="Model\ServiceEntry.cs" />
     <Compile Include="Model\ServiceRegistration.cs" />
     <Compile Include="Model\ServiceState.cs" />
+    <Compile Include="Plugins\AbstractServiceContainerListener.cs" />
     <Compile Include="Plugins\Disposition\DisposablePlugin.cs" />
+    <Compile Include="Plugins\IListenerInvoker.cs" />
     <Compile Include="Plugins\IServiceContainerListener.cs" />
     <Compile Include="Plugins\IServiceContainerPlugin.cs" />
+    <Compile Include="Plugins\ListenerInvoker.cs" />
+    <Compile Include="Plugins\Starter\StartablePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceResolutionException.cs" />
     <Compile Include="Services\DependencyGraphTracker.cs" />
@@ -78,10 +82,11 @@
     <Compile Include="Services\Impl\DefaultActivatorStrategy.cs" />
     <Compile Include="Services\Impl\DotNetObjectFactory.cs" />
     <Compile Include="Activators\LifestyleActivator.cs" />
-    <Compile Include="Services\Impl\InstanceManager.cs" />
+    <Compile Include="Services\Impl\ObjectInstances.cs" />
     <Compile Include="Services\Impl\LifestyleFactory.cs" />
     <Compile Include="Services\Impl\PluginManager.cs" />
     <Compile Include="Services\Impl\StaticLookupActivatorResolver.cs" />
+    <Compile Include="Services\IObjectInstances.cs" />
     <Compile Include="Services\ResolutionMessageBuilder.cs" />
     <Compile Include="Services\Impl\RootActivatorResolver.cs" />
     <Compile Include="Services\Impl\ServiceDependencyInspector.cs" />

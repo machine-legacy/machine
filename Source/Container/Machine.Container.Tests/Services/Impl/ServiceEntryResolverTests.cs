@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins;
 
 using NUnit.Framework;
 using Rhino.Mocks;
@@ -25,7 +26,7 @@ namespace Machine.Container.Services.Impl
       _serviceGraph = Get<IServiceGraph>();
       _serviceDependencyInspector = Get<IServiceDependencyInspector>();
       _serviceEntryFactory = Get<IServiceEntryFactory>();
-      _creationServices = new CreationServices(Get<IActivatorStrategy>(), Get<IActivatorStore>(), Get<ILifestyleFactory>(), Get<IOverrideLookup>(), Get<IServiceEntryResolver>());
+      _creationServices = new CreationServices(Get<IActivatorStrategy>(), Get<IActivatorStore>(), Get<ILifestyleFactory>(), Get<IOverrideLookup>(), Get<IServiceEntryResolver>(), Get<IListenerInvoker>(), Get<IObjectInstances>());
     }
     #endregion
 

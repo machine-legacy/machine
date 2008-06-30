@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-using Machine.Container.Model;
+using Machine.Container.Plugins;
 
 namespace Machine.Container.Services.Impl
 {
@@ -9,18 +9,22 @@ namespace Machine.Container.Services.Impl
   public class CreationServices : ICreationServices
   {
     #region Member Data
-    readonly DependencyGraphTracker _dependencyGraphTracker = new DependencyGraphTracker();
-    readonly IActivatorStrategy _activatorStrategy;
-    readonly IActivatorStore _activatorStore;
-    readonly ILifestyleFactory _lifestyleFactory;
-    readonly IOverrideLookup _overrideLookup;
-    readonly IServiceEntryResolver _serviceEntryResolver;
+    private readonly DependencyGraphTracker _dependencyGraphTracker = new DependencyGraphTracker();
+    private readonly IActivatorStrategy _activatorStrategy;
+    private readonly IActivatorStore _activatorStore;
+    private readonly ILifestyleFactory _lifestyleFactory;
+    private readonly IOverrideLookup _overrideLookup;
+    private readonly IServiceEntryResolver _serviceEntryResolver;
+    private readonly IListenerInvoker _listenerInvoker;
+    private readonly IObjectInstances _objectInstances;
     #endregion
 
     #region CreationServices()
-    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup, IServiceEntryResolver serviceEntryResolver)
+    public CreationServices(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ILifestyleFactory lifestyleFactory, IOverrideLookup overrideLookup, IServiceEntryResolver serviceEntryResolver, IListenerInvoker listenerInvoker, IObjectInstances objectInstances)
     {
       _activatorStore = activatorStore;
+      _objectInstances = objectInstances;
+      _listenerInvoker = listenerInvoker;
       _serviceEntryResolver = serviceEntryResolver;
       _lifestyleFactory = lifestyleFactory;
       _activatorStrategy = activatorStrategy;
@@ -57,6 +61,16 @@ namespace Machine.Container.Services.Impl
     public IServiceEntryResolver ServiceEntryResolver
     {
       get { return _serviceEntryResolver; }
+    }
+
+    public IListenerInvoker ListenerInvoker
+    {
+      get { return _listenerInvoker; }
+    }
+
+    public IObjectInstances ObjectInstances
+    {
+      get { return _objectInstances; }
     }
     #endregion
   }

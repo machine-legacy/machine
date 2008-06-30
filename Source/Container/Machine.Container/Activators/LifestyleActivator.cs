@@ -29,9 +29,9 @@ namespace Machine.Container.Activators
       return _lifestyle.Activate(services);
     }
 
-    public void Release(object instance)
+    public void Release(ICreationServices services, object instance)
     {
-      _lifestyle.Release(instance);
+      _lifestyle.Release(services, instance);
     }
     #endregion
   }

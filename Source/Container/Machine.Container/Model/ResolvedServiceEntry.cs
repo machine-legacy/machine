@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Services;
+using Machine.Container.Services.Impl;
 
 namespace Machine.Container.Model
 {
@@ -9,20 +10,22 @@ namespace Machine.Container.Model
   {
     private readonly ServiceEntry _serviceEntry;
     private readonly IActivator _activator;
+    private readonly IObjectInstances _objectInstances;
 
-    public ServiceEntry ServiceEntry
+    protected ServiceEntry ServiceEntry
     {
       get { return _serviceEntry; }
     }
 
-    public IActivator Activator
+    protected IActivator Activator
     {
       get { return _activator; }
     }
 
-    public ResolvedServiceEntry(ServiceEntry serviceEntry, IActivator activator)
+    public ResolvedServiceEntry(ServiceEntry serviceEntry, IActivator activator, IObjectInstances objectInstances)
     {
       _serviceEntry = serviceEntry;
+      _objectInstances = objectInstances;
       _activator = activator;
     }
 
@@ -44,6 +47,18 @@ namespace Machine.Container.Model
     public override Int32 GetHashCode()
     {
       return this.ServiceEntry.GetHashCode() ^ this.Activator.GetHashCode();
+    }
+
+    public object Activate(ICreationServices services)
+    {
+      object instance = _activator.Activate(services);
+      _objectInstances.Remember(this, instance);
+      return instance;
+    }
+
+    public void Release(ICreationServices services, object instance)
+    {
+      _objectInstances.Release(services, instance);
     }
   }
 }

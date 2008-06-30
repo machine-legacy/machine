@@ -159,6 +159,32 @@ namespace Machine.Container
       _machineContainer.AddService<IService1, Service1DependsOn2>(LifestyleType.Transient);
       Assert.IsNotNull(_machineContainer.ResolveWithOverrides<IService1>(new SimpleService2()));
     }
+
+    [Test]
+    [ExpectedException(typeof(ServiceContainerException))]
+    public void ReleaseNotCreatedByContainer_Throws()
+    {
+      _machineContainer.AddService<IService1, SimpleService1>(LifestyleType.Transient);
+      _machineContainer.Release(new SimpleService1());
+    }
+
+    [Test]
+    public void ReleaseFirstTime_JustDoesThat()
+    {
+      _machineContainer.AddService<IService1, SimpleService1>(LifestyleType.Transient);
+      IService1 service1 = _machineContainer.Resolve<IService1>();
+      _machineContainer.Release(service1);
+    }
+
+    [Test]
+    [ExpectedException(typeof(ServiceContainerException))]
+    public void ReleaseSecondTime_Throws()
+    {
+      _machineContainer.AddService<IService1, SimpleService1>(LifestyleType.Transient);
+      IService1 service1 = _machineContainer.Resolve<IService1>();
+      _machineContainer.Release(service1);
+      _machineContainer.Release(service1);
+    }
     #endregion
   }
   public class Service1 : IService1

@@ -57,7 +57,7 @@ namespace Machine.Container.Activators
       return _objectFactory.CreateObject(_entry.ConstructorCandidate.Candidate, parameters);
     }
 
-    public void Release(object instance)
+    public void Release(ICreationServices services, object instance)
     {
     }
     #endregion
@@ -89,7 +89,7 @@ namespace Machine.Container.Activators
       List<object> parameters = new List<object>();
       foreach (ResolvedServiceEntry dependency in _entry.ConstructorCandidate.ResolvedDependencies)
       {
-        parameters.Add(dependency.Activator.Activate(services));
+        parameters.Add(dependency.Activate(services));
       }
       return parameters.ToArray();
     }

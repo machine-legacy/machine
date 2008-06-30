@@ -1,4 +1,8 @@
+using System;
+
 using Machine.Container.Activators;
+using Machine.Container.Plugins;
+using Machine.Container.Services.Impl;
 
 namespace Machine.Container.Services
 {
@@ -30,6 +34,16 @@ namespace Machine.Container.Services
     }
 
     DependencyGraphTracker DependencyGraphTracker
+    {
+      get;
+    }
+
+    IListenerInvoker ListenerInvoker
+    {
+      get;
+    }
+
+    IObjectInstances ObjectInstances
     {
       get;
     }

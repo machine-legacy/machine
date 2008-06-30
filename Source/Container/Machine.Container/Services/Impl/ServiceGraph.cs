@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins;
 using Machine.Core.Utility;
 
 namespace Machine.Container.Services.Impl
@@ -14,9 +15,15 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region Member Data
-    private readonly Dictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
+    private readonly IListenerInvoker _listenerInvoker;
+    private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     private readonly ReaderWriterLock _lock = new ReaderWriterLock();
     #endregion
+
+    public ServiceGraph(IListenerInvoker listenerInvoker)
+    {
+      _listenerInvoker = listenerInvoker;
+    }
 
     #region IServiceGraph Members
     public ServiceEntry Lookup(Type type, bool throwIfAmbiguous)
@@ -35,6 +42,7 @@ namespace Machine.Container.Services.Impl
       {
         _log.Info("Adding: " + entry);
         _map[entry.ServiceType] = entry;
+        _listenerInvoker.ServiceRegistered(entry);
       }
     }
 
