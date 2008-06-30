@@ -157,7 +157,7 @@ namespace Machine.Container
 
     protected virtual IActivatorResolver CreateDependencyResolver()
     {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(), new ThrowsPendingActivatorResolver());
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
     }
 
     public virtual void Initialize()
@@ -176,10 +176,10 @@ namespace Machine.Container
 
     public virtual void PrepareForServices()
     {
-      _state.PrepareForServices();
-      AddService<IHighLevelContainer>(this);
       _pluginManager.Initialize();
       _listenerInvoker.Initialize(this);
+      _state.PrepareForServices();
+      AddService<IHighLevelContainer>(this);
       _listenerInvoker.PreparedForServices();
     }
 

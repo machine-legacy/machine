@@ -10,14 +10,13 @@ namespace Machine.Container.Services.Impl
   public class DefaultActivatorStrategy : IActivatorStrategy
   {
     #region Member Data
-    readonly IObjectFactory _objectFactory;
-    readonly IServiceEntryResolver _serviceEntryResolver;
-    readonly IServiceDependencyInspector _serviceDependencyInspector;
+    private readonly IObjectFactory _objectFactory;
+    private readonly IServiceEntryResolver _serviceEntryResolver;
+    private readonly IServiceDependencyInspector _serviceDependencyInspector;
     #endregion
 
     #region DefaultActivatorStrategy()
-    public DefaultActivatorStrategy(IObjectFactory objectFactory, IServiceEntryResolver serviceEntryResolver,
-      IServiceDependencyInspector serviceDependencyInspector)
+    public DefaultActivatorStrategy(IObjectFactory objectFactory, IServiceEntryResolver serviceEntryResolver, IServiceDependencyInspector serviceDependencyInspector)
     {
       _objectFactory = objectFactory;
       _serviceDependencyInspector = serviceDependencyInspector;
@@ -26,11 +25,6 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region IActivatorStrategy Members
-    public IActivator CreateLifestyleActivator(ILifestyle lifestyle)
-    {
-      return new LifestyleActivator(lifestyle);
-    }
-
     public IActivator CreateStaticActivator(ServiceEntry entry, object instance)
     {
       return new StaticActivator(entry, instance);

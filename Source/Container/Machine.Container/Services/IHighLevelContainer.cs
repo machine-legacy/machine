@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins;
 
 namespace Machine.Container.Services
 {
@@ -36,6 +37,10 @@ namespace Machine.Container.Services
     void Release(object instance);
     bool HasService<T>();
     IEnumerable<ServiceRegistration> RegisteredServices { get; }
+
+    void AddPlugin(IServiceContainerPlugin plugin);
+    void AddListener(IServiceContainerListener listener);
+
     void Initialize();
     void PrepareForServices();
     void Start();

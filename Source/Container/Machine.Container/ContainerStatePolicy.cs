@@ -17,7 +17,7 @@ namespace Machine.Container
     {
       if (Array.IndexOf(states, _state) == -1)
       {
-        throw new ServiceContainerException(String.Format("You may not that when the container is in the {0} state!\n{1}", _state, attempting));
+        throw new ServiceContainerException(String.Format("You may not do that when the container is in the {0} state!\n{1}", _state, attempting));
       }
     }
 

@@ -5,6 +5,7 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Activators
 {
+  [Obsolete]
   public class LifestyleActivator : IActivator
   {
     #region Member Data

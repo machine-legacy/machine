@@ -5,10 +5,10 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services.Impl
 {
-  public class DefaultLifestyleAwareActivatorResolver : IActivatorResolver
+  public class ActivatorStoreActivatorResolver : IActivatorResolver
   {
     #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DefaultLifestyleAwareActivatorResolver));
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStoreActivatorResolver));
     #endregion
 
     #region IActivatorResolver Members

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-using Castle.Core;
 using Castle.Windsor;
 
+using Machine.Container.Model;
+using Machine.Container.Plugins;
 using Machine.Container.Services;
+
+using LifestyleType = Castle.Core.LifestyleType;
 
 namespace Machine.WindsorExtensions
 {
@@ -85,9 +88,19 @@ namespace Machine.WindsorExtensions
       return _windsor.Kernel.HasComponent(typeof(T));
     }
 
-    public IEnumerable<Machine.Container.Model.ServiceRegistration> RegisteredServices
+    public IEnumerable<ServiceRegistration> RegisteredServices
     {
       get { throw new NotImplementedException(); }
+    }
+
+    public void AddPlugin(IServiceContainerPlugin plugin)
+    {
+      throw new NotImplementedException();
+    }
+
+    public void AddListener(IServiceContainerListener listener)
+    {
+      throw new NotImplementedException();
     }
 
     public void Initialize()

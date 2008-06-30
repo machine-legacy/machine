@@ -30,7 +30,6 @@ namespace Machine.Container.Services.Impl
     {
       using (_mocks.Record())
       {
-        Expect.Call(Get<IActivatorStrategy>().CreateLifestyleActivator(Get<ILifestyle>())).Return(Get<IActivator>());
       }
       _target.ResolveActivator(_entry);
     }

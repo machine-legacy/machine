@@ -22,7 +22,7 @@ namespace Machine.Testing.AutoMocking
     protected override IActivatorResolver CreateDependencyResolver()
     {
       _mockingDependencyResolver = new MockingDependencyResolver(_mocks);
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new DefaultLifestyleAwareActivatorResolver(),
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(),
         _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
     }
 

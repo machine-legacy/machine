@@ -6,7 +6,7 @@ using NUnit.Framework;
 namespace Machine.Container.Services.Impl
 {
   [TestFixture]
-  public class DefaultLifestyleAwareActivatorResolverTests : ScaffoldTests<DefaultLifestyleAwareActivatorResolver>
+  public class DefaultLifestyleAwareActivatorResolverTests : ScaffoldTests<ActivatorStoreActivatorResolver>
   {
   }
 }

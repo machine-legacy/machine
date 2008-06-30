@@ -63,7 +63,7 @@ namespace Machine.Container.Services.Impl
     }
     #endregion
 
-    public ServiceEntry LookupLazily(Type type, bool throwIfAmbiguous)
+    protected virtual ServiceEntry LookupLazily(Type type, bool throwIfAmbiguous)
     {
       using (RWLock.AsReader(_lock))
       {

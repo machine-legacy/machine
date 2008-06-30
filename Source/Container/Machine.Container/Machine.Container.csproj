@@ -75,7 +75,7 @@
     <Compile Include="Services\IHighLevelContainer.cs" />
     <Compile Include="Services\ILifestyle.cs" />
     <Compile Include="Services\ILifestyleFactory.cs" />
-    <Compile Include="Services\Impl\DefaultLifestyleAwareActivatorResolver.cs" />
+    <Compile Include="Services\Impl\ActivatorStoreActivatorResolver.cs" />
     <Compile Include="Services\Impl\ActivatorStore.cs" />
     <Compile Include="Services\Impl\ContainerServices.cs" />
     <Compile Include="Activators\DefaultActivator.cs" />

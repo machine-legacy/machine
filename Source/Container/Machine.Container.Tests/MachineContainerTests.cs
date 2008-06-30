@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins.Disposition;
 using Machine.Container.Services.Impl;
 
 using NUnit.Framework;
@@ -21,6 +22,7 @@ namespace Machine.Container
       base.Setup();
       _machineContainer = new MachineContainer();
       _machineContainer.Initialize();
+      _machineContainer.AddPlugin(new DisposablePlugin());
       _machineContainer.PrepareForServices();
       _machineContainer.Start();
     }
@@ -185,6 +187,15 @@ namespace Machine.Container
       _machineContainer.Release(service1);
       _machineContainer.Release(service1);
     }
+
+    [Test]
+    public void ReleaseADisposable_CallsDispose()
+    {
+      _machineContainer.AddService<IDisposableService, DisposableService>();
+      IDisposableService disposable = _machineContainer.Resolve<IDisposableService>();
+      _machineContainer.Release(disposable);
+      Assert.IsTrue(disposable.IsDisposed);
+    }
     #endregion
   }
   public class Service1 : IService1
@@ -211,5 +222,28 @@ namespace Machine.Container
   }
   public class SimpleService2 : IService2
   {
+  }
+  public interface IDisposableService
+  {
+    bool IsDisposed
+    {
+      get;
+    }
+  }
+  public class DisposableService : IDisposableService, IDisposable
+  {
+    private bool _disposed;
+
+    public bool IsDisposed
+    {
+      get { return _disposed; }
+    }
+
+    #region IDisposable Members
+    public void Dispose()
+    {
+      _disposed = true;
+    }
+    #endregion
   }
 }
