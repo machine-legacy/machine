@@ -8,33 +8,23 @@ namespace Machine.Container.Configuration
 {
   public class RegistrationConfigurer
   {
-    readonly IActivatorStrategy _activatorStrategy;
-    readonly IActivatorStore _activatorStore;
-    readonly ServiceEntry _entry;
+    private readonly IContainerServices _containerServices;
+    private readonly ServiceEntry _entry;
 
-    public RegistrationConfigurer(IActivatorStrategy activatorStrategy, IActivatorStore activatorStore, ServiceEntry entry)
+    public RegistrationConfigurer(IContainerServices containerServices, ServiceEntry entry)
     {
-      _activatorStore = activatorStore;
-      _activatorStrategy = activatorStrategy;
+      _containerServices = containerServices;
       _entry = entry;
     }
 
-    public RegistrationConfigurer AsSingleton
+    public RegistrationConfigurer AsSingleton()
     {
-      get
-      {
-        _entry.LifestyleType = LifestyleType.Singleton;
-        return this;
-      }
+      return WithLifestyle(LifestyleType.Singleton);
     }
 
-    public RegistrationConfigurer AsTransient
+    public RegistrationConfigurer AsTransient()
     {
-      get
-      {
-        _entry.LifestyleType = LifestyleType.Transient;
-        return this;
-      }
+      return WithLifestyle(LifestyleType.Transient);
     }
 
     public RegistrationConfigurer Provides(Type serviceType)
@@ -50,8 +40,14 @@ namespace Machine.Container.Configuration
 
     public RegistrationConfigurer Is(object instance)
     {
-      IActivator activator = _activatorStrategy.CreateStaticActivator(_entry, instance);
-      _activatorStore.AddActivator(_entry, activator);
+      IActivator activator = _containerServices.ActivatorStrategy.CreateStaticActivator(_entry, instance);
+      _containerServices.ActivatorStore.AddActivator(_entry, activator);
+      return this;
+    }
+
+    public RegistrationConfigurer WithLifestyle(LifestyleType type)
+    {
+      _entry.LifestyleType = type;
       return this;
     }
   }

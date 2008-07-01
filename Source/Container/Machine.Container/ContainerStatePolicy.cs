@@ -33,17 +33,17 @@ namespace Machine.Container
 
     public void AssertCanResolve()
     {
-      AssertState("Resolve Service", ContainerState.ServiceRegistration, ContainerState.Started);
+      AssertState("Resolve", ContainerState.ServiceRegistration, ContainerState.Started);
     }
 
     public void AssertCanRelease()
     {
-      AssertState("Release Service", ContainerState.Started);
+      AssertState("Release", ContainerState.Started);
     }
 
     public void AssertCanAddServices()
     {
-      AssertState("Register Service", ContainerState.ServiceRegistration, ContainerState.Started);
+      AssertState("Register", ContainerState.ServiceRegistration, ContainerState.Started);
     }
 
     public void AssertIsInitialized()

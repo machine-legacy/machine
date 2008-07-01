@@ -27,6 +27,7 @@ namespace Machine.Container.Services.Impl
     #region IActivatorStrategy Members
     public IActivator CreateStaticActivator(ServiceEntry entry, object instance)
     {
+      entry.AssertIsAcceptableInstance(instance);
       return new StaticActivator(entry, instance);
     }
 

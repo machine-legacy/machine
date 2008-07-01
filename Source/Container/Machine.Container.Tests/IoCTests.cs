@@ -15,7 +15,7 @@ namespace Machine.Container
     public void Container_WhenItsNull_Throws()
     {
       IoC.Container = null;
-      IHighLevelContainer container = IoC.Container;
+      IMachineContainer container = IoC.Container;
     }
 
     [Test]

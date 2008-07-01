@@ -68,6 +68,10 @@ namespace Machine.Container.Model
       _serviceType = serviceType;
       _implementationType = implementationType;
       _lifestyleType = lifestyleType;
+      if (!serviceType.IsAssignableFrom(implementationType))
+      {
+        throw new ServiceContainerException("Implementation and Service mismatch?");
+      }
     }
     #endregion
 
@@ -95,5 +99,16 @@ namespace Machine.Container.Model
         throw new ServiceContainerException("You may not do that when there are active instances!");
       }
     }
+
+    public void AssertIsAcceptableInstance(object instance)
+    {
+      if (!_serviceType.IsInstanceOfType(instance))
+      {
+        throw new ServiceContainerException("Instance is not instance of type: " + _serviceType);
+      }
+    }
+  }
+  public class RegistrationsPolicy
+  {
   }
 }

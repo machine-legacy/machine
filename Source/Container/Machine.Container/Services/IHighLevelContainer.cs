@@ -16,7 +16,7 @@ namespace Machine.Container.Services
     void Start();
 
     ContainerRegisterer Register { get; }
-    ContainerResolver Resolver { get; }
+    ContainerResolver Resolve { get; }
 
     IEnumerable<ServiceRegistration> RegisteredServices { get; }
 
@@ -33,8 +33,8 @@ namespace Machine.Container.Services
     void AddService<TService>(LifestyleType lifestyleType);
     void AddService<TService>(object instance);
     void AddService(Type serviceType, object instance);
-    T Resolve<T>();
-    object Resolve(Type type);
+    T ResolveObject<T>();
+    object ResolveObject(Type type);
     T ResolveWithOverrides<T>(params object[] serviceOverrides);
     T New<T>(params object[] serviceOverrides);
   }

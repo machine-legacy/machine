@@ -22,9 +22,7 @@ namespace Machine.Container
 
     public void AddService(Type serviceType, LifestyleType lifestyleType)
     {
-      _state.AssertCanAddServices();
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType);
-      entry.LifestyleType = lifestyleType;
+      Register.Type(serviceType).WithLifestyle(lifestyleType);
     }
 
     public void AddService<TService>(Type implementationType)
@@ -44,9 +42,7 @@ namespace Machine.Container
 
     public void AddService(Type serviceType, Type implementationType, LifestyleType lifestyleType)
     {
-      _state.AssertCanAddServices();
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType, implementationType);
-      entry.LifestyleType = lifestyleType;
+      Register.Type(implementationType).Provides(serviceType).WithLifestyle(lifestyleType);
     }
 
     public void AddService<TService>(object instance)
@@ -56,40 +52,33 @@ namespace Machine.Container
 
     public void AddService(Type serviceType, object instance)
     {
-      _state.AssertCanAddServices();
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType);
-      IActivator activator = _activatorStrategy.CreateStaticActivator(entry, instance);
-      _activatorStore.AddActivator(entry, activator);
+      Register.Type(serviceType).Is(instance);
     }
 
     // Resolving
-    public T Resolve<T>()
+    public T ResolveObject<T>()
     {
-      return (T)Resolve(typeof(T));
+      return (T)ResolveObject(typeof(T));
     }
 
-    public object Resolve(Type serviceType)
+    public object ResolveObject(Type type)
     {
-      return ResolveWithOverrides(serviceType);
+      return ResolveWithOverrides(type);
     }
 
-    public T New<T>(params object[] serviceOverrides)
+    public T New<T>(params object[] overrides)
     {
-      AddService<T>(LifestyleType.Transient);
-      return ResolveWithOverrides<T>(serviceOverrides);
+      return Resolve.New<T>(overrides);
     }
 
-    public T ResolveWithOverrides<T>(params object[] serviceOverrides)
+    public T ResolveWithOverrides<T>(params object[] overrides)
     {
-      return (T)ResolveWithOverrides(typeof(T), serviceOverrides);
+      return (T)ResolveWithOverrides(typeof(T), overrides);
     }
 
-    public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
+    public object ResolveWithOverrides(Type type, params object[] overrides)
     {
-      _state.AssertCanResolve();
-      IResolutionServices services = _containerServices.CreateResolutionServices(serviceOverrides);
-      ResolvedServiceEntry entry = _resolver.ResolveEntry(services, serviceType, true);
-      return entry.Activate(services);
+      return Resolve.WithOverrides(type, overrides);
     }
   }
 }

@@ -64,12 +64,12 @@ namespace Machine.WindsorExtensions
       _wrapper.AddService(instance);
     }
 
-    public T Resolve<T>()
+    public T ResolveObject<T>()
     {
       return _windsor.Resolve<T>();
     }
 
-    public object Resolve(Type type)
+    public object ResolveObject(Type type)
     {
       return _windsor.Resolve(type);
     }
@@ -147,7 +147,7 @@ namespace Machine.WindsorExtensions
       get { throw new NotImplementedException(); }
     }
 
-    public ContainerResolver Resolver
+    public ContainerResolver Resolve
     {
       get { throw new NotImplementedException(); }
     }

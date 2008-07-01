@@ -35,7 +35,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void CreateActivatorInstance_ReturnsInstanceActivator_ReturnsSameOne()
     {
-      Assert.IsInstanceOfType(typeof(StaticActivator), _strategy.CreateStaticActivator(_entry, new object()));
+      Assert.IsInstanceOfType(typeof(StaticActivator), _strategy.CreateStaticActivator(_entry, new Service1()));
     }
 
     [Test]

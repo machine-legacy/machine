@@ -8,11 +8,11 @@ namespace Machine.Container
   public static class IoC
   {
     #region Member Data
-    private static IHighLevelContainer _container;
+    private static IMachineContainer _container;
     #endregion
 
     #region Properties
-    public static IHighLevelContainer Container
+    public static IMachineContainer Container
     {
       get
       {

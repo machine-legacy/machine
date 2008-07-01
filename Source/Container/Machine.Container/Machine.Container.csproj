@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="CompartmentalizedMachineContainer.cs" />
     <Compile Include="Configuration\RegistrationConfigurer.cs" />
+    <Compile Include="ContainerRegisterer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
+    <Compile Include="ContainerResolver.cs" />
     <Compile Include="ContainerStatePolicy.cs" />
     <Compile Include="MachineContainer.cs" />
     <Compile Include="IoC.cs" />
@@ -58,7 +60,6 @@
     <Compile Include="Model\ServiceDependency.cs" />
     <Compile Include="Model\ServiceEntry.cs" />
     <Compile Include="Model\ServiceRegistration.cs" />
-    <Compile Include="Model\ServiceState.cs" />
     <Compile Include="Plugins\AbstractServiceContainerListener.cs" />
     <Compile Include="Plugins\Disposition\DisposablePlugin.cs" />
     <Compile Include="Plugins\IListenerInvoker.cs" />
@@ -72,6 +73,8 @@
     <Compile Include="Services\IActivator.cs" />
     <Compile Include="Services\IActivatorStore.cs" />
     <Compile Include="Services\IActivatorStrategy.cs" />
+    <Compile Include="Services\IContainerServices.cs" />
+    <Compile Include="Services\Impl\ContainerServices.cs" />
     <Compile Include="Services\IResolutionServices.cs" />
     <Compile Include="Services\IActivatorResolver.cs" />
     <Compile Include="Services\IHighLevelContainer.cs" />
@@ -114,9 +117,6 @@
       <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
       <Name>Machine.Core</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utility\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -58,6 +58,7 @@ namespace Machine.Container.Services.Impl
     }
 
     [Test]
+    [Ignore]
     [ExpectedException(typeof(ServiceResolutionException))]
     public void CreateEntryIfMissing_IsThereWithOtherImplementation_Throws()
     {

@@ -17,8 +17,7 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region ServiceEntryResolver()
-    public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory,
-      IActivatorResolver activatorResolver)
+    public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, IActivatorResolver activatorResolver)
     {
       _serviceGraph = serviceGraph;
       _activatorResolver = activatorResolver;
@@ -39,10 +38,6 @@ namespace Machine.Container.Services.Impl
       {
         entry = _serviceEntryFactory.CreateServiceEntry(serviceType, implementationType, LifestyleType.Singleton);
         _serviceGraph.Add(entry);
-      }
-      if (entry.ImplementationType != implementationType && serviceType != implementationType)
-      {
-        throw new ServiceResolutionException("Can't add a service twice with two implementations: " + serviceType);
       }
       return entry;
     }

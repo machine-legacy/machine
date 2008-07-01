@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 
-using Machine.Container.Configuration;
 using Machine.Container.Model;
 using Machine.Container.Plugins;
 using Machine.Container.Services;
@@ -22,6 +20,8 @@ namespace Machine.Container
     protected ILifestyleFactory _lifestyleFactory;
     protected IServiceGraph _serviceGraph;
     protected IContainerServices _containerServices;
+    protected ContainerRegisterer _containerRegisterer;
+    protected ContainerResolver _containerResolver;
     #endregion
 
     public CompartmentalizedMachineContainer()
@@ -78,23 +78,6 @@ namespace Machine.Container
     }
     #endregion
 
-    protected virtual IContainerServices CreateContainerServices()
-    {
-      return new ContainerServices(_activatorStore, _activatorStrategy, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
-    }
-
-    protected virtual IActivatorResolver CreateDependencyResolver()
-    {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
-    }
-
-    protected virtual void RegisterContainerInContainer()
-    {
-      ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(typeof(IHighLevelContainer));
-      IActivator activator = _activatorStrategy.CreateStaticActivator(entry, this);
-      _activatorStore.AddActivator(entry, activator);
-    }
-
     public virtual void Initialize()
     {
       IActivatorResolver activatorResolver = CreateDependencyResolver();
@@ -107,6 +90,8 @@ namespace Machine.Container
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
       _objectInstances = new ObjectInstances(_listenerInvoker);
       _containerServices = CreateContainerServices();
+      _containerRegisterer = new ContainerRegisterer(_containerServices);
+      _containerResolver = new ContainerResolver(_containerServices, _containerRegisterer);
       _state.Initialize();
     }
 
@@ -127,83 +112,35 @@ namespace Machine.Container
 
     public ContainerRegisterer Register
     {
-      get { return new ContainerRegisterer(_containerServices); }
-    }
-
-    public ContainerResolver Resolver
-    {
-      get { return new ContainerResolver(_containerServices); }
-    }
-  }
-  public class ContainerRegisterer
-  {
-    readonly IContainerServices _containerServices;
-
-    public ContainerRegisterer(IContainerServices containerServices)
-    {
-      _containerServices = containerServices;
-    }
-
-    public RegistrationConfigurer Implementation(Type implementationType)
-    {
-      ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(implementationType);
-      return new RegistrationConfigurer(_containerServices.ActivatorStrategy, _containerServices.ActivatorStore, entry);
-    }
-
-    public RegistrationConfigurer Implementation<TImplementation>()
-    {
-      return Implementation(typeof(TImplementation));
-    }
-  }
-  public class ContainerResolver
-  {
-    readonly IContainerServices _containerServices;
-
-    public ContainerResolver(IContainerServices containerServices)
-    {
-      _containerServices = containerServices;
-    }
-
-    public object Resolve(Type serviceType)
-    {
-      return ResolveWithOverrides(serviceType);
-    }
-
-    public T Resolve<T>()
-    {
-      return (T)Resolve(typeof(T));
-    }
-
-    public T New<T>(params object[] serviceOverrides)
-    {
-      ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(typeof(T));
-      entry.LifestyleType = LifestyleType.Transient;
-      return ResolveWithOverrides<T>(serviceOverrides);
-    }
-
-    public T ResolveWithOverrides<T>(params object[] serviceOverrides)
-    {
-      return (T)ResolveWithOverrides(typeof(T), serviceOverrides);
-    }
-
-    public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
-    {
-      IResolutionServices services = _containerServices.CreateResolutionServices(serviceOverrides);
-      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, serviceType, true);
-      return entry.Activate(services);
-    }
-
-    public IList<T> ResolveAll<T>()
-    {
-      List<T> found = new List<T>();
-      foreach (ServiceRegistration registration in _containerServices.ServiceGraph.RegisteredServices)
+      get
       {
-        if (typeof(T).IsAssignableFrom(registration.ImplementationType))
-        {
-          found.Add((T)Resolve(registration.ImplementationType));
-        }
+        _state.AssertCanAddServices();
+        return _containerRegisterer;
       }
-      return found;
+    }
+
+    public ContainerResolver Resolve
+    {
+      get
+      {
+        _state.AssertCanResolve();
+        return _containerResolver;
+      }
+    }
+
+    protected virtual IContainerServices CreateContainerServices()
+    {
+      return new ContainerServices(_activatorStore, _activatorStrategy, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
+    }
+
+    protected virtual IActivatorResolver CreateDependencyResolver()
+    {
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
+    }
+
+    protected virtual void RegisterContainerInContainer()
+    {
+      _containerRegisterer.Type<IMachineContainer>().Is(this);
     }
   }
 }
