@@ -14,7 +14,7 @@ namespace Machine.Container.Services.Impl
     #region IActivatorResolver Members
     public IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry)
     {
-      _log.Info("ResolveActivator: " + entry);
+      // _log.Info("ResolveActivator: " + entry);
       if (!services.ActivatorStore.HasActivator(entry))
       {
         return null;
@@ -24,7 +24,7 @@ namespace Machine.Container.Services.Impl
       {
         return activator;
       }
-      throw new ServiceResolutionException("Unable to activate!");
+      throw new ServiceResolutionException("Unable to activate: " + entry);
     }
     #endregion
   }

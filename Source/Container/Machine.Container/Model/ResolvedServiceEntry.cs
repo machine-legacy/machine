@@ -29,6 +29,29 @@ namespace Machine.Container.Model
       _activator = activator;
     }
 
+    public object Activate(IResolutionServices services)
+    {
+      object instance = _activator.Activate(services);
+      _objectInstances.Remember(this, instance);
+      return instance;
+    }
+
+    public void Release(IResolutionServices services, object instance)
+    {
+      _activator.Release(services, instance);
+      _objectInstances.Release(services, instance);
+    }
+
+    public void IncrementActiveInstances()
+    {
+      _entry.IncrementActiveInstances();
+    }
+
+    public void DecrementActiveInstances()
+    {
+      _entry.DecrementActiveInstances();
+    }
+
     public override string ToString()
     {
       return String.Format("ResolvedEntry<{0}, {1}>", _entry, _activator);
@@ -47,28 +70,6 @@ namespace Machine.Container.Model
     public override Int32 GetHashCode()
     {
       return this.ServiceEntry.GetHashCode() ^ this.Activator.GetHashCode();
-    }
-
-    public object Activate(IResolutionServices services)
-    {
-      object instance = _activator.Activate(services);
-      _objectInstances.Remember(this, instance);
-      return instance;
-    }
-
-    public void Release(IResolutionServices services, object instance)
-    {
-      _objectInstances.Release(services, instance);
-    }
-
-    public void IncrementActiveInstances()
-    {
-      _entry.IncrementActiveInstances();
-    }
-
-    public void DecrementActiveInstances()
-    {
-      _entry.DecrementActiveInstances();
     }
   }
 }

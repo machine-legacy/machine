@@ -29,11 +29,13 @@ namespace Machine.Container.Activators
 
     public object Activate(IResolutionServices services)
     {
+      _entry.AssertIsAcceptableInstance(_instance);
       return _instance;
     }
 
     public void Release(IResolutionServices services, object instance)
     {
+      throw new ServiceContainerException("Releasing staticly registered instances is weird!");
     }
     #endregion
   }

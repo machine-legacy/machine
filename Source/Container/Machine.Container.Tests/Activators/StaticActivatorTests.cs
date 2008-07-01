@@ -12,9 +12,9 @@ namespace Machine.Container.Activators
   public class StaticActivatorTests : MachineContainerTestsFixture
   {
     #region Member Data
-    StaticActivator _activator;
-    ServiceEntry _entry;
-    object _instance;
+    private StaticActivator _activator;
+    private ServiceEntry _entry;
+    private SimpleService1 _instance;
     #endregion
 
     #region Test Setup and Teardown Methods
@@ -22,7 +22,7 @@ namespace Machine.Container.Activators
     {
       base.Setup();
       _entry = ServiceEntryHelper.NewEntry();
-      _instance = new object();
+      _instance = new SimpleService1();
       _activator = new StaticActivator(_entry, _instance);
     }
     #endregion

@@ -13,6 +13,7 @@ namespace Machine.Container
     protected readonly ContainerStatePolicy _state = new ContainerStatePolicy();
     protected readonly IPluginManager _pluginManager;
     protected readonly IListenerInvoker _listenerInvoker;
+    protected readonly IDependencyResolverFactory _dependencyResolverFactory;
     protected IObjectInstances _objectInstances;
     protected IServiceEntryResolver _resolver;
     protected IActivatorStrategy _activatorStrategy;
@@ -24,10 +25,16 @@ namespace Machine.Container
     protected ContainerResolver _containerResolver;
     #endregion
 
-    public CompartmentalizedMachineContainer()
+    public CompartmentalizedMachineContainer(IDependencyResolverFactory dependencyResolverFactory)
     {
+      _dependencyResolverFactory = dependencyResolverFactory;
       _pluginManager = new PluginManager(this);
       _listenerInvoker = new ListenerInvoker(_pluginManager);
+    }
+
+    public CompartmentalizedMachineContainer()
+     : this(new DefaultDependencyResolverFactory())
+    {
     }
 
     #region IHighLevelContainer Members
@@ -80,7 +87,7 @@ namespace Machine.Container
 
     public virtual void Initialize()
     {
-      IActivatorResolver activatorResolver = CreateDependencyResolver();
+      IActivatorResolver activatorResolver = _dependencyResolverFactory.CreateDependencyResolver();
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
       IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
       _serviceGraph = new ServiceGraph(_listenerInvoker);
@@ -133,14 +140,18 @@ namespace Machine.Container
       return new ContainerServices(_activatorStore, _activatorStrategy, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
     }
 
-    protected virtual IActivatorResolver CreateDependencyResolver()
-    {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
-    }
-
     protected virtual void RegisterContainerInContainer()
     {
       _containerRegisterer.Type<IMachineContainer>().Is(this);
     }
+  }
+  public class DefaultDependencyResolverFactory : IDependencyResolverFactory
+  {
+    #region IDependencyResolverFactory Members
+    public IActivatorResolver CreateDependencyResolver()
+    {
+      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
+    }
+    #endregion
   }
 }

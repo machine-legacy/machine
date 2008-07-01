@@ -3,12 +3,25 @@ using System.Collections.Generic;
 
 using Machine.Container.Configuration;
 using Machine.Container.Model;
+using Machine.Container.Plugins;
 using Machine.Container.Services;
 
 namespace Machine.Container
 {
-  public class MachineContainer : CompartmentalizedMachineContainer, IHighLevelContainer
+  public class MachineContainer : IHighLevelContainer
   {
+    private readonly CompartmentalizedMachineContainer _container;
+
+    public MachineContainer(CompartmentalizedMachineContainer container)
+    {
+      _container = container;
+    }
+
+    public MachineContainer()
+     : this(new CompartmentalizedMachineContainer())
+    {
+    }
+
     // Adding Services / Registration
     public void Add<TService>()
     {
@@ -80,5 +93,64 @@ namespace Machine.Container
     {
       return Resolve.Object(type, overrides);
     }
+
+    #region IMachineContainer Members
+    public void AddPlugin(IServiceContainerPlugin plugin)
+    {
+      _container.AddPlugin(plugin);
+    }
+
+    public void AddListener(IServiceContainerListener listener)
+    {
+      _container.AddListener(listener);
+    }
+
+    public void Initialize()
+    {
+      _container.Initialize();
+    }
+
+    public void PrepareForServices()
+    {
+      _container.PrepareForServices();
+    }
+
+    public void Start()
+    {
+      _container.Start();
+    }
+
+    public ContainerRegisterer Register
+    {
+      get { return _container.Register; }
+    }
+
+    public ContainerResolver Resolve
+    {
+      get { return _container.Resolve; }
+    }
+
+    public IEnumerable<ServiceRegistration> RegisteredServices
+    {
+      get { return _container.RegisteredServices; }
+    }
+
+    public void Release(object instance)
+    {
+      _container.Release(instance);
+    }
+
+    public bool HasService<T>()
+    {
+      return _container.HasService<T>();
+    }
+    #endregion
+
+    #region IDisposable Members
+    public void Dispose()
+    {
+      _container.Dispose();
+    }
+    #endregion
   }
 }

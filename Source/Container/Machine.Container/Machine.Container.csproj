@@ -74,6 +74,7 @@
     <Compile Include="Services\IActivatorStore.cs" />
     <Compile Include="Services\IActivatorStrategy.cs" />
     <Compile Include="Services\IContainerServices.cs" />
+    <Compile Include="Services\IDependencyResolverFactory.cs" />
     <Compile Include="Services\Impl\ContainerServices.cs" />
     <Compile Include="Services\IResolutionServices.cs" />
     <Compile Include="Services\IActivatorResolver.cs" />

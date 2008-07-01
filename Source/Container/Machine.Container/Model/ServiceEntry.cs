@@ -31,6 +31,7 @@ namespace Machine.Container.Model
       set
       {
         AssertHasNoActiveInstances();
+        AssertValidTypes(value, _implementationType);
         _serviceType = value;
       }
     }
@@ -41,6 +42,7 @@ namespace Machine.Container.Model
       set
       {
         AssertHasNoActiveInstances();
+        AssertValidTypes(_serviceType, value);
         _implementationType = value;
       }
     }
@@ -65,13 +67,10 @@ namespace Machine.Container.Model
     #region ServiceEntry()
     public ServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType)
     {
+      AssertValidTypes(serviceType, implementationType);
       _serviceType = serviceType;
       _implementationType = implementationType;
       _lifestyleType = lifestyleType;
-      if (!serviceType.IsAssignableFrom(implementationType))
-      {
-        throw new ServiceContainerException("Implementation and Service mismatch?");
-      }
     }
     #endregion
 
@@ -84,20 +83,23 @@ namespace Machine.Container.Model
 
     public void IncrementActiveInstances()
     {
+      // Protected by ObjectInstances lock
       _numberOfActiveInstances++;
     }
 
     public void DecrementActiveInstances()
     {
+      // Protected by ObjectInstances lock
+      if (_numberOfActiveInstances == 0)
+      {
+        throw new ServiceContainerException("Number of active instances less than 0!");
+      }
       _numberOfActiveInstances--;
     }
 
-    private void AssertHasNoActiveInstances()
+    public bool CanHaveActivator
     {
-      if (_numberOfActiveInstances > 0)
-      {
-        throw new ServiceContainerException("You may not do that when there are active instances!");
-      }
+      get { return this.LifestyleType != LifestyleType.Override; }
     }
 
     public void AssertIsAcceptableInstance(object instance)
@@ -107,8 +109,21 @@ namespace Machine.Container.Model
         throw new ServiceContainerException("Instance is not instance of type: " + _serviceType);
       }
     }
-  }
-  public class RegistrationsPolicy
-  {
+
+    private static void AssertValidTypes(Type serviceType, Type implementationType)
+    {
+      if (!serviceType.IsAssignableFrom(implementationType))
+      {
+        throw new ServiceContainerException("Service Type should be assignable from Implementation Type!");
+      }
+    }
+
+    private void AssertHasNoActiveInstances()
+    {
+      if (_numberOfActiveInstances > 0)
+      {
+        throw new ServiceContainerException("You may not do that when there are active instances!");
+      }
+    }
   }
 }

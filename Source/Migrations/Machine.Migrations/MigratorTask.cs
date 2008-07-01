@@ -40,7 +40,7 @@ namespace Machine.Migrations
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
         IHighLevelContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
-        container.Resolve<IMigrator>().RunMigrator();
+        container.Resolve.Object<IMigrator>().RunMigrator();
       }
       return true;
     }

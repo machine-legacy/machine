@@ -7,9 +7,9 @@ namespace Machine.Container.Services
 {
   public interface IServiceEntryResolver
   {
-    ServiceEntry CreateEntryIfMissing(Type serviceType);
+    ServiceEntry CreateEntryIfMissing(Type type);
     ServiceEntry CreateEntryIfMissing(Type serviceType, Type implementationType);
-    ServiceEntry LookupEntry(Type serviceType);
-    ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type serviceType, bool throwIfAmbiguous);
+    ServiceEntry LookupEntry(Type type);
+    ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type type, bool throwIfAmbiguous);
   }
 }

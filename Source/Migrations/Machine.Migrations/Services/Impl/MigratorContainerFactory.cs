@@ -14,25 +14,25 @@ namespace Machine.Migrations.Services.Impl
     {
       IHighLevelContainer container = CreateContainer();
       container.Initialize();
-      container.AddService<IConnectionProvider>(configuration.ConnectionProviderType);
-      container.AddService<ITransactionProvider>(configuration.TransactionProviderType);
-      container.AddService<IDatabaseProvider>(configuration.DatabaseProviderType);
-      container.AddService<ISchemaProvider>(configuration.SchemaProviderType);
-      container.AddService<IFileSystem, FileSystem>();
-      container.AddService<INamer, Namer>();
-      container.AddService<ISchemaStateManager, SchemaStateManager>();
-      container.AddService<IMigrationFinder, MigrationFinder>();
-      container.AddService<IMigrationSelector, MigrationSelector>();
-      container.AddService<IMigrationRunner, MigrationRunner>();
-      container.AddService<IMigrationInitializer, MigrationInitializer>();
-      container.AddService<IMigrator, Migrator>();
-      container.AddService<IMigrationFactoryChooser, MigrationFactoryChooser>();
-      container.AddService<IVersionStateFactory, VersionStateFactory>();
-      container.AddService<IWorkingDirectoryManager, WorkingDirectoryManager>();
-      container.AddService<ICommonTransformations, CommonTransformations>();
-      container.AddService<IConfiguration>(configuration);
-      container.AddService<CSharpMigrationFactory>();
-      container.AddService<BooMigrationFactory>();
+      container.Add<IConnectionProvider>(configuration.ConnectionProviderType);
+      container.Add<ITransactionProvider>(configuration.TransactionProviderType);
+      container.Add<IDatabaseProvider>(configuration.DatabaseProviderType);
+      container.Add<ISchemaProvider>(configuration.SchemaProviderType);
+      container.Add<IFileSystem, FileSystem>();
+      container.Add<INamer, Namer>();
+      container.Add<ISchemaStateManager, SchemaStateManager>();
+      container.Add<IMigrationFinder, MigrationFinder>();
+      container.Add<IMigrationSelector, MigrationSelector>();
+      container.Add<IMigrationRunner, MigrationRunner>();
+      container.Add<IMigrationInitializer, MigrationInitializer>();
+      container.Add<IMigrator, Migrator>();
+      container.Add<IMigrationFactoryChooser, MigrationFactoryChooser>();
+      container.Add<IVersionStateFactory, VersionStateFactory>();
+      container.Add<IWorkingDirectoryManager, WorkingDirectoryManager>();
+      container.Add<ICommonTransformations, CommonTransformations>();
+      container.Add<IConfiguration>(configuration);
+      container.Add<CSharpMigrationFactory>();
+      container.Add<BooMigrationFactory>();
       return container;
     }
     #endregion

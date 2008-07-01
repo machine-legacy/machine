@@ -26,9 +26,9 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region Methods
-    public ServiceEntry CreateEntryIfMissing(Type serviceType)
+    public ServiceEntry CreateEntryIfMissing(Type type)
     {
-      return CreateEntryIfMissing(serviceType, serviceType);
+      return CreateEntryIfMissing(type, type);
     }
 
     public ServiceEntry CreateEntryIfMissing(Type serviceType, Type implementationType)
@@ -36,36 +36,39 @@ namespace Machine.Container.Services.Impl
       ServiceEntry entry = _serviceGraph.Lookup(serviceType);
       if (entry == null)
       {
+        // TODO Possible race condition here? -jlewalle
         entry = _serviceEntryFactory.CreateServiceEntry(serviceType, implementationType, LifestyleType.Singleton);
         _serviceGraph.Add(entry);
       }
       return entry;
     }
 
-    public ServiceEntry LookupEntry(Type serviceType)
+    public ServiceEntry LookupEntry(Type type)
     {
-      return _serviceGraph.Lookup(serviceType);
+      return _serviceGraph.Lookup(type);
     }
 
-    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type serviceType, bool throwIfAmbiguous)
+    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type type, bool throwIfAmbiguous)
     {
-      _log.Info("ResolveEntry: " + serviceType);
-      ServiceEntry entry = _serviceGraph.Lookup(serviceType, throwIfAmbiguous);
+      _log.Info("ResolveEntry: " + type);
+      ServiceEntry entry = _serviceGraph.Lookup(type, throwIfAmbiguous);
       if (entry == null)
       {
-        entry = _serviceEntryFactory.CreateServiceEntry(serviceType, serviceType, LifestyleType.Transient);
+        entry = _serviceEntryFactory.CreateServiceEntry(type, type, LifestyleType.Override);
       }
+      /* Never want to auto create activator for the entry we created above. */
       else if (!services.ActivatorStore.HasActivator(entry))
       {
         ILifestyle lifestyle = services.LifestyleFactory.CreateLifestyle(entry);
         services.ActivatorStore.AddActivator(entry, lifestyle);
       }
+
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);
-      if (activator != null)
+      if (activator == null)
       {
-        return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
+        return null;
       }
-      return null;
+      return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
     }
     #endregion
   }

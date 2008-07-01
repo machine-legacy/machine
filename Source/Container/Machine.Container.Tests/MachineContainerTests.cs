@@ -109,7 +109,7 @@ namespace Machine.Container
     public void AddService_Duplicate_Throws()
     {
       _machineContainer.Add<IService2, Service2DependsOn1>();
-      _machineContainer.Add<IService2, Service1DependsOn2>();
+      _machineContainer.Add<IService2, SimpleService2>();
     }
 
     [Test]

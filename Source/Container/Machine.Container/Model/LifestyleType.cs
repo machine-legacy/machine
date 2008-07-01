@@ -6,7 +6,8 @@ namespace Machine.Container.Model
   public enum LifestyleType
   {
     Singleton,
-    Transient
+    Transient,
+    Override
   }
 
   public abstract class LifestyleAttribute : Attribute

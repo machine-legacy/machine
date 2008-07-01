@@ -38,7 +38,7 @@ namespace Machine.Container.Lifestyles
       return _defaultActivator.Activate(services);
     }
 
-    public void Release(IResolutionServices services, object instance)
+    public virtual void Release(IResolutionServices services, object instance)
     {
       _defaultActivator.Release(services, instance);
     }
