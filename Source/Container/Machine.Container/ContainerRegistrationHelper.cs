@@ -28,10 +28,10 @@ namespace Machine.Container
           switch (lifestyleAttribute.Lifestyle)
           {
             case LifestyleType.Transient:
-              _container.AddService(type, LifestyleType.Transient);
+              _container.Add(type, LifestyleType.Transient);
               break;
             case LifestyleType.Singleton:
-              _container.AddService(type, LifestyleType.Singleton);
+              _container.Add(type, LifestyleType.Singleton);
               break;
             default:
               throw new NotSupportedException("Not supported lifestyle: " + lifestyleAttribute.Lifestyle);
@@ -42,11 +42,11 @@ namespace Machine.Container
 
     public virtual void AddCore()
     {
-      _container.AddService<Clock>();
-      _container.AddService<Namer>();
-      _container.AddService<FileSystem>();
-      _container.AddService<DotNetObjectActivator>();
-      _container.AddService<ThreadManager>();
+      _container.Add<Clock>();
+      _container.Add<Namer>();
+      _container.Add<FileSystem>();
+      _container.Add<DotNetObjectActivator>();
+      _container.Add<ThreadManager>();
     }
   }
 }

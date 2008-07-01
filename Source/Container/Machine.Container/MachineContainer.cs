@@ -10,47 +10,47 @@ namespace Machine.Container
   public class MachineContainer : CompartmentalizedMachineContainer, IHighLevelContainer
   {
     // Adding Services / Registration
-    public void AddService<TService>()
+    public void Add<TService>()
     {
-      AddService<TService>(LifestyleType.Singleton);
+      Add<TService>(LifestyleType.Singleton);
     }
 
-    public void AddService<TService>(LifestyleType lifestyleType)
+    public void Add<TService>(LifestyleType lifestyleType)
     {
-      AddService(typeof(TService), lifestyleType);
+      Add(typeof(TService), lifestyleType);
     }
 
-    public void AddService(Type serviceType, LifestyleType lifestyleType)
+    public void Add(Type serviceType, LifestyleType lifestyleType)
     {
       Register.Type(serviceType).WithLifestyle(lifestyleType);
     }
 
-    public void AddService<TService>(Type implementationType)
+    public void Add<TService>(Type implementationType)
     {
-      AddService(typeof(TService), implementationType, LifestyleType.Singleton);
+      Add(typeof(TService), implementationType, LifestyleType.Singleton);
     }
 
-    public void AddService<TService, TImpl>()
+    public void Add<TService, TImpl>()
     {
-      AddService<TService, TImpl>(LifestyleType.Singleton);
+      Add<TService, TImpl>(LifestyleType.Singleton);
     }
 
-    public void AddService<TService, TImpl>(LifestyleType lifestyleType)
+    public void Add<TService, TImpl>(LifestyleType lifestyleType)
     {
-      AddService(typeof(TService), typeof(TImpl), lifestyleType);
+      Add(typeof(TService), typeof(TImpl), lifestyleType);
     }
 
-    public void AddService(Type serviceType, Type implementationType, LifestyleType lifestyleType)
+    public void Add(Type serviceType, Type implementationType, LifestyleType lifestyleType)
     {
       Register.Type(implementationType).Provides(serviceType).WithLifestyle(lifestyleType);
     }
 
-    public void AddService<TService>(object instance)
+    public void Add<TService>(object instance)
     {
-      AddService(typeof(TService), instance);
+      Add(typeof(TService), instance);
     }
 
-    public void AddService(Type serviceType, object instance)
+    public void Add(Type serviceType, object instance)
     {
       Register.Type(serviceType).Is(instance);
     }

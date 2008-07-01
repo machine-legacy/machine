@@ -25,14 +25,14 @@ namespace Machine.Container.Services
   }
   public interface IHighLevelContainer : IMachineContainer
   {
-    void AddService(Type serviceType, LifestyleType lifestyleType);
-    void AddService<TService>();
-    void AddService<TService>(Type implementation);
-    void AddService<TService, TImpl>(LifestyleType lifestyleType);
-    void AddService<TService, TImpl>();
-    void AddService<TService>(LifestyleType lifestyleType);
-    void AddService<TService>(object instance);
-    void AddService(Type serviceType, object instance);
+    void Add(Type serviceType, LifestyleType lifestyleType);
+    void Add<TService>();
+    void Add<TService>(Type implementation);
+    void Add<TService, TImpl>(LifestyleType lifestyleType);
+    void Add<TService, TImpl>();
+    void Add<TService>(LifestyleType lifestyleType);
+    void Add<TService>(object instance);
+    void Add(Type serviceType, object instance);
     T ResolveObject<T>();
     object ResolveObject(Type type);
     T ResolveWithOverrides<T>(params object[] serviceOverrides);

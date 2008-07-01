@@ -24,42 +24,42 @@ namespace Machine.WindsorExtensions
     }
 
     #region IHighLevelContainer Members
-    public void AddService(Type serviceType, Machine.Container.Model.LifestyleType lifestyleType)
+    public void Add(Type serviceType, Machine.Container.Model.LifestyleType lifestyleType)
     {
       _wrapper.AddService(serviceType, Convert(lifestyleType));
     }
 
-    public void AddService<TService>()
+    public void Add<TService>()
     {
       _wrapper.AddService<TService>();
     }
 
-    public void AddService<TService>(Type implementation)
+    public void Add<TService>(Type implementation)
     {
       _wrapper.AddService<TService>(implementation);
     }
 
-    public void AddService<TService, TImpl>(Machine.Container.Model.LifestyleType lifestyleType)
+    public void Add<TService, TImpl>(Machine.Container.Model.LifestyleType lifestyleType)
     {
       _wrapper.AddService<TService, TImpl>(Convert(lifestyleType));
     }
 
-    public void AddService<TService, TImpl>()
+    public void Add<TService, TImpl>()
     {
       _wrapper.AddService<TService, TImpl>();
     }
 
-    public void AddService<TService>(Machine.Container.Model.LifestyleType lifestyleType)
+    public void Add<TService>(Machine.Container.Model.LifestyleType lifestyleType)
     {
       _wrapper.AddService(typeof(TService), Convert(lifestyleType));
     }
 
-    public void AddService<TService>(object instance)
+    public void Add<TService>(object instance)
     {
       _wrapper.AddService<TService>(instance);
     }
 
-    public void AddService(Type serviceType, object instance)
+    public void Add(Type serviceType, object instance)
     {
       _wrapper.AddService(instance);
     }
