@@ -26,7 +26,6 @@ namespace Machine.Container.Services.Impl
       _serviceGraph = Get<IServiceGraph>();
       _serviceDependencyInspector = Get<IServiceDependencyInspector>();
       _serviceEntryFactory = Get<IServiceEntryFactory>();
-      IContainerServices containerServices = Create<ContainerServices>();
       _services = Create<ResolutionServices>();
     }
     #endregion

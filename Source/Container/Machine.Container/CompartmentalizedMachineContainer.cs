@@ -78,14 +78,21 @@ namespace Machine.Container
     }
     #endregion
 
-    protected IContainerServices CreateContainerServices()
+    protected virtual IContainerServices CreateContainerServices()
     {
-      return new ContainerServices(_activatorStore, _activatorStrategy, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver);
+      return new ContainerServices(_activatorStore, _activatorStrategy, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
     }
 
     protected virtual IActivatorResolver CreateDependencyResolver()
     {
       return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
+    }
+
+    protected virtual void RegisterContainerInContainer()
+    {
+      ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(typeof(IHighLevelContainer));
+      IActivator activator = _activatorStrategy.CreateStaticActivator(entry, this);
+      _activatorStore.AddActivator(entry, activator);
     }
 
     public virtual void Initialize()
@@ -110,13 +117,6 @@ namespace Machine.Container
       _state.PrepareForServices();
       RegisterContainerInContainer();
       _listenerInvoker.PreparedForServices();
-    }
-
-    protected virtual void RegisterContainerInContainer()
-    {
-      ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(typeof(IHighLevelContainer));
-      IActivator activator = _activatorStrategy.CreateStaticActivator(entry, this);
-      _activatorStore.AddActivator(entry, activator);
     }
 
     public virtual void Start()
@@ -196,14 +196,13 @@ namespace Machine.Container
     public IList<T> ResolveAll<T>()
     {
       List<T> found = new List<T>();
-      /*
-      foreach (ServiceRegistration registration in _container.RegisteredServices)
+      foreach (ServiceRegistration registration in _containerServices.ServiceGraph.RegisteredServices)
       {
         if (typeof(T).IsAssignableFrom(registration.ImplementationType))
         {
           found.Add((T)Resolve(registration.ImplementationType));
         }
-      }*/
+      }
       return found;
     }
   }

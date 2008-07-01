@@ -1,6 +1,5 @@
 using System;
 
-using Machine.Container.Activators;
 using Machine.Container.Plugins;
 
 namespace Machine.Container.Services
@@ -37,6 +36,10 @@ namespace Machine.Container.Services
       get;
     }
 
+    IServiceGraph ServiceGraph
+    {
+      get;
+    }
   }
   public interface IContainerServices : IInternalServices
   {

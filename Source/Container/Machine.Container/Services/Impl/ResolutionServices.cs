@@ -14,10 +14,12 @@ namespace Machine.Container.Services.Impl
     private readonly IServiceEntryResolver _serviceEntryResolver;
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IObjectInstances _objectInstances;
+    private readonly IServiceGraph _serviceGraph;
 
-    public ContainerServices(IActivatorStore activatorStore, IActivatorStrategy activatorStrategy, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryResolver serviceEntryResolver)
+    public ContainerServices(IActivatorStore activatorStore, IActivatorStrategy activatorStrategy, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph)
     {
       _activatorStore = activatorStore;
+      _serviceGraph = serviceGraph;
       _activatorStrategy = activatorStrategy;
       _lifestyleFactory = lifestyleFactory;
       _listenerInvoker = listenerInvoker;
@@ -53,6 +55,11 @@ namespace Machine.Container.Services.Impl
     public IObjectInstances ObjectInstances
     {
       get { return _objectInstances; }
+    }
+
+    public IServiceGraph ServiceGraph
+    {
+      get { return _serviceGraph; }
     }
 
     public IResolutionServices CreateResolutionServices(object[] serviceOverrides)
@@ -116,6 +123,11 @@ namespace Machine.Container.Services.Impl
     public IObjectInstances ObjectInstances
     {
       get { return _containerServices.ObjectInstances; }
+    }
+
+    public IServiceGraph ServiceGraph
+    {
+      get { return _containerServices.ServiceGraph; }
     }
   }
 }
