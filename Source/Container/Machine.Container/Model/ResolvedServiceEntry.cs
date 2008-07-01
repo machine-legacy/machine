@@ -8,13 +8,13 @@ namespace Machine.Container.Model
 {
   public class ResolvedServiceEntry
   {
-    private readonly ServiceEntry _serviceEntry;
+    private readonly ServiceEntry _entry;
     private readonly IActivator _activator;
     private readonly IObjectInstances _objectInstances;
 
     protected ServiceEntry ServiceEntry
     {
-      get { return _serviceEntry; }
+      get { return _entry; }
     }
 
     protected IActivator Activator
@@ -22,16 +22,16 @@ namespace Machine.Container.Model
       get { return _activator; }
     }
 
-    public ResolvedServiceEntry(ServiceEntry serviceEntry, IActivator activator, IObjectInstances objectInstances)
+    public ResolvedServiceEntry(ServiceEntry entry, IActivator activator, IObjectInstances objectInstances)
     {
-      _serviceEntry = serviceEntry;
+      _entry = entry;
       _objectInstances = objectInstances;
       _activator = activator;
     }
 
     public override string ToString()
     {
-      return String.Format("ResolvedEntry<{0}, {1}>", _serviceEntry, _activator);
+      return String.Format("ResolvedEntry<{0}, {1}>", _entry, _activator);
     }
 
     public override bool Equals(object obj)
@@ -63,12 +63,12 @@ namespace Machine.Container.Model
 
     public void IncrementActiveInstances()
     {
-      _serviceEntry.IncrementActiveInstances();
+      _entry.IncrementActiveInstances();
     }
 
     public void DecrementActiveInstances()
     {
-      _serviceEntry.DecrementActiveInstances();
+      _entry.DecrementActiveInstances();
     }
   }
 }

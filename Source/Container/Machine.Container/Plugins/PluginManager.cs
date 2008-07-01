@@ -55,10 +55,7 @@ namespace Machine.Container.Plugins
 
     public IEnumerable<IServiceContainerListener> AllListeners
     {
-      get
-      {
-        return _listeners;
-      }
+      get { return _listeners; }
     }
     #endregion
 

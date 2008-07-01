@@ -23,11 +23,11 @@ namespace Machine.Testing.AutoMocking
     #endregion
 
     #region IActivatorResolver Members
-    public IActivator ResolveActivator(IResolutionServices services, ServiceEntry serviceEntry)
+    public IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry)
     {
-      if (serviceEntry.ServiceType.IsInterface)
+      if (entry.ServiceType.IsInterface)
       {
-        return services.ActivatorStrategy.CreateStaticActivator(serviceEntry, Get(serviceEntry.ServiceType));
+        return services.ActivatorStrategy.CreateStaticActivator(entry, Get(entry.ServiceType));
       }
       return null;
     }

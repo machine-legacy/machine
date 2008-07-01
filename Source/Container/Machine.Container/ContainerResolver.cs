@@ -19,7 +19,12 @@ namespace Machine.Container
 
     public object Object(Type type)
     {
-      return WithOverrides(type);
+      return Resolve(type);
+    }
+
+    public object Object(Type type, params object[] overrides)
+    {
+      return Resolve(type, overrides);
     }
 
     public T Object<T>()
@@ -27,20 +32,15 @@ namespace Machine.Container
       return (T)Object(typeof(T));
     }
 
-    public T WithOverrides<T>(params object[] overrides)
+    public T Object<T>(params object[] overrides)
     {
-      return (T)WithOverrides(typeof(T), overrides);
-    }
-
-    public object WithOverrides(Type type, params object[] overrides)
-    {
-      return Resolve(type, overrides);
+      return (T)Object(typeof(T), overrides);
     }
 
     public T New<T>(params object[] overrides)
     {
       _containerRegisterer.Type<T>().AsTransient();
-      return WithOverrides<T>(overrides);
+      return Object<T>(overrides);
     }
 
     public IList<T> All<T>()

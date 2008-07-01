@@ -27,7 +27,7 @@ namespace Machine.Container.Services.Impl
         {
           if (!_map[instance].Equals(entry))
           {
-            throw new InvalidOperationException("Already have instance!");
+            throw new InvalidOperationException("Already have instance for: " + entry);
           }
         }
         else
@@ -46,7 +46,7 @@ namespace Machine.Container.Services.Impl
       {
         if (!_map.ContainsKey(instance))
         {
-          throw new ServiceContainerException("Cannot release instances not created by the container!");
+          throw new ServiceContainerException("Attempt to release instances NOT created by the container: " + instance);
         }
         _listenerInvoker.InstanceReleased(_map[instance], instance);
         _map[instance].DecrementActiveInstances();

@@ -13,8 +13,8 @@ namespace Machine.Container.Lifestyles
     #endregion
 
     #region SingletonLifestyle()
-    public SingletonLifestyle(IActivatorStrategy activatorStrategy, ServiceEntry serviceEntry)
-     : base(activatorStrategy, serviceEntry)
+    public SingletonLifestyle(IActivatorStrategy activatorStrategy, ServiceEntry entry)
+     : base(activatorStrategy, entry)
     {
     }
     #endregion

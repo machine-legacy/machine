@@ -27,7 +27,7 @@ namespace Machine.MsMvc
       ViewEngineAttribute viewEngineAttribute = ReflectionHelper.GetAttribute<ViewEngineAttribute>(controllerType, true);
       if (viewEngineAttribute != null)
       {
-        IViewEngine viewEngine = (IViewEngine)_container.Resolve(viewEngineAttribute.ViewEngineType);
+        IViewEngine viewEngine = (IViewEngine)_container.ResolveObject(viewEngineAttribute.ViewEngineType);
         defaultController.ViewEngine = viewEngine;
       }
       return defaultController;

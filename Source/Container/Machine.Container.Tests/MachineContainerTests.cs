@@ -166,6 +166,25 @@ namespace Machine.Container
     }
 
     [Test]
+    [ExpectedException(typeof(ServiceContainerException))]
+    public void Resolve_And_Change_Entry_Throws()
+    {
+      _machineContainer.Add<IService1, SimpleService1>();
+      IService1 service1 = _machineContainer.ResolveObject<IService1>();
+      _machineContainer.Register.Type<IService1>().AsTransient();
+    }
+
+    [Test]
+    public void Resolve_And_Release_Change_Entry_Works()
+    {
+      _machineContainer.Add<IService1, SimpleService1>();
+      IService1 service1 = _machineContainer.ResolveObject<IService1>();
+      _machineContainer.Release(service1);
+      _machineContainer.Register.Type<IService1>().AsTransient();
+      _machineContainer.ResolveObject<IService1>();
+    }
+
+    [Test]
     public void Resolve_Transient_YieldsMultipleInstances()
     {
       _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);

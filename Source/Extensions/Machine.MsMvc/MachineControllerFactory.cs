@@ -27,7 +27,7 @@ namespace Machine.MsMvc
       {
         throw new ArgumentNullException("Unable to find controller type: " + controllerName);
       }
-      IController controller = (IController)_container.Resolve(controllerType);
+      IController controller = (IController)_container.ResolveObject(controllerType);
       return _controllerPreparer.PrepareController(controllerType, controller);
     }
 

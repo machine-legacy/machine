@@ -10,7 +10,7 @@ namespace Machine.Container.Lifestyles
   {
     #region Member Data
     private readonly IActivatorStrategy _activatorStrategy;
-    private readonly ServiceEntry _serviceEntry;
+    private readonly ServiceEntry _entry;
     private IActivator _defaultActivator;
     #endregion
 
@@ -18,14 +18,14 @@ namespace Machine.Container.Lifestyles
     public TransientLifestyle(IActivatorStrategy activatorStrategy, ServiceEntry serviceEntry)
     {
       _activatorStrategy = activatorStrategy;
-      _serviceEntry = serviceEntry;
+      _entry = serviceEntry;
     }
     #endregion
 
     #region ILifestyle Members
     public virtual void Initialize()
     {
-      _defaultActivator = _activatorStrategy.CreateDefaultActivator(_serviceEntry);
+      _defaultActivator = _activatorStrategy.CreateDefaultActivator(_entry);
     }
 
     public virtual bool CanActivate(IResolutionServices services)

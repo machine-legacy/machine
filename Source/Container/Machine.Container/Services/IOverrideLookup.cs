@@ -7,6 +7,6 @@ namespace Machine.Container.Services
 {
   public interface IOverrideLookup
   {
-    object LookupOverride(ServiceEntry serviceEntry);
+    object LookupOverride(ServiceEntry entry);
   }
 }

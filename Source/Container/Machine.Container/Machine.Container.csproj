@@ -86,7 +86,6 @@
     <Compile Include="Activators\DefaultActivator.cs" />
     <Compile Include="Services\Impl\DefaultActivatorStrategy.cs" />
     <Compile Include="Services\Impl\DotNetObjectFactory.cs" />
-    <Compile Include="Activators\LifestyleActivator.cs" />
     <Compile Include="Services\Impl\ObjectInstances.cs" />
     <Compile Include="Services\Impl\LifestyleFactory.cs" />
     <Compile Include="Plugins\PluginManager.cs" />

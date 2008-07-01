@@ -62,7 +62,6 @@
     <Compile Include="Services\Impl\DefaultActivatorStrategyTests.cs" />
     <Compile Include="Activators\DefaultActivatorTests.cs" />
     <Compile Include="Services\Impl\DotNetObjectFactoryTests.cs" />
-    <Compile Include="Activators\LifestyleActivatorTests.cs" />
     <Compile Include="Services\Impl\LifestyleFactoryTests.cs" />
     <Compile Include="Services\Impl\PluginManagerTests.cs" />
     <Compile Include="Services\Impl\ServiceEntryFactoryTests.cs" />

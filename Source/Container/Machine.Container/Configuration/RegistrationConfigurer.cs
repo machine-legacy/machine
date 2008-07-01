@@ -27,27 +27,38 @@ namespace Machine.Container.Configuration
       return WithLifestyle(LifestyleType.Transient);
     }
 
-    public RegistrationConfigurer Provides(Type serviceType)
+    public RegistrationConfigurer WithLifestyle(LifestyleType type)
     {
-      _entry.ServiceType = serviceType;
+      _entry.LifestyleType = type;
       return this;
     }
 
-    public RegistrationConfigurer Provides<TService>()
+    public RegistrationConfigurer ImplementedBy(Type type)
     {
-      return Provides(typeof(TService));
+      _entry.ImplementationType = type;
+      return this;
+    }
+
+    public RegistrationConfigurer ImplementedBy<TType>()
+    {
+      return ImplementedBy(typeof(TType));
+    }
+
+    public RegistrationConfigurer Provides(Type type)
+    {
+      _entry.ServiceType = type;
+      return this;
+    }
+
+    public RegistrationConfigurer Provides<TType>()
+    {
+      return Provides(typeof(TType));
     }
 
     public RegistrationConfigurer Is(object instance)
     {
       IActivator activator = _containerServices.ActivatorStrategy.CreateStaticActivator(_entry, instance);
       _containerServices.ActivatorStore.AddActivator(_entry, activator);
-      return this;
-    }
-
-    public RegistrationConfigurer WithLifestyle(LifestyleType type)
-    {
-      _entry.LifestyleType = type;
       return this;
     }
   }

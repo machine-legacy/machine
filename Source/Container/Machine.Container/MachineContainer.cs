@@ -78,7 +78,7 @@ namespace Machine.Container
 
     public object ResolveWithOverrides(Type type, params object[] overrides)
     {
-      return Resolve.WithOverrides(type, overrides);
+      return Resolve.Object(type, overrides);
     }
   }
 }

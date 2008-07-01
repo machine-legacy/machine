@@ -24,7 +24,7 @@ namespace Machine.MsWcf
     protected override ServiceHost CreateServiceHost(Type serviceType, Uri[] baseAddresses)
     {
       _log.Info("CreateServiceHost: " + serviceType);
-      object service = IoC.Container.Resolve(serviceType);
+      object service = IoC.Container.Resolve.Object(serviceType);
       return new ServiceHost(service, baseAddresses);
     }
     #endregion

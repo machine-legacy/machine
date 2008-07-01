@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class StaticOverrideLookup : IOverrideLookup
   {
     #region Member Data
-    readonly object[] _objects;
+    private readonly object[] _objects;
     #endregion
 
     #region StaticOverrideLookup()
@@ -19,13 +19,13 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region IOverrideLookup Members
-    public object LookupOverride(ServiceEntry serviceEntry)
+    public object LookupOverride(ServiceEntry entry)
     {
-      foreach (object service in _objects)
+      foreach (object value in _objects)
       {
-        if (serviceEntry.ServiceType.IsAssignableFrom(service.GetType()))
+        if (entry.ServiceType.IsAssignableFrom(value.GetType()))
         {
-          return service;
+          return value;
         }
       }
       return null;
