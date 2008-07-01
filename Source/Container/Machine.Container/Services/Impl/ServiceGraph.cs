@@ -18,6 +18,7 @@ namespace Machine.Container.Services.Impl
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     private readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    private readonly List<Type> _registrationOrder = new List<Type>();
     #endregion
 
     public ServiceGraph(IListenerInvoker listenerInvoker)
@@ -42,6 +43,7 @@ namespace Machine.Container.Services.Impl
       {
         _log.Info("Adding: " + entry);
         _map[entry.ServiceType] = entry;
+        _registrationOrder.Add(entry.ServiceType);
         _listenerInvoker.ServiceRegistered(entry);
       }
     }
@@ -53,8 +55,9 @@ namespace Machine.Container.Services.Impl
         using (RWLock.AsReader(_lock))
         {
           List<ServiceRegistration> registrations = new List<ServiceRegistration>();
-          foreach (ServiceEntry serviceEntry in _map.Values)
+          foreach (Type serviceType in _registrationOrder)
           {
+            ServiceEntry serviceEntry = _map[serviceType];
             registrations.Add(new ServiceRegistration(serviceEntry.ServiceType, serviceEntry.ImplementationType));
           }
           return registrations;
@@ -68,8 +71,9 @@ namespace Machine.Container.Services.Impl
       using (RWLock.AsReader(_lock))
       {
         List<ServiceEntry> matches = new List<ServiceEntry>();
-        foreach (ServiceEntry entry in _map.Values)
+        foreach (Type key in _registrationOrder)
         {
+          ServiceEntry entry = _map[key];
           if (type.IsAssignableFrom(entry.ImplementationType))
           {
             matches.Add(entry);

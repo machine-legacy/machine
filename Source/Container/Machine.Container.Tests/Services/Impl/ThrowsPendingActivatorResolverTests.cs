@@ -16,7 +16,7 @@ namespace Machine.Container.Services.Impl
     public void ResolveActivator_Always_Throws()
     {
       ServiceEntry serviceEntry = ServiceEntryHelper.NewEntry();
-      IContainerServices services = new ContainerServices(Get<IActivatorStrategy>(), Get<IActivatorStore>(), Get<ILifestyleFactory>(), Get<IOverrideLookup>(), Get<IServiceEntryResolver>(), Get<IListenerInvoker>(), Get<IObjectInstances>());
+      IResolutionServices services = Create<ResolutionServices>();
       _target.ResolveActivator(services, serviceEntry);
     }
   }

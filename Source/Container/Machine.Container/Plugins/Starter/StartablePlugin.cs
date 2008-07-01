@@ -26,7 +26,7 @@ namespace Machine.Container.Plugins.Starter
     {
       foreach (ServiceEntry entry in _startables)
       {
-        IStartable startable = (IStartable)this.Container.Resolve(entry.ImplementationType);
+        IStartable startable = (IStartable)this.Container.Resolver.Resolve(entry.ImplementationType);
         startable.Start();
       }
     }

@@ -49,16 +49,26 @@ namespace Machine.Container.Model
       return this.ServiceEntry.GetHashCode() ^ this.Activator.GetHashCode();
     }
 
-    public object Activate(IContainerServices services)
+    public object Activate(IResolutionServices services)
     {
       object instance = _activator.Activate(services);
       _objectInstances.Remember(this, instance);
       return instance;
     }
 
-    public void Release(IContainerServices services, object instance)
+    public void Release(IResolutionServices services, object instance)
     {
       _objectInstances.Release(services, instance);
+    }
+
+    public void IncrementActiveInstances()
+    {
+      _serviceEntry.IncrementActiveInstances();
+    }
+
+    public void DecrementActiveInstances()
+    {
+      _serviceEntry.DecrementActiveInstances();
     }
   }
 }

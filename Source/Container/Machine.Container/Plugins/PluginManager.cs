@@ -8,12 +8,12 @@ namespace Machine.Container.Plugins
 {
   public class PluginManager : IPluginManager
   {
-    private readonly IHighLevelContainer _container;
+    private readonly IMachineContainer _container;
     private readonly List<IServiceContainerPlugin> _plugins = new List<IServiceContainerPlugin>();
     private readonly List<IServiceContainerListener> _listeners = new List<IServiceContainerListener>();
     private bool _initialized;
 
-    public PluginManager(IHighLevelContainer container)
+    public PluginManager(IMachineContainer container)
     {
       _container = container;
     }

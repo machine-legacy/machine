@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Castle.Windsor;
 
+using Machine.Container;
 using Machine.Container.Model;
 using Machine.Container.Plugins;
 using Machine.Container.Services;
@@ -56,6 +57,11 @@ namespace Machine.WindsorExtensions
     public void AddService<TService>(object instance)
     {
       _wrapper.AddService<TService>(instance);
+    }
+
+    public void AddService(Type serviceType, object instance)
+    {
+      _wrapper.AddService(instance);
     }
 
     public T Resolve<T>()
@@ -134,5 +140,17 @@ namespace Machine.WindsorExtensions
       }
       throw new ArgumentException("lifestyleType");
     }
+
+    #region IMachineContainer Members
+    public ContainerRegisterer Register
+    {
+      get { throw new NotImplementedException(); }
+    }
+
+    public ContainerResolver Resolver
+    {
+      get { throw new NotImplementedException(); }
+    }
+    #endregion
   }
 }

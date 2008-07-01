@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CompartmentalizedMachineContainer.cs" />
+    <Compile Include="Configuration\RegistrationConfigurer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerStatePolicy.cs" />
     <Compile Include="MachineContainer.cs" />
@@ -70,14 +72,14 @@
     <Compile Include="Services\IActivator.cs" />
     <Compile Include="Services\IActivatorStore.cs" />
     <Compile Include="Services\IActivatorStrategy.cs" />
-    <Compile Include="Services\IContainerServices.cs" />
+    <Compile Include="Services\IResolutionServices.cs" />
     <Compile Include="Services\IActivatorResolver.cs" />
     <Compile Include="Services\IHighLevelContainer.cs" />
     <Compile Include="Services\ILifestyle.cs" />
     <Compile Include="Services\ILifestyleFactory.cs" />
     <Compile Include="Services\Impl\ActivatorStoreActivatorResolver.cs" />
     <Compile Include="Services\Impl\ActivatorStore.cs" />
-    <Compile Include="Services\Impl\ContainerServices.cs" />
+    <Compile Include="Services\Impl\ResolutionServices.cs" />
     <Compile Include="Activators\DefaultActivator.cs" />
     <Compile Include="Services\Impl\DefaultActivatorStrategy.cs" />
     <Compile Include="Services\Impl\DotNetObjectFactory.cs" />

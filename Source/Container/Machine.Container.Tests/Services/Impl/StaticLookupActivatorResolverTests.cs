@@ -22,12 +22,12 @@ namespace Machine.Container.Services.Impl
       object instance = new object();
       Run(delegate
       {
-        SetupResult.For(Get<IContainerServices>().Overrides).Return(Get<IOverrideLookup>());
+        SetupResult.For(Get<IResolutionServices>().Overrides).Return(Get<IOverrideLookup>());
         SetupResult.For(Get<IOverrideLookup>().LookupOverride(_entry)).Return(instance);
-        SetupResult.For(Get<IContainerServices>().ActivatorStrategy).Return(Get<IActivatorStrategy>());
+        SetupResult.For(Get<IResolutionServices>().ActivatorStrategy).Return(Get<IActivatorStrategy>());
         SetupResult.For(Get<IActivatorStrategy>().CreateStaticActivator(_entry, instance)).Return(Get<IActivator>());
       });
-      Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(Get<IContainerServices>(), _entry));
+      Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(Get<IResolutionServices>(), _entry));
     }
 
     [Test]
@@ -35,10 +35,10 @@ namespace Machine.Container.Services.Impl
     {
       Run(delegate
       {
-        SetupResult.For(Get<IContainerServices>().Overrides).Return(Get<IOverrideLookup>());
+        SetupResult.For(Get<IResolutionServices>().Overrides).Return(Get<IOverrideLookup>());
         SetupResult.For(Get<IOverrideLookup>().LookupOverride(_entry)).Return(null);
       });
-      Assert.IsNull(_target.ResolveActivator(Get<IContainerServices>(), _entry));
+      Assert.IsNull(_target.ResolveActivator(Get<IResolutionServices>(), _entry));
     }
     #endregion
   }

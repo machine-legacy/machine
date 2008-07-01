@@ -22,17 +22,17 @@ namespace Machine.Container.Activators
     #endregion
 
     #region IActivator Members
-    public bool CanActivate(IContainerServices services)
+    public bool CanActivate(IResolutionServices services)
     {
       return true;
     }
 
-    public object Activate(IContainerServices services)
+    public object Activate(IResolutionServices services)
     {
       return _instance;
     }
 
-    public void Release(IContainerServices services, object instance)
+    public void Release(IResolutionServices services, object instance)
     {
     }
     #endregion

@@ -210,7 +210,7 @@ namespace Machine.Container
     [Test]
     public void LotsOfServices_Works()
     {
-      ContainerResolver resolver = new ContainerResolver(_machineContainer);
+      ContainerResolver resolver = new ContainerResolver(null);
       _machineContainer.AddService<IService1, Service1>();
       _machineContainer.AddService<Service2DependsOn1>();
       _machineContainer.AddService<SimpleService2>();

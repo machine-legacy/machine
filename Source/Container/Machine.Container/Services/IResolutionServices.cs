@@ -5,7 +5,7 @@ using Machine.Container.Plugins;
 
 namespace Machine.Container.Services
 {
-  public interface IContainerServices
+  public interface IInternalServices
   {
     IActivatorStore ActivatorStore
     {
@@ -22,17 +22,7 @@ namespace Machine.Container.Services
       get;
     }
 
-    IOverrideLookup Overrides
-    {
-      get;
-    }
-
     IServiceEntryResolver ServiceEntryResolver
-    {
-      get;
-    }
-
-    DependencyGraphTracker DependencyGraphTracker
     {
       get;
     }
@@ -43,6 +33,23 @@ namespace Machine.Container.Services
     }
 
     IObjectInstances ObjectInstances
+    {
+      get;
+    }
+
+  }
+  public interface IContainerServices : IInternalServices
+  {
+    IResolutionServices CreateResolutionServices(object[] serviceOverrides);
+  }
+  public interface IResolutionServices : IInternalServices
+  {
+    IOverrideLookup Overrides
+    {
+      get;
+    }
+
+    DependencyGraphTracker DependencyGraphTracker
     {
       get;
     }

@@ -16,9 +16,10 @@ namespace Machine.Container.Activators
   public class DefaultActivatorTests : ScaffoldTests<DefaultActivator>
   {
     #region Member Data
-    ServiceEntry _entry;
-    object _instance;
-    object _parameter1;
+    private ServiceEntry _entry;
+    private object _instance;
+    private object _parameter1;
+    private ResolvedConstructorCandidate _candidate;
     #endregion
 
     #region Test Setup and Teardown Methods
@@ -41,7 +42,7 @@ namespace Machine.Container.Activators
       }
       using (_mocks.Playback())
       {
-        _target.Activate(Get<IContainerServices>());
+        _target.Activate(Get<IResolutionServices>());
       }
     }
 
@@ -51,12 +52,12 @@ namespace Machine.Container.Activators
       using (_mocks.Record())
       {
         SetupMocks();
-        Expect.Call(Get<IObjectFactory>().CreateObject(_entry.ConstructorCandidate.Candidate, new object[0])).Return(_instance);
+        Expect.Call(Get<IObjectFactory>().CreateObject(_candidate.Candidate, new object[0])).Return(_instance);
       }
       using (_mocks.Playback())
       {
-        _target.CanActivate(Get<IContainerServices>());
-        Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
+        _target.CanActivate(Get<IResolutionServices>());
+        Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
       }
     }
 
@@ -67,14 +68,14 @@ namespace Machine.Container.Activators
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
-        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IContainerServices>(), typeof(IService1), true)).Return(resolvedServiceEntry);
-        Expect.Call(Get<IActivator>().Activate(Get<IContainerServices>())).Return(_parameter1);
-        Expect.Call(Get<IObjectFactory>().CreateObject(_entry.ConstructorCandidate.Candidate, new object[] {_parameter1})).Return(_instance);
+        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IResolutionServices>(), typeof(IService1), true)).Return(resolvedServiceEntry);
+        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(_parameter1);
+        Expect.Call(Get<IObjectFactory>().CreateObject(_candidate.Candidate, new object[] {_parameter1})).Return(_instance);
       }
       using (_mocks.Playback())
       {
-        _target.CanActivate(Get<IContainerServices>());
-        Assert.AreEqual(_instance, _target.Activate(Get<IContainerServices>()));
+        _target.CanActivate(Get<IResolutionServices>());
+        Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
       }
     }
     #endregion
@@ -82,10 +83,10 @@ namespace Machine.Container.Activators
     #region Methods
     protected virtual void SetupMocks(params Type[] dependencies)
     {
-      _entry.ConstructorCandidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(Service1DependsOn2), dependencies), new List<ResolvedServiceEntry>());
-      SetupResult.For(Get<IContainerServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
-      SetupResult.For(Get<IContainerServices>().ActivatorStore).Return(Get<IActivatorStore>());
-      SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(_entry.ConstructorCandidate.Candidate);
+      _candidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(Service1DependsOn2), dependencies), new List<ResolvedServiceEntry>());
+      SetupResult.For(Get<IResolutionServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
+      SetupResult.For(Get<IResolutionServices>().ActivatorStore).Return(Get<IActivatorStore>());
+      SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(_candidate.Candidate);
     }
 
     protected override DefaultActivator Create()

@@ -8,15 +8,15 @@ namespace Machine.Container.Plugins
 {
   public abstract class AbstractServiceContainerListener : IServiceContainerListener
   {
-    private IHighLevelContainer _container;
+    private IMachineContainer _container;
 
-    public IHighLevelContainer Container
+    public IMachineContainer Container
     {
       get { return _container; }
     }
 
     #region IServiceContainerListener Members
-    public virtual void Initialize(IHighLevelContainer container)
+    public virtual void Initialize(IMachineContainer container)
     {
       _container = container;
     }

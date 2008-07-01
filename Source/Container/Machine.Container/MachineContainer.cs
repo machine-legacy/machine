@@ -1,47 +1,14 @@
 using System;
 using System.Collections.Generic;
 
+using Machine.Container.Configuration;
 using Machine.Container.Model;
-using Machine.Container.Plugins;
 using Machine.Container.Services;
-using Machine.Container.Services.Impl;
 
 namespace Machine.Container
 {
-  public class MachineContainer : IHighLevelContainer
+  public class MachineContainer : CompartmentalizedMachineContainer, IHighLevelContainer
   {
-    #region Member Data
-    private readonly ContainerStatePolicy _state = new ContainerStatePolicy();
-    private readonly IPluginManager _pluginManager;
-    private readonly IListenerInvoker _listenerInvoker;
-    private IObjectInstances _objectInstances;
-    private IServiceEntryResolver _resolver;
-    private IActivatorStrategy _activatorStrategy;
-    private IActivatorStore _activatorStore;
-    private ILifestyleFactory _lifestyleFactory;
-    private IServiceGraph _serviceGraph;
-    #endregion
-
-    public MachineContainer()
-    {
-      _pluginManager = new PluginManager(this);
-      _listenerInvoker = new ListenerInvoker(_pluginManager);
-    }
-
-    #region IHighLevelContainer Members
-    // Plugins / Listeners
-    public void AddPlugin(IServiceContainerPlugin plugin)
-    {
-      _state.AssertCanAddPlugins();
-      _pluginManager.AddPlugin(plugin);
-    }
-
-    public void AddListener(IServiceContainerListener listener)
-    {
-      _state.AssertCanAddListeners();
-      _pluginManager.AddListener(listener);
-    }
-
     // Adding Services / Registration
     public void AddService<TService>()
     {
@@ -84,8 +51,13 @@ namespace Machine.Container
 
     public void AddService<TService>(object instance)
     {
+      AddService(typeof(TService), instance);
+    }
+
+    public void AddService(Type serviceType, object instance)
+    {
       _state.AssertCanAddServices();
-      ServiceEntry entry = _resolver.CreateEntryIfMissing(typeof(TService));
+      ServiceEntry entry = _resolver.CreateEntryIfMissing(serviceType);
       IActivator activator = _activatorStrategy.CreateStaticActivator(entry, instance);
       _activatorStore.AddActivator(entry, activator);
     }
@@ -115,110 +87,9 @@ namespace Machine.Container
     public object ResolveWithOverrides(Type serviceType, params object[] serviceOverrides)
     {
       _state.AssertCanResolve();
-      IContainerServices services = CreateCreationServices(serviceOverrides);
+      IResolutionServices services = _containerServices.CreateResolutionServices(serviceOverrides);
       ResolvedServiceEntry entry = _resolver.ResolveEntry(services, serviceType, true);
       return entry.Activate(services);
     }
-
-    // Releasing
-    public void Release(object instance)
-    {
-      _state.AssertCanRelease();
-      IContainerServices services = CreateCreationServices();
-      _objectInstances.Release(services, instance);
-    }
-
-    // Miscellaneous
-    public bool HasService<T>()
-    {
-      ServiceEntry entry = _resolver.LookupEntry(typeof(T));
-      return entry != null;
-    }
-
-    public IEnumerable<ServiceRegistration> RegisteredServices
-    {
-      get { return _serviceGraph.RegisteredServices; }
-    }
-    #endregion
-
-    #region IDisposable Members
-    public void Dispose()
-    {
-      _listenerInvoker.Dispose();
-      _pluginManager.Dispose();
-    }
-    #endregion
-
-    protected virtual IContainerServices CreateCreationServices(params object[] serviceOverrides)
-    {
-      IOverrideLookup overrides = new StaticOverrideLookup(serviceOverrides);
-      return new ContainerServices(_activatorStrategy, _activatorStore, _lifestyleFactory, overrides, _resolver, _listenerInvoker, _objectInstances);
-    }
-
-    protected virtual IActivatorResolver CreateDependencyResolver()
-    {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
-    }
-
-    public virtual void Initialize()
-    {
-      IActivatorResolver activatorResolver = CreateDependencyResolver();
-      IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
-      IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
-      _serviceGraph = new ServiceGraph(_listenerInvoker);
-      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
-      _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
-      _activatorStore = new ActivatorStore();
-      _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
-      _objectInstances = new ObjectInstances(_listenerInvoker);
-      _state.Initialize();
-    }
-
-    public virtual void PrepareForServices()
-    {
-      _pluginManager.Initialize();
-      _listenerInvoker.Initialize(this);
-      _state.PrepareForServices();
-      AddService<IHighLevelContainer>(this);
-      _listenerInvoker.PreparedForServices();
-    }
-
-    public virtual void Start()
-    {
-      _state.Start();
-      _listenerInvoker.Started();
-    }
   }
-  public class ContainerResolver
-  {
-    private readonly IHighLevelContainer _container;
-
-    public ContainerResolver(IHighLevelContainer container)
-    {
-      _container = container;
-    }
-
-    public IList<T> ResolveAll<T>()
-    {
-      List<T> found = new List<T>();
-      foreach (ServiceRegistration registration in _container.RegisteredServices)
-      {
-        if (typeof(T).IsAssignableFrom(registration.ImplementationType))
-        {
-          found.Add((T)_container.Resolve(registration.ImplementationType));
-        }
-      }
-      return found;
-    }
-  }
-  /*
-  public class CompartmentalizedMachineContainer : IMachineContainer
-  {
-    #region IDisposable Members
-    public void Dispose()
-    {
-    }
-    #endregion
-  }
-  */
 }

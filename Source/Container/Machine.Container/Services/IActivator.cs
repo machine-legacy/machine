@@ -5,8 +5,8 @@ namespace Machine.Container.Services
 {
   public interface IActivator
   {
-    bool CanActivate(IContainerServices services);
-    object Activate(IContainerServices services);
-    void Release(IContainerServices services, object instance);
+    bool CanActivate(IResolutionServices services);
+    object Activate(IResolutionServices services);
+    void Release(IResolutionServices services, object instance);
   }
 }

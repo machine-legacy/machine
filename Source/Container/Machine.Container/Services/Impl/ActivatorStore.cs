@@ -31,6 +31,10 @@ namespace Machine.Container.Services.Impl
     {
       using (RWLock.AsWriter(_lock))
       {
+        if (_cache.ContainsKey(entry))
+        {
+          throw new ServiceContainerException("Multiple activators for one entry!");
+        }
         _log.Info("Adding: " + entry + " " + activator);
         _cache[entry] = activator;
       }

@@ -17,6 +17,7 @@ namespace Machine.Container.Activators
     private readonly IServiceDependencyInspector _serviceDependencyInspector;
     private readonly IServiceEntryResolver _serviceEntryResolver;
     private readonly ServiceEntry _entry;
+    private ResolvedConstructorCandidate _selectedCandidate;
     #endregion
 
     #region DefaultActivator()
@@ -30,7 +31,7 @@ namespace Machine.Container.Activators
     #endregion
 
     #region IActivator Members
-    public bool CanActivate(IContainerServices services)
+    public bool CanActivate(IResolutionServices services)
     {
       using (services.DependencyGraphTracker.Push(_entry))
       {
@@ -38,8 +39,8 @@ namespace Machine.Container.Activators
         {
           return false;
         }
-        _entry.ConstructorCandidate = CreateConstructorParameters(services);
-        if (_entry.ConstructorCandidate == null)
+        _selectedCandidate = CreateConstructorParameters(services);
+        if (_selectedCandidate == null)
         {
           return false;
         }
@@ -47,22 +48,22 @@ namespace Machine.Container.Activators
       }
     }
 
-    public object Activate(IContainerServices services)
+    public object Activate(IResolutionServices services)
     {
-      if (_entry.ConstructorCandidate == null)
+      if (_selectedCandidate == null)
       {
         throw new YouFoundABugException();
       }
       object[] parameters = ResolveConstructorDependencies(services);
-      return _objectFactory.CreateObject(_entry.ConstructorCandidate.Candidate, parameters);
+      return _objectFactory.CreateObject(_selectedCandidate.Candidate, parameters);
     }
 
-    public void Release(IContainerServices services, object instance)
+    public void Release(IResolutionServices services, object instance)
     {
     }
     #endregion
 
-    protected virtual ResolvedConstructorCandidate CreateConstructorParameters(IContainerServices services)
+    protected virtual ResolvedConstructorCandidate CreateConstructorParameters(IResolutionServices services)
     {
       List<ResolvedServiceEntry> resolved = new List<ResolvedServiceEntry>();
       ConstructorCandidate candidate = _serviceDependencyInspector.SelectConstructor(_entry.ConcreteType);
@@ -84,10 +85,10 @@ namespace Machine.Container.Activators
       return _entry.ConcreteType != null && !_entry.ConcreteType.IsPrimitive;
     }
 
-    protected virtual object[] ResolveConstructorDependencies(IContainerServices services)
+    protected virtual object[] ResolveConstructorDependencies(IResolutionServices services)
     {
       List<object> parameters = new List<object>();
-      foreach (ResolvedServiceEntry dependency in _entry.ConstructorCandidate.ResolvedDependencies)
+      foreach (ResolvedServiceEntry dependency in _selectedCandidate.ResolvedDependencies)
       {
         parameters.Add(dependency.Activate(services));
       }

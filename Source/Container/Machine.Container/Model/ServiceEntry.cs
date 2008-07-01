@@ -8,27 +8,41 @@ namespace Machine.Container.Model
   public class ServiceEntry
   {
     #region Member Data
-    private readonly Type _serviceType;
-    private readonly Type _implementationType;
+    private Type _serviceType;
+    private Type _implementationType;
     private LifestyleType _lifestyleType;
-    private ResolvedConstructorCandidate _constructorCandidate;
+    private long _numberOfActiveInstances;
     #endregion
 
     #region Properties
     public LifestyleType LifestyleType
     {
       get { return _lifestyleType; }
-      set { _lifestyleType = value; }
+      set
+      {
+        AssertHasNoActiveInstances();
+        _lifestyleType = value;
+      }
     }
 
     public Type ServiceType
     {
       get { return _serviceType; }
+      set
+      {
+        AssertHasNoActiveInstances();
+        _serviceType = value;
+      }
     }
 
     public Type ImplementationType
     {
       get { return _implementationType; }
+      set
+      {
+        AssertHasNoActiveInstances();
+        _implementationType = value;
+      }
     }
 
     public Type ConcreteType
@@ -46,12 +60,6 @@ namespace Machine.Container.Model
         return null;
       }
     }
-
-    public ResolvedConstructorCandidate ConstructorCandidate
-    {
-      get { return _constructorCandidate; }
-      set { _constructorCandidate = value; }
-    }
     #endregion
 
     #region ServiceEntry()
@@ -66,8 +74,26 @@ namespace Machine.Container.Model
     #region Methods
     public override string ToString()
     {
-      return String.Format("Entry<{0}, {1}>", this.ServiceType, this.ImplementationType);
+      return String.Format("Entry<{0}, {1}, {2}>", this.ServiceType, this.ImplementationType, _numberOfActiveInstances);
     }
     #endregion
+
+    public void IncrementActiveInstances()
+    {
+      _numberOfActiveInstances++;
+    }
+
+    public void DecrementActiveInstances()
+    {
+      _numberOfActiveInstances--;
+    }
+
+    private void AssertHasNoActiveInstances()
+    {
+      if (_numberOfActiveInstances > 0)
+      {
+        throw new ServiceContainerException("You may not do that when there are active instances!");
+      }
+    }
   }
 }

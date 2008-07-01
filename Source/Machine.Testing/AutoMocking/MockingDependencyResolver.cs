@@ -23,7 +23,7 @@ namespace Machine.Testing.AutoMocking
     #endregion
 
     #region IActivatorResolver Members
-    public IActivator ResolveActivator(IContainerServices services, ServiceEntry serviceEntry)
+    public IActivator ResolveActivator(IResolutionServices services, ServiceEntry serviceEntry)
     {
       if (serviceEntry.ServiceType.IsInterface)
       {

@@ -21,18 +21,26 @@ namespace Machine.Container.Services.Impl
 
     public void Remember(ResolvedServiceEntry entry, object instance)
     {
-      using (RWLock.AsWriter(_lock))
+      using (RWLock.AsReader((_lock)))
       {
-        if (_map.ContainsKey(instance) && !_map[instance].Equals(entry))
+        if (_map.ContainsKey(instance))
         {
-          throw new InvalidOperationException("Already have instance!");
+          if (!_map[instance].Equals(entry))
+          {
+            throw new InvalidOperationException("Already have instance!");
+          }
         }
-        _map[instance] = entry;
-        _listenerInvoker.InstanceCreated(entry, instance);
+        else
+        {
+          _lock.UpgradeToWriterLock(Timeout.Infinite);
+          _map[instance] = entry;
+          _listenerInvoker.InstanceCreated(entry, instance);
+          entry.IncrementActiveInstances();
+        }
       }
     }
 
-    public void Release(IContainerServices services, object instance)
+    public void Release(IResolutionServices services, object instance)
     {
       using (RWLock.AsWriter(_lock))
       {
@@ -41,6 +49,7 @@ namespace Machine.Container.Services.Impl
           throw new ServiceContainerException("Cannot release instances not created by the container!");
         }
         _listenerInvoker.InstanceReleased(_map[instance], instance);
+        _map[instance].DecrementActiveInstances();
         _map.Remove(instance);
       }
     }

@@ -12,7 +12,7 @@ namespace Machine.Container.Plugins.Disposition
     private bool _initialized;
 
     #region IServiceContainerListener Members
-    public override void Initialize(IHighLevelContainer container)
+    public override void Initialize(IMachineContainer container)
     {
       if (_initialized) return;
       container.AddListener(this);

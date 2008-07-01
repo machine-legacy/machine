@@ -52,7 +52,7 @@ namespace Machine.Container.Services.Impl
       return _serviceGraph.Lookup(serviceType);
     }
 
-    public ResolvedServiceEntry ResolveEntry(IContainerServices services, Type serviceType, bool throwIfAmbiguous)
+    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type serviceType, bool throwIfAmbiguous)
     {
       _log.Info("ResolveEntry: " + serviceType);
       ServiceEntry entry = _serviceGraph.Lookup(serviceType, throwIfAmbiguous);
