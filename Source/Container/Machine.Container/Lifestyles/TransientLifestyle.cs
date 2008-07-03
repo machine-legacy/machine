@@ -14,6 +14,11 @@ namespace Machine.Container.Lifestyles
     private IActivator _defaultActivator;
     #endregion
 
+    protected ServiceEntry Entry
+    {
+      get { return _entry; }
+    }
+
     #region TransientLifestyle()
     public TransientLifestyle(IActivatorStrategy activatorStrategy, ServiceEntry serviceEntry)
     {

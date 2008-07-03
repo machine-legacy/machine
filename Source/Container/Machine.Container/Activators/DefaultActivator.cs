@@ -39,12 +39,12 @@ namespace Machine.Container.Activators
         {
           return false;
         }
-        _selectedCandidate = CreateConstructorParameters(services);
+        /* I don't care if we do this multiple times as we race to get it down for now... */
         if (_selectedCandidate == null)
         {
-          return false;
+          _selectedCandidate = ResolveConstructorCandidate(services);
         }
-        return true;
+        return _selectedCandidate != null;
       }
     }
 
@@ -52,7 +52,7 @@ namespace Machine.Container.Activators
     {
       if (_selectedCandidate == null)
       {
-        throw new YouFoundABugException();
+        throw new YouFoundABugException("How can you try and Activate something if it can't be activated: " + _entry);
       }
       object[] parameters = ResolveConstructorDependencies(services);
       return _objectFactory.CreateObject(_selectedCandidate.Candidate, parameters);
@@ -63,7 +63,7 @@ namespace Machine.Container.Activators
     }
     #endregion
 
-    protected virtual ResolvedConstructorCandidate CreateConstructorParameters(IResolutionServices services)
+    protected virtual ResolvedConstructorCandidate ResolveConstructorCandidate(IResolutionServices services)
     {
       List<ResolvedServiceEntry> resolved = new List<ResolvedServiceEntry>();
       ConstructorCandidate candidate = _serviceDependencyInspector.SelectConstructor(_entry.ConcreteType);

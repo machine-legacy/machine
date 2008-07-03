@@ -236,6 +236,16 @@ namespace Machine.Container
     }
 
     [Test]
+    public void ReleaseASingleton_Creates_New_Instance_Afterwards()
+    {
+      _machineContainer.Add<IService1, SimpleService1>();
+      IService1 service1 = _machineContainer.ResolveObject<IService1>();
+      _machineContainer.Release(service1);
+      IService1 service2 = _machineContainer.ResolveObject<IService1>();
+      Assert.AreNotEqual(service1, service2);
+    }
+
+    [Test]
     [ExpectedException(typeof(AmbiguousServicesException))]
     public void LotsOfServicesWithAmbigiousDependency_Throws()
     {

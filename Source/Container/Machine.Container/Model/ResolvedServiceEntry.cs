@@ -39,7 +39,9 @@ namespace Machine.Container.Model
     public void Release(IResolutionServices services, object instance)
     {
       _activator.Release(services, instance);
-      _objectInstances.Release(services, instance);
+      // Awkward I know, ObjectInstances actually calls this method because they are
+      // responsible for mapping instances to the ResolvedServiceEntry
+      // _objectInstances.Release(services, instance);
     }
 
     public void IncrementActiveInstances()

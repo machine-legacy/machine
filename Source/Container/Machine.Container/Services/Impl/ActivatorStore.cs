@@ -14,7 +14,7 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region Member Data
-    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ActivatorStore");
     private readonly Dictionary<ServiceEntry, IActivator> _cache = new Dictionary<ServiceEntry, IActivator>();
     #endregion
 

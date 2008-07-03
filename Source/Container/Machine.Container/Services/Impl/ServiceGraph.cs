@@ -17,7 +17,7 @@ namespace Machine.Container.Services.Impl
     #region Member Data
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
-    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ServiceGraph");
     private readonly List<Type> _registrationOrder = new List<Type>();
     #endregion
 

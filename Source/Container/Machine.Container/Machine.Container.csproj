@@ -59,6 +59,8 @@
     <Compile Include="Model\ResolvedServiceEntry.cs" />
     <Compile Include="Model\ServiceDependency.cs" />
     <Compile Include="Model\ServiceEntry.cs" />
+    <Compile Include="Model\ServiceEntryLock.cs" />
+    <Compile Include="Model\ServiceEntryLockBroker.cs" />
     <Compile Include="Model\ServiceRegistration.cs" />
     <Compile Include="Plugins\AbstractServiceContainerListener.cs" />
     <Compile Include="Plugins\Disposition\DisposablePlugin.cs" />

@@ -56,18 +56,18 @@ namespace Machine.Container.Services.Impl
     }
 
     [Test]
-    public void TwoWithSeparateArguments_FewerFirst_Works()
+    public void TwoWithSeparateArguments_MoreArgumentsLast_Works()
     {
       IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoWithSeparateArgument1)).Dependencies;
-      Assert.AreEqual(1, actual.Count);
+      Assert.AreEqual(2, actual.Count);
       Assert.AreEqual(typeof(IService1), actual[0].DependencyType);
     }
 
     [Test]
-    public void TwoWithSeparateArguments_FewerLast_Works()
+    public void TwoWithSeparateArguments_MoreArgumentsFirst_Works()
     {
       IList<ServiceDependency> actual = _inspector.SelectConstructor(typeof(ExampleTwoWithSeparateArgument2)).Dependencies;
-      Assert.AreEqual(1, actual.Count);
+      Assert.AreEqual(2, actual.Count);
       Assert.AreEqual(typeof(IService1), actual[0].DependencyType);
     }
 

@@ -25,14 +25,8 @@ namespace Machine.Container.Services.Impl
         }
         else
         {
-          if (selected.Dependencies.Count == candidate.Dependencies.Count)
-          {
-            throw new InvalidOperationException();
-          }
-          if (selected.Dependencies.Count > candidate.Dependencies.Count)
-          {
-            selected = candidate;
-          }
+          BailOutIfEqualNumberOfArguments(selected, candidate);
+          selected = ChooseOneWithMoreArguments(selected, candidate);
         }
       }
       if (selected == null)
@@ -43,8 +37,7 @@ namespace Machine.Container.Services.Impl
     }
     #endregion
 
-    #region Protected Methods
-    protected virtual List<ConstructorCandidate> DetermineCandidates(Type type)
+    private static List<ConstructorCandidate> DetermineCandidates(Type type)
     {
       List<ConstructorCandidate> candidates = new List<ConstructorCandidate>();
       foreach (ConstructorInfo ctor in type.GetConstructors())
@@ -58,6 +51,18 @@ namespace Machine.Container.Services.Impl
       }
       return candidates;
     }
-    #endregion
+
+    private static void BailOutIfEqualNumberOfArguments(ConstructorCandidate first, ConstructorCandidate second)
+    {
+      if (first.Dependencies.Count == second.Dependencies.Count)
+      {
+        throw new InvalidOperationException();
+      }
+    }
+
+    private static ConstructorCandidate ChooseOneWithMoreArguments(ConstructorCandidate first, ConstructorCandidate second)
+    {
+      return first.Dependencies.Count > second.Dependencies.Count ? first : second;
+    }
   }
 }

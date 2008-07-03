@@ -31,11 +31,27 @@ namespace Machine.Container.Lifestyles
 
     public override object Activate(IResolutionServices services)
     {
+      using (this.Entry.Lock.AcquireReaderLock())
+      {
+        if (_instance == null)
+        {
+          this.Entry.Lock.UpgradeToWriterLock();
+          if (_instance == null)
+          {
+            _instance = base.Activate(services);
+          }
+        }
+        return _instance;
+      }
+    }
+
+    public override void Release(IResolutionServices services, object instance)
+    {
       if (_instance == null)
       {
-        _instance = base.Activate(services);
+        throw new YouFoundABugException("You managed to re-release something?");
       }
-      return _instance;
+      _instance = null;
     }
     #endregion
   }

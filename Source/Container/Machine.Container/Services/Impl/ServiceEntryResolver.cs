@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 
 using Machine.Container.Model;
 
@@ -56,13 +57,14 @@ namespace Machine.Container.Services.Impl
       {
         entry = _serviceEntryFactory.CreateServiceEntry(type, type, LifestyleType.Override);
       }
-      /* Never want to auto create activator for the entry we created above. */
-      else if (!services.ActivatorStore.HasActivator(entry))
+      using (entry.Lock.AcquireReaderLock())
       {
-        ILifestyle lifestyle = services.LifestyleFactory.CreateLifestyle(entry);
-        services.ActivatorStore.AddActivator(entry, lifestyle);
+        /* Never want to auto create activator for the entry we created above. */
+        if (entry.CanHaveActivator)
+        {
+          CreateActivatorForEntryIfNecessary(services, entry);
+        }
       }
-
       IActivator activator = _activatorResolver.ResolveActivator(services, entry);
       if (activator == null)
       {
@@ -71,5 +73,19 @@ namespace Machine.Container.Services.Impl
       return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
     }
     #endregion
+
+    private static void CreateActivatorForEntryIfNecessary(IResolutionServices services, ServiceEntry entry)
+    {
+      if (!services.ActivatorStore.HasActivator(entry))
+      {
+        entry.Lock.UpgradeToWriterLock();
+        if (services.ActivatorStore.HasActivator(entry))
+        {
+          return;
+        }
+        ILifestyle lifestyle = services.LifestyleFactory.CreateLifestyle(entry);
+        services.ActivatorStore.AddActivator(entry, lifestyle);
+      }
+    }
   }
 }

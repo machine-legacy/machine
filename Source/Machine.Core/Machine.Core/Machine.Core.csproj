@@ -70,9 +70,15 @@
     <Compile Include="Services\IThreadManager.cs" />
     <Compile Include="Services\TemporaryDirectoryHandle.cs" />
     <Compile Include="Services\INamer.cs" />
+    <Compile Include="Utility\DotNetReaderWriterLock.cs" />
     <Compile Include="Utility\Enumerate.cs" />
+    <Compile Include="Utility\IReaderWriterLock.cs" />
     <Compile Include="Utility\ListHelper.cs" />
-    <Compile Include="Utility\LockingHelpers.cs" />
+    <Compile Include="Utility\PerformanceMeasuringReaderWriterLock.cs" />
+    <Compile Include="Utility\ReaderWriterLockFactory.cs" />
+    <Compile Include="Utility\ReaderWriterLockStatistics.cs" />
+    <Compile Include="Utility\ReaderWriterUsage.cs" />
+    <Compile Include="Utility\RWLock.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="Utility\StackPopper.cs" />
     <Compile Include="Utility\TimeSpanHelper.cs" />

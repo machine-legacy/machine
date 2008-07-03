@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-
-using Machine.Container.Services;
 
 namespace Machine.Container.Model
 {
@@ -124,6 +121,11 @@ namespace Machine.Container.Model
       {
         throw new ServiceContainerException("You may not do that when there are active instances!");
       }
+    }
+
+    public ServiceEntryLock Lock
+    {
+      get { return ServiceEntryLockBroker.Singleton.GetLockForEntry(this); }
     }
   }
 }

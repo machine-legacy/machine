@@ -54,6 +54,7 @@
     <Compile Include="Lifestyles\SingletonLifestyleTests.cs" />
     <Compile Include="Lifestyles\TransientLifestyleTests.cs" />
     <Compile Include="Model\ServiceEntryTests.cs" />
+    <Compile Include="MultithreadedMachineContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScaffoldTests.cs" />
     <Compile Include="ServiceEntryHelper.cs" />
@@ -75,6 +76,10 @@
     <Compile Include="Services\Impl\ThrowsPendingActivatorResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">
+      <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
+      <Name>Machine.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Machine.Testing\Machine.Testing.csproj">
       <Project>{DB751178-BF97-4477-861B-B169AAB964D3}</Project>
       <Name>Machine.Testing</Name>
