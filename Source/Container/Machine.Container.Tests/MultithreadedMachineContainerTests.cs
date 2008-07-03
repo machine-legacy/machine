@@ -86,7 +86,6 @@ namespace Machine.Container
     #endregion
 
     [Test]
-    [Ignore]
     public void Multiple_Threads_Resolving()
     {
       _machineContainer.Register.Type<Service1DependsOn2>().AsTransient();
@@ -105,15 +104,13 @@ namespace Machine.Container
       }
       JoinAllThreads();
 
-      IDictionary<IReaderWriterLock, List<ReaderWriterUsage>> byLock = ReaderWriterLockStatistics.Singleton.GroupByLock();
-      foreach (KeyValuePair<IReaderWriterLock, List<ReaderWriterUsage>> entry in byLock)
-      {
-        ReaderWriterLockStatistics.OutputSummaryOfUsages(entry.Key.Name, entry.Value);
-      }
+
+      ReaderWriterLockStatistics.Report report = ReaderWriterLockStatistics.Singleton.CreateReport();
+      Console.WriteLine(report.ToAscii());
 
       IDictionary<Type, List<Creation>> grouped = _creations.GroupByType();
       Assert.AreEqual(1, grouped[typeof(SimpleService2)].Count);
-      Assert.AreEqual(30, grouped[typeof(Service1DependsOn2)].Count);
+      Assert.AreEqual(600, grouped[typeof(Service1DependsOn2)].Count);
     }
 
     [TearDown]

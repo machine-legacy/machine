@@ -68,6 +68,7 @@ namespace Machine.Core.Utility
 
     public void Release()
     {
+      _timer.Stop();
       _timeReleased = _timer.ElapsedTicks;
     }
 

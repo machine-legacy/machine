@@ -7,7 +7,8 @@ namespace Machine.Core.Utility
   {
     public static IReaderWriterLock CreateLock(string name)
     {
-      return new PerformanceMeasuringReaderWriterLock(new ReaderWriterLock(), name);
+      return new DotNetReaderWriterLock();
+      // return new PerformanceMeasuringReaderWriterLock(new ReaderWriterLock(), name);
     }
   }
 }

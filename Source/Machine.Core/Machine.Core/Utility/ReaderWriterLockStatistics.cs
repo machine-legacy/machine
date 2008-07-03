@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Text;
 using System.Threading;
 
 namespace Machine.Core.Utility
@@ -36,7 +39,17 @@ namespace Machine.Core.Utility
       }
     }
 
-    public static void OutputSummaryOfUsages(string name, IEnumerable<ReaderWriterUsage> usages)
+    public Report CreateReport()
+    {
+      Report report = new Report();
+      foreach (KeyValuePair<IReaderWriterLock, List<ReaderWriterUsage>> entry in GroupByLock())
+      {
+        CreateReportRow(report, entry.Key, entry.Value);
+      }
+      return report;
+    }
+
+    private static void CreateReportRow(Report report, IReaderWriterLock  lok, IEnumerable<ReaderWriterUsage> usages)
     {
       long numberOfAcquires = 0;
       long numberOfReads = 0;
@@ -71,26 +84,132 @@ namespace Machine.Core.Utility
         totalTicksInLock += usage.TimeSpentInLock;
       }
 
-      TimeSpan totalTimeInLock = new TimeSpan(totalTicksInLock);
-      TimeSpan totalTimeAsReader = new TimeSpan(totalTicksAsReader);
-      TimeSpan totalTimeAsWriter= new TimeSpan(totalTicksAsWriter);
-      TimeSpan totalTimeWaiting = new TimeSpan(totalTicksWaiting);
-      TimeSpan totalTimeWaitingToRead = new TimeSpan(totalTicksWaitingToRead);
-      TimeSpan totalTimeWaitingToWrite = new TimeSpan(totalTicksWaitingToWrite);
+      double frequency = (double)Stopwatch.Frequency / 1000.0;
 
-      Console.WriteLine("{0}", name);
-      Console.WriteLine("Acquired: {1,5} Reads: {2,5} Writes: {3,5} Upgrades: {4,5} Waiting: {5,14} WaitingToRead: {6,14} WaitingToWrite: {7,14} AsWriter: {8,14} AsReader: {9,10} Total: {10,14}",
-        String.Empty,
-        numberOfAcquires,
-        numberOfReads,
-        numberOfWrites,
-        numberOfUpgrades,
-        totalTimeWaiting.TotalSeconds,
-        totalTimeWaitingToRead.TotalSeconds,
-        totalTimeWaitingToWrite.TotalSeconds,
-        totalTimeAsWriter.TotalSeconds,
-        totalTimeAsReader.TotalSeconds,
-        totalTimeInLock.TotalSeconds);
+      Report.Row row = report.AddRow();
+      row.AddColumn("Acquires", numberOfAcquires);
+      row.AddColumn("Reads", numberOfReads);
+      row.AddColumn("Writes", numberOfWrites);
+      row.AddColumn("Upgrades", numberOfUpgrades);
+      row.AddColumn("WaitingToRead", totalTicksWaitingToRead / frequency);
+      row.AddColumn("WaitingToWrite", totalTicksWaitingToWrite / frequency);
+      row.AddColumn("Waiting", totalTicksWaiting / frequency);
+      row.AddColumn("Lock", lok.Name);
+    }
+
+    public class Report
+    {
+      public class Row
+      {
+        private readonly List<ColumnValue> _values = new List<ColumnValue>();
+        private readonly Report _report;
+
+        public Row(Report report)
+        {
+          _report = report;
+        }
+
+        public Row AddColumn(string name, double value)
+        {
+          Column column = _report.AddColumn(name);
+          _values.Add(new ColumnDoubleValue() { Column = column, Value = value });
+          return this;
+        }
+
+        public Row AddColumn(string name, string value)
+        {
+          Column column = _report.AddColumn(name);
+          _values.Add(new ColumnStringValue() { Column = column, Value = value });
+          return this;
+        }
+
+        public IEnumerable EnumerateValuesInColumnOrder(IEnumerable<Column> columns)
+        {
+          foreach (Column column in columns)
+          {
+            foreach (ColumnValue value in _values)
+            {
+              if (value.Column == column)
+              {
+                yield return value;
+              }
+            }
+          }
+        }
+      }
+
+      public class Column
+      {
+        public string Name;
+      }
+
+      public abstract class ColumnValue
+      {
+        public Column Column;
+      }
+
+      public class ColumnStringValue : ColumnValue
+      {
+        public string Value;
+
+        public override string ToString()
+        {
+          return this.Value;
+        }
+      }
+
+      public class ColumnDoubleValue : ColumnValue
+      {
+        public double Value;
+
+        public override string ToString()
+        {
+          return this.Value.ToString("###.####");
+        }
+      }
+
+      private readonly List<Column> _columns = new List<Column>();
+      private readonly List<Row> _rows = new List<Row>();
+
+      public Row AddRow()
+      {
+        Row row = new Row(this);
+        _rows.Add(row);
+        return row;
+      }
+
+      public Column AddColumn(string name)
+      {
+        foreach (Column column in _columns)
+        {
+          if (column.Name == name)
+          {
+            return column;
+          }
+        }
+        Column newColumn = new Column() { Name = name };
+        _columns.Add(newColumn);
+        return newColumn;
+      }
+
+      public string ToAscii()
+      {
+        StringBuilder sb = new StringBuilder();
+        foreach (Column column in _columns)
+        {
+          sb.AppendFormat(@"{0,20}", column.Name);
+        }
+        sb.AppendLine();
+        foreach (Row row in _rows)
+        {
+          foreach (ColumnValue value in row.EnumerateValuesInColumnOrder(_columns))
+          {
+            sb.AppendFormat(@"{0,20}", value.ToString());
+          }
+          sb.AppendLine();
+        }
+        return sb.ToString();
+      }
     }
   }
 }
