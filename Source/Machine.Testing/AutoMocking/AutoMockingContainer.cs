@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container;
+using Machine.Container.Model;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
 
@@ -31,7 +32,7 @@ namespace Machine.Testing.AutoMocking
       return _mockingDependencyResolver.Get<TService>();
     }
   }
-  public class MockingDependencyResolverFactory : IDependencyResolverFactory
+  public class MockingDependencyResolverFactory : IContainerInfrastructureFactory
   {
     private readonly MockingDependencyResolver _mockingDependencyResolver;
 
@@ -40,10 +41,15 @@ namespace Machine.Testing.AutoMocking
       _mockingDependencyResolver = mockingDependencyResolver;
     }
 
-    #region IDependencyResolverFactory Members
+    #region IContainerInfrastructureFactory Members
     public IActivatorResolver CreateDependencyResolver()
     {
       return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
+    }
+
+    public IInstanceTrackingPolicy CreateInstanceTrackingPolicy()
+    {
+      return new GlobalActivationScope();
     }
     #endregion
   }

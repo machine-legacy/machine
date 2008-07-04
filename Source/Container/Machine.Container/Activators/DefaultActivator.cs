@@ -93,6 +93,7 @@ namespace Machine.Container.Activators
       foreach (ResolvedServiceEntry dependency in _selectedCandidate.ResolvedDependencies)
       {
         Activation activation = dependency.Activate(services);
+        activation.AssertIsFullyActivated();
         parameters.Add(activation.Instance);
       }
       return parameters.ToArray();

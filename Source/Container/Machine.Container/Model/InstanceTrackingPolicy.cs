@@ -8,7 +8,7 @@ namespace Machine.Container.Model
   public interface IInstanceTrackingPolicy
   {
     TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation);
-    ResolvedServiceEntry RetrieveAndForget(object instance);
+    RemberedActivation RetrieveAndForget(object instance);
   }
 
   public enum TrackingStatus
@@ -53,18 +53,18 @@ namespace Machine.Container.Model
       return TrackingStatus.Old;
     }
 
-    public ResolvedServiceEntry RetrieveAndForget(object instance)
+    public RemberedActivation RetrieveAndForget(object instance)
     {
       using (RWLock.AsWriter(_lock))
       {
-        _log.Info("Releasing: " + instance + "(" + instance.GetHashCode() + ")");
+        _log.Info("Deactivating: " + instance + "(" + instance.GetHashCode() + ")");
         if (!_map.ContainsKey(instance))
         {
-          throw new ServiceContainerException("Attempt to release instances NOT created by the container: " + instance);
+          throw new ServiceContainerException("Attempt to deactivate instance NOT created by the container: " + instance);
         }
         RemberedActivation entry = _map[instance];
         _map.Remove(instance);
-        return entry.ResolvedEntry;
+        return entry;
       }
     }
   }
@@ -98,53 +98,19 @@ namespace Machine.Container.Model
       return TrackingStatus.Old;
     }
 
-    public ResolvedServiceEntry RetrieveAndForget(object instance)
+    public RemberedActivation RetrieveAndForget(object instance)
     {
       if (_map == null)
       {
-        throw new ServiceContainerException("You're trying to release before getting anything on this thread: " + instance);
+        throw new ServiceContainerException("You're trying to deactivate before getting anything on this thread: " + instance);
       }
       if (_map.ContainsKey(instance))
       {
         RemberedActivation entry = _map[instance];
         _map.Remove(instance);
-        return entry.ResolvedEntry;
+        return entry;
       }
-      throw new ServiceContainerException("Attempt to release instances NOT created by the container OR by another thread: " + instance);
-    }
-  }
-
-  public class RemberedActivation
-  {
-    public ResolvedServiceEntry ResolvedEntry
-    {
-      get; private set;
-    }
-
-    public Activation Activation
-    {
-      get; private set;
-    }
-
-    public RemberedActivation(ResolvedServiceEntry resolvedEntry, Activation activation)
-    {
-      Activation = activation;
-      ResolvedEntry = resolvedEntry;
-    }
-
-    public override bool Equals(object obj)
-    {
-      RemberedActivation other = obj as RemberedActivation;
-      if (other != null)
-      {
-        return other.ResolvedEntry.Equals(this.ResolvedEntry) && other.Activation.Equals(this.Activation);
-      }
-      return false;
-    }
-
-    public override int GetHashCode()
-    {
-      return this.ResolvedEntry.GetHashCode() ^ this.Activation.GetHashCode();
+      throw new ServiceContainerException("Attempt to deactivate instance NOT created by the container OR by another thread: " + instance);
     }
   }
 }

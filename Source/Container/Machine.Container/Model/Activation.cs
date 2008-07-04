@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using Machine.Container.Services;
+
 namespace Machine.Container.Model
 {
   public class Activation
@@ -8,7 +10,7 @@ namespace Machine.Container.Model
     private readonly ServiceEntry _entry;
     private readonly object _instance;
     private readonly bool _isBrandNew;
-    private readonly Int32 _ownerThread;
+    private IActivator _activator;
 
     public ServiceEntry Entry
     {
@@ -39,9 +41,28 @@ namespace Machine.Container.Model
     {
       _entry = entry;
       _instance = instance;
-      _isBrandNew = isBrandNew;
       _entry.AssertIsAcceptableInstance(_instance);
-      _ownerThread = System.Threading.Thread.CurrentThread.ManagedThreadId;
+      _isBrandNew = isBrandNew;
+    }
+
+    public void MakeFullyActivated(IActivator activator)
+    {
+      _activator = activator;
+    }
+
+    public void Deactivate(IResolutionServices services)
+    {
+      AssertIsFullyActivated();
+      _entry.DecrementActiveInstances();
+      _activator.Deactivate(services, _instance);
+    }
+
+    public void AssertIsFullyActivated()
+    {
+      if (_activator == null)
+      {
+        throw new ServiceContainerException("How did you get a half-activated activation?");
+      }
     }
 
     public override bool Equals(object obj)

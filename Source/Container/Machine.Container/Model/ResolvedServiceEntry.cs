@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Services;
-using Machine.Container.Services.Impl;
 
 namespace Machine.Container.Model
 {
@@ -32,6 +31,7 @@ namespace Machine.Container.Model
     public Activation Activate(IResolutionServices services)
     {
       Activation activation = _activator.Activate(services);
+      activation.MakeFullyActivated(_activator);
       if (activation.IsBrandNew)
       {
         _objectInstances.Remember(this, activation);
@@ -39,22 +39,9 @@ namespace Machine.Container.Model
       return activation;
     }
 
-    public void Release(IResolutionServices services, object instance)
-    {
-      _activator.Deactivate(services, instance);
-      // Awkward I know, ObjectInstances actually calls this method because they are
-      // responsible for mapping instances to the ResolvedServiceEntry
-      // _objectInstances.Release(services, instance);
-    }
-
     public void IncrementActiveInstances()
     {
       _entry.IncrementActiveInstances();
-    }
-
-    public void DecrementActiveInstances()
-    {
-      _entry.DecrementActiveInstances();
     }
 
     public override string ToString()

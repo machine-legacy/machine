@@ -80,13 +80,11 @@ namespace Machine.Container.Model
 
     public void IncrementActiveInstances()
     {
-      // Protected by ObjectInstances lock
       _numberOfActiveInstances++;
     }
 
     public void DecrementActiveInstances()
     {
-      // Protected by ObjectInstances lock
       if (_numberOfActiveInstances == 0)
       {
         throw new ServiceContainerException("Number of active instances less than 0!");

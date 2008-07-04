@@ -13,7 +13,7 @@ namespace Machine.Container
     protected readonly ContainerStatePolicy _state = new ContainerStatePolicy();
     protected readonly IPluginManager _pluginManager;
     protected readonly IListenerInvoker _listenerInvoker;
-    protected readonly IDependencyResolverFactory _dependencyResolverFactory;
+    protected readonly IContainerInfrastructureFactory _containerInfrastructureFactory;
     protected IObjectInstances _objectInstances;
     protected IServiceEntryResolver _resolver;
     protected IActivatorStrategy _activatorStrategy;
@@ -25,15 +25,15 @@ namespace Machine.Container
     protected ContainerResolver _containerResolver;
     #endregion
 
-    public CompartmentalizedMachineContainer(IDependencyResolverFactory dependencyResolverFactory)
+    public CompartmentalizedMachineContainer(IContainerInfrastructureFactory containerInfrastructureFactory)
     {
-      _dependencyResolverFactory = dependencyResolverFactory;
+      _containerInfrastructureFactory = containerInfrastructureFactory;
       _pluginManager = new PluginManager(this);
       _listenerInvoker = new ListenerInvoker(_pluginManager);
     }
 
     public CompartmentalizedMachineContainer()
-     : this(new DefaultDependencyResolverFactory())
+     : this(new DefaultContainerInfrastructureFactory())
     {
     }
 
@@ -87,7 +87,7 @@ namespace Machine.Container
 
     public virtual void Initialize()
     {
-      IActivatorResolver activatorResolver = _dependencyResolverFactory.CreateDependencyResolver();
+      IActivatorResolver activatorResolver = _containerInfrastructureFactory.CreateDependencyResolver();
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
       IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
       _serviceGraph = new ServiceGraph(_listenerInvoker);
@@ -95,7 +95,7 @@ namespace Machine.Container
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
       _activatorStore = new ActivatorStore();
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
-      _objectInstances = new ObjectInstances(_listenerInvoker, new PerThreadActivationScope());
+      _objectInstances = new ObjectInstances(_listenerInvoker, _containerInfrastructureFactory.CreateInstanceTrackingPolicy());
       _containerServices = CreateContainerServices();
       _containerRegisterer = new ContainerRegisterer(_containerServices);
       _containerResolver = new ContainerResolver(_containerServices, _containerRegisterer);
@@ -145,12 +145,17 @@ namespace Machine.Container
       _containerRegisterer.Type<IMachineContainer>().Is(this);
     }
   }
-  public class DefaultDependencyResolverFactory : IDependencyResolverFactory
+  public class DefaultContainerInfrastructureFactory : IContainerInfrastructureFactory
   {
-    #region IDependencyResolverFactory Members
+    #region IContainerInfrastructureFactory Members
     public IActivatorResolver CreateDependencyResolver()
     {
       return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
+    }
+
+    public IInstanceTrackingPolicy CreateInstanceTrackingPolicy()
+    {
+      return new GlobalActivationScope();
     }
     #endregion
   }

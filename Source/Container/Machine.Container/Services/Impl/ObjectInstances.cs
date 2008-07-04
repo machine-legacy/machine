@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
@@ -22,6 +21,7 @@ namespace Machine.Container.Services.Impl
 
     public void Remember(ResolvedServiceEntry entry, Activation activation)
     {
+      activation.AssertIsFullyActivated();
       if (_trackingPolicy.Remember(entry, activation) == TrackingStatus.New)
       {
         _listenerInvoker.OnActivation(entry, activation);
@@ -33,10 +33,9 @@ namespace Machine.Container.Services.Impl
     public void Deactivate(IResolutionServices services, object instance)
     {
       Deactivation deactivation = new Deactivation(instance);
-      ResolvedServiceEntry resolvedEntry = _trackingPolicy.RetrieveAndForget(instance);
-      _listenerInvoker.OnDeactivation(resolvedEntry, deactivation);
-      resolvedEntry.DecrementActiveInstances();
-      resolvedEntry.Release(services, instance);
+      RemberedActivation rememberedActivation = _trackingPolicy.RetrieveAndForget(instance);
+      _listenerInvoker.OnDeactivation(rememberedActivation.ResolvedEntry, deactivation);
+      rememberedActivation.Deactivate(services);
     }
   }
 }
