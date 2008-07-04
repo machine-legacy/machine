@@ -95,7 +95,7 @@ namespace Machine.Container
       _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
       _activatorStore = new ActivatorStore();
       _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
-      _objectInstances = new ObjectInstances(_listenerInvoker);
+      _objectInstances = new ObjectInstances(_listenerInvoker, new PerThreadActivationScope());
       _containerServices = CreateContainerServices();
       _containerRegisterer = new ContainerRegisterer(_containerServices);
       _containerResolver = new ContainerResolver(_containerServices, _containerRegisterer);

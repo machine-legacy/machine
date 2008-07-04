@@ -62,7 +62,8 @@ namespace Machine.Container
     {
       IResolutionServices services = _containerServices.CreateResolutionServices(overrides);
       ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type, true);
-      return entry.Activate(services);
+      Activation activation = entry.Activate(services);
+      return activation.Instance;
     }
   }
 }

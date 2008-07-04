@@ -52,9 +52,12 @@
     <Compile Include="IoC.cs" />
     <Compile Include="Lifestyles\SingletonLifestyle.cs" />
     <Compile Include="Lifestyles\TransientLifestyle.cs" />
+    <Compile Include="Model\Activation.cs" />
     <Compile Include="Model\ConstructorCandidate.cs" />
     <Compile Include="Model\DependencyType.cs" />
+    <Compile Include="Model\InstanceTrackingPolicy.cs" />
     <Compile Include="Model\LifestyleType.cs" />
+    <Compile Include="Model\Deactivation.cs" />
     <Compile Include="Model\ResolvedConstructorCandidate.cs" />
     <Compile Include="Model\ResolvedServiceEntry.cs" />
     <Compile Include="Model\ServiceDependency.cs" />

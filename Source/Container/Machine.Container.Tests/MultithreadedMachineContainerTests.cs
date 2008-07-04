@@ -15,7 +15,7 @@ namespace Machine.Container
   public class Creation
   {
     private readonly ResolvedServiceEntry _entry;
-    private readonly object _instance;
+    private readonly Activation _activation;
 
     public ResolvedServiceEntry Entry
     {
@@ -24,13 +24,13 @@ namespace Machine.Container
 
     public object Instance
     {
-      get { return _instance; }
+      get { return _activation.Instance; }
     }
 
-    public Creation(ResolvedServiceEntry entry, object instance)
+    public Creation(ResolvedServiceEntry entry, Activation activation)
     {
       _entry = entry;
-      _instance = instance;
+      _activation = activation;
     }
   }
   public class ServiceCreations
@@ -42,9 +42,9 @@ namespace Machine.Container
       _creations.Clear();
     }
 
-    public void Add(ResolvedServiceEntry entry, object instance)
+    public void Add(ResolvedServiceEntry entry, Activation activation)
     {
-      _creations.Add(new Creation(entry, instance));
+      _creations.Add(new Creation(entry, activation));
     }
 
     public IDictionary<Type, List<Creation>> GroupByType()
@@ -82,12 +82,17 @@ namespace Machine.Container
       _machineContainer.AddPlugin(new DisposablePlugin());
       _machineContainer.PrepareForServices();
       _machineContainer.Start();
+      log4net.Appender.OutputDebugStringAppender appender = new log4net.Appender.OutputDebugStringAppender();
+      appender.Layout = new log4net.Layout.PatternLayout("%-5p %c{1} %m");
+      log4net.Config.BasicConfigurator.Configure(appender);
     }
     #endregion
 
     [Test]
     public void Multiple_Threads_Resolving()
     {
+      ReaderWriterLockStatistics statistics = new ReaderWriterLockStatistics();
+
       _machineContainer.Register.Type<Service1DependsOn2>().AsTransient();
       _machineContainer.Register.Type<SimpleService2>().AsSingleton();
       ThreadStart start = delegate()
@@ -97,15 +102,16 @@ namespace Machine.Container
           Service1DependsOn2 service = _machineContainer.Resolve.Object<Service1DependsOn2>();
           _machineContainer.Release(service);
         }
+        PerThreadUsages.CopyThreadUsagesToMainCollection(statistics);
       };
       for (int i = 0; i < 30; ++i)
       {
         AddThread(start);
       }
       JoinAllThreads();
+      PerThreadUsages.CopyThreadUsagesToMainCollection(statistics);
 
-
-      ReaderWriterLockStatistics.Report report = ReaderWriterLockStatistics.Singleton.CreateReport();
+      ReaderWriterLockStatistics.Report report = statistics.CreateReport();
       Console.WriteLine(report.ToAscii());
 
       IDictionary<Type, List<Creation>> grouped = _creations.GroupByType();
@@ -153,12 +159,12 @@ namespace Machine.Container
       _creations.Clear();
     }
 
-    public void InstanceCreated(ResolvedServiceEntry entry, object instance)
+    public void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
     {
-      _creations.Add(entry, instance);
+      _creations.Add(entry, activation);
     }
 
-    public void InstanceReleased(ResolvedServiceEntry entry, object instance)
+    public void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
     {
     }
     #endregion

@@ -9,7 +9,8 @@ namespace Machine.Container.Lifestyles
   public class SingletonLifestyle : TransientLifestyle
   {
     #region Member Data
-    private object _instance;
+    private Activation _firstActivation;
+    private Activation _cachedActivation;
     #endregion
 
     #region SingletonLifestyle()
@@ -22,36 +23,39 @@ namespace Machine.Container.Lifestyles
     #region ILifestyle Members
     public override bool CanActivate(IResolutionServices services)
     {
-      if (_instance == null)
+      if (_firstActivation == null)
       {
         return base.CanActivate(services);
       }
       return true;
     }
 
-    public override object Activate(IResolutionServices services)
+    public override Activation Activate(IResolutionServices services)
     {
       using (this.Entry.Lock.AcquireReaderLock())
       {
-        if (_instance == null)
+        if (_firstActivation == null)
         {
           this.Entry.Lock.UpgradeToWriterLock();
-          if (_instance == null)
+          if (_firstActivation == null)
           {
-            _instance = base.Activate(services);
+            _firstActivation = base.Activate(services);
+            _cachedActivation = new Activation(_firstActivation);
+            return _firstActivation;
           }
         }
-        return _instance;
+        return _cachedActivation;
       }
     }
 
     public override void Release(IResolutionServices services, object instance)
     {
-      if (_instance == null)
+      if (_firstActivation == null)
       {
         throw new YouFoundABugException("You managed to re-release something?");
       }
-      _instance = null;
+      _firstActivation = null;
+      _cachedActivation = null;
     }
     #endregion
   }

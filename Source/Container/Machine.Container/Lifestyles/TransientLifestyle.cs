@@ -38,7 +38,7 @@ namespace Machine.Container.Lifestyles
       return _defaultActivator.CanActivate(services);
     }
 
-    public virtual object Activate(IResolutionServices services)
+    public virtual Activation Activate(IResolutionServices services)
     {
       return _defaultActivator.Activate(services);
     }

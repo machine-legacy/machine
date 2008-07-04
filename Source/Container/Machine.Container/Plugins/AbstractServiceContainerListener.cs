@@ -33,11 +33,11 @@ namespace Machine.Container.Plugins
     {
     }
 
-    public virtual void InstanceCreated(ResolvedServiceEntry entry, object instance)
+    public virtual void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
     {
     }
 
-    public virtual void InstanceReleased(ResolvedServiceEntry entry, object instance)
+    public virtual void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
     {
     }
     #endregion

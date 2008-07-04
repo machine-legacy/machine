@@ -19,16 +19,19 @@ namespace Machine.Container.Plugins.Disposition
       _initialized = true;
     }
 
-    public override void InstanceCreated(ResolvedServiceEntry entry, object instance)
+    public override void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
     {
-      IDisposable disposable = instance as IDisposable;
+      IDisposable disposable = activation.Instance as IDisposable;
       if (disposable == null) return;
-      _disposables.Add(disposable);
+      if (!_disposables.Contains(disposable))
+      {
+        _disposables.Add(disposable);
+      }
     }
 
-    public override void InstanceReleased(ResolvedServiceEntry entry, object instance)
+    public override void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
     {
-      IDisposable disposable = instance as IDisposable;
+      IDisposable disposable = deactivation.Instance as IDisposable;
       if (disposable == null) return;
       disposable.Dispose();
       _disposables.Remove(disposable);

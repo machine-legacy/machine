@@ -18,7 +18,7 @@ namespace Machine.Container.Model
       {
         if (!_map.ContainsKey(entry))
         {
-          _lock.UpgradeToWriterLock(Timeout.Infinite);
+          _lock.UpgradeToWriterLock();
           if (!_map.ContainsKey(entry))
           {
             _map[entry] = new ServiceEntryLock(entry.ToString());

@@ -12,7 +12,7 @@ namespace Machine.Container.Plugins
     void PreparedForServices();
     void ServiceRegistered(ServiceEntry entry);
     void Started();
-    void InstanceCreated(ResolvedServiceEntry entry, object instance);
-    void InstanceReleased(ResolvedServiceEntry entry, object instance);
+    void InstanceCreated(ResolvedServiceEntry entry, Activation activation);
+    void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation);
   }
 }

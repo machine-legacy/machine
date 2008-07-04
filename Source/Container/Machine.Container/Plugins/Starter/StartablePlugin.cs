@@ -18,7 +18,7 @@ namespace Machine.Container.Plugins.Starter
       }
     }
 
-    public override void InstanceCreated(ResolvedServiceEntry entry, object instance)
+    public override void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
     {
     }
 

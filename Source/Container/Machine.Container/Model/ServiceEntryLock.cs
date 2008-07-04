@@ -1,6 +1,5 @@
 using System;
 using System.Diagnostics;
-using System.Threading;
 
 using Machine.Core.Utility;
 
@@ -12,24 +11,24 @@ namespace Machine.Container.Model
 
     public ServiceEntryLock(string name)
     {
-      _lock = ReaderWriterLockFactory.CreateLock("ServiceEntryLock-" + name);
+      _lock = ReaderWriterLockFactory.CreateLock("SEL-" + name);
     }
 
     public ServiceEntryLock AcquireReaderLock()
     {
-      _lock.AcquireReaderLock(Timeout.Infinite);
+      _lock.AcquireReaderLock();
       return this;
     }
 
     public ServiceEntryLock AcquireWriterLock()
     {
-      _lock.AcquireWriterLock(Timeout.Infinite);
+      _lock.AcquireWriterLock();
       return this;
     }
 
     public ServiceEntryLock UpgradeToWriterLock()
     {
-      _lock.UpgradeToWriterLock(Timeout.Infinite);
+      _lock.UpgradeToWriterLock();
       return this;
     }
 

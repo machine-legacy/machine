@@ -64,6 +64,11 @@ namespace Machine.Core.Utility
     {
       _lock.ReleaseLock();
     }
+
+    public virtual bool UpgradeToWriterIf(RwLockGuardCondition condition)
+    {
+      return RWLock.UpgradeToWriterIf(this, condition);
+    }
     #endregion
   }
 }

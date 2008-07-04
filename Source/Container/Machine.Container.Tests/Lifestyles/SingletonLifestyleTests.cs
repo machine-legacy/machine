@@ -14,16 +14,15 @@ namespace Machine.Container.Lifestyles
   public class SingletonLifestyleTests : ScaffoldTests<SingletonLifestyle>
   {
     #region Member Data
-    readonly object _instance = new object();
-    readonly ServiceEntry _serviceEntry = ServiceEntryHelper.NewEntry();
+    readonly object _instance = new SimpleService1();
+    readonly ServiceEntry _entry = ServiceEntryHelper.NewEntry();
     #endregion
 
     #region Test Methods
     [Test]
     public void Initialize_Always_CreateDefaultActivator()
     {
-      Run(
-        delegate { SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>()); });
+      Run(delegate { SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_entry)).Return(Get<IActivator>()); });
       _target.Initialize();
       _mocks.Verify(Get<IActivatorStrategy>());
     }
@@ -31,33 +30,35 @@ namespace Machine.Container.Lifestyles
     [Test]
     public void Create_FirstCall_InvokesDefaultActivator()
     {
+      Activation activation = new Activation(_entry, _instance);
       Run(delegate
       {
-        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(_instance);
+        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_entry)).Return(Get<IActivator>());
+        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(activation);
       });
       _target.Initialize();
-      Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
+      Assert.AreEqual(activation, _target.Activate(Get<IResolutionServices>()));
     }
 
     [Test]
     public void Create_SecondCall_ReturnsPrevious()
     {
+      Activation activation = new Activation(_entry, _instance);
       Run(delegate
       {
-        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_serviceEntry)).Return(Get<IActivator>());
-        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(_instance);
+        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_entry)).Return(Get<IActivator>());
+        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(activation);
       });
       _target.Initialize();
-      Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
-      Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
+      Assert.AreEqual(activation, _target.Activate(Get<IResolutionServices>()));
+      Assert.AreEqual(activation, _target.Activate(Get<IResolutionServices>()));
     }
     #endregion
 
     #region Methods
     protected override SingletonLifestyle Create()
     {
-      return new SingletonLifestyle(Get<IActivatorStrategy>(), _serviceEntry);
+      return new SingletonLifestyle(Get<IActivatorStrategy>(), _entry);
     }
     #endregion
   }

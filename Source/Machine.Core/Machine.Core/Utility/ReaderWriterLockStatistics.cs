@@ -9,16 +9,14 @@ namespace Machine.Core.Utility
 {
   public class ReaderWriterLockStatistics
   {
-    public static ReaderWriterLockStatistics Singleton = new ReaderWriterLockStatistics();
-
     private readonly ReaderWriterLock _lock = new ReaderWriterLock();
     private readonly List<ReaderWriterUsage> _usages = new List<ReaderWriterUsage>();
 
-    public void AddUsage(ReaderWriterUsage usage)
+    public void AddUsages(IEnumerable<ReaderWriterUsage> usages)
     {
       using (RWLock.AsWriter(_lock))
       {
-        _usages.Add(usage);
+        _usages.AddRange(usages);
       }
     }
 
@@ -67,7 +65,7 @@ namespace Machine.Core.Utility
         {
           numberOfUpgrades++;
         }
-        if (usage.InitiallyAReader || usage.WasUpgraded)
+        if (usage.InitiallyAReader)
         {
           numberOfReads++;
         }
@@ -197,14 +195,14 @@ namespace Machine.Core.Utility
         StringBuilder sb = new StringBuilder();
         foreach (Column column in _columns)
         {
-          sb.AppendFormat(@"{0,20}", column.Name);
+          sb.AppendFormat(@"{0,18} ", column.Name);
         }
         sb.AppendLine();
         foreach (Row row in _rows)
         {
           foreach (ColumnValue value in row.EnumerateValuesInColumnOrder(_columns))
           {
-            sb.AppendFormat(@"{0,20}", value.ToString());
+            sb.AppendFormat(@"{0,18} ", value);
           }
           sb.AppendLine();
         }

@@ -29,11 +29,14 @@ namespace Machine.Container.Model
       _activator = activator;
     }
 
-    public object Activate(IResolutionServices services)
+    public Activation Activate(IResolutionServices services)
     {
-      object instance = _activator.Activate(services);
-      _objectInstances.Remember(this, instance);
-      return instance;
+      Activation activation = _activator.Activate(services);
+      if (activation.IsBrandNew)
+      {
+        _objectInstances.Remember(this, activation);
+      }
+      return activation;
     }
 
     public void Release(IResolutionServices services, object instance)

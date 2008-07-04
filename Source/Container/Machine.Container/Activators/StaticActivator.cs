@@ -9,15 +9,13 @@ namespace Machine.Container.Activators
   public class StaticActivator : IActivator
   {
     #region Member Data
-    private readonly ServiceEntry _entry;
-    private readonly object _instance;
+    private readonly Activation _activation;
     #endregion
 
     #region StaticActivator()
     public StaticActivator(ServiceEntry entry, object instance)
     {
-      _entry = entry;
-      _instance = instance;
+      _activation = new Activation(entry, instance, false);
     }
     #endregion
 
@@ -27,10 +25,9 @@ namespace Machine.Container.Activators
       return true;
     }
 
-    public object Activate(IResolutionServices services)
+    public Activation Activate(IResolutionServices services)
     {
-      _entry.AssertIsAcceptableInstance(_instance);
-      return _instance;
+      return _activation;
     }
 
     public void Release(IResolutionServices services, object instance)

@@ -26,8 +26,8 @@ namespace Machine.Container.Activators
     public override void Setup()
     {
       _entry = ServiceEntryHelper.NewEntry();
-      _instance = new object();
-      _parameter1 = new object();
+      _instance = new SimpleService1();
+      _parameter1 = new SimpleService1();
       base.Setup();
     }
     #endregion
@@ -49,6 +49,7 @@ namespace Machine.Container.Activators
     [Test]
     public void Create_NoDependencies_CallsConstructor()
     {
+      Activation activation = new Activation(_entry, _instance);
       using (_mocks.Record())
       {
         SetupMocks();
@@ -57,25 +58,28 @@ namespace Machine.Container.Activators
       using (_mocks.Playback())
       {
         _target.CanActivate(Get<IResolutionServices>());
-        Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
+        Assert.AreEqual(activation, _target.Activate(Get<IResolutionServices>()));
       }
     }
 
     [Test]
     public void Create_OneDependency_CallsConstructor()
     {
-      ResolvedServiceEntry resolvedServiceEntry = new ResolvedServiceEntry(ServiceEntryHelper.NewEntry(), Get<IActivator>(), Get<IObjectInstances>());
+      ServiceEntry entry = ServiceEntryHelper.NewEntry();
+      ResolvedServiceEntry resolvedServiceEntry = new ResolvedServiceEntry(entry, Get<IActivator>(), Get<IObjectInstances>());
+      Activation parameterActivation = new Activation(entry, _parameter1);
+      Activation activation = new Activation(_entry, _instance);
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
         Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IResolutionServices>(), typeof(IService1), true)).Return(resolvedServiceEntry);
-        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(_parameter1);
-        Expect.Call(Get<IObjectFactory>().CreateObject(_candidate.Candidate, new object[] {_parameter1})).Return(_instance);
+        Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(parameterActivation);
+        Expect.Call(Get<IObjectFactory>().CreateObject(_candidate.Candidate, new object[] { _parameter1 })).Return(_instance);
       }
       using (_mocks.Playback())
       {
         _target.CanActivate(Get<IResolutionServices>());
-        Assert.AreEqual(_instance, _target.Activate(Get<IResolutionServices>()));
+        Assert.AreEqual(activation, _target.Activate(Get<IResolutionServices>()));
       }
     }
     #endregion

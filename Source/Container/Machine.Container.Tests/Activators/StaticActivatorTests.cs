@@ -31,8 +31,9 @@ namespace Machine.Container.Activators
     [Test]
     public void Create_Always_ReturnsInstance()
     {
-      Assert.AreEqual(_instance, _activator.Activate(Get<IResolutionServices>()));
-      Assert.AreEqual(_instance, _activator.Activate(Get<IResolutionServices>()));
+      Activation activation = new Activation(_entry, _instance);
+      Assert.AreEqual(activation, _activator.Activate(Get<IResolutionServices>()));
+      Assert.AreEqual(activation, _activator.Activate(Get<IResolutionServices>()));
     }
     #endregion
   }

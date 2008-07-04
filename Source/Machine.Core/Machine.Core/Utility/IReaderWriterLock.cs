@@ -14,6 +14,7 @@ namespace Machine.Core.Utility
     void AcquireReaderLock();
     void AcquireWriterLock();
     void UpgradeToWriterLock();
+    bool UpgradeToWriterIf(RwLockGuardCondition condition);
     void ReleaseLock();
   }
 }

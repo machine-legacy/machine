@@ -48,19 +48,19 @@ namespace Machine.Container.Plugins
       }
     }
 
-    public void InstanceCreated(ResolvedServiceEntry entry, object instance)
+    public void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
     {
       foreach (IServiceContainerListener listener in _pluginManager.AllListeners)
       {
-        listener.InstanceCreated(entry, instance);
+        listener.InstanceCreated(entry, activation);
       }
     }
 
-    public void InstanceReleased(ResolvedServiceEntry entry, object instance)
+    public void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
     {
       foreach (IServiceContainerListener listener in _pluginManager.AllListeners)
       {
-        listener.InstanceReleased(entry, instance);
+        listener.InstanceReleased(entry, deactivation);
       }
     }
     #endregion

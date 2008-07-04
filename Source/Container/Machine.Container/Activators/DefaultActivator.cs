@@ -48,14 +48,16 @@ namespace Machine.Container.Activators
       }
     }
 
-    public object Activate(IResolutionServices services)
+    public Activation Activate(IResolutionServices services)
     {
       if (_selectedCandidate == null)
       {
         throw new YouFoundABugException("How can you try and Activate something if it can't be activated: " + _entry);
       }
       object[] parameters = ResolveConstructorDependencies(services);
-      return _objectFactory.CreateObject(_selectedCandidate.Candidate, parameters);
+      object instance = _objectFactory.CreateObject(_selectedCandidate.Candidate, parameters);
+      // services.ObjectInstances.Remember();
+      return new Activation(_entry, instance, true);
     }
 
     public void Release(IResolutionServices services, object instance)
@@ -90,7 +92,8 @@ namespace Machine.Container.Activators
       List<object> parameters = new List<object>();
       foreach (ResolvedServiceEntry dependency in _selectedCandidate.ResolvedDependencies)
       {
-        parameters.Add(dependency.Activate(services));
+        Activation activation = dependency.Activate(services);
+        parameters.Add(activation.Instance);
       }
       return parameters.ToArray();
     }

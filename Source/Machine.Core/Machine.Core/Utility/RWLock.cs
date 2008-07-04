@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading;
 
 namespace Machine.Core.Utility
 {
+  public delegate bool RwLockGuardCondition();
+
   public static class RWLock
   {
     public static IDisposable AsWriter(ReaderWriterLock theLock)
@@ -31,11 +32,16 @@ namespace Machine.Core.Utility
       return new RWLockWrapper(theLock);
     }
 
-    public static bool UpgradeToWriterIf(ReaderWriterLock rwLock, GuardCondition condition)
+    public static bool UpgradeToWriterIf(ReaderWriterLock lok, RwLockGuardCondition condition)
+    {
+      return UpgradeToWriterIf(new DotNetReaderWriterLock(lok), condition);
+    }
+
+    public static bool UpgradeToWriterIf(IReaderWriterLock lok, RwLockGuardCondition condition)
     {
       if (condition())
       {
-        rwLock.UpgradeToWriterLock(Timeout.Infinite);
+        lok.UpgradeToWriterLock();
         if (condition())
         {
           return true;
@@ -57,62 +63,6 @@ namespace Machine.Core.Utility
     public void Dispose()
     {
       _readerWriterLock.ReleaseLock();
-    }
-  }
-
-  public delegate bool GuardCondition();
-
-  public class BetterReaderWriterLock
-  {
-    private readonly ReaderWriterLock _lock;
-
-    public BetterReaderWriterLock()
-    {
-      _lock = new ReaderWriterLock();
-    }
-
-    public void AcquireReaderLock()
-    {
-      _lock.AcquireReaderLock(Timeout.Infinite);
-    }
-
-    public void AcquireWriterLock()
-    {
-      _lock.AcquireWriterLock(Timeout.Infinite);
-    }
-
-    public void UpgradeToWriterLock()
-    {
-      _lock.UpgradeToWriterLock(Timeout.Infinite);
-    }
-
-    public bool UpgradeToWriterIf(GuardCondition condition)
-    {
-      return RWLock.UpgradeToWriterIf(_lock, condition);
-    }
-
-    public void ReleaseLock()
-    {
-      _lock.ReleaseLock();
-    }
-  }
-
-  public static class PerThreadUsages
-  {
-    [ThreadStatic]
-    private static Dictionary<IReaderWriterLock, ReaderWriterUsage> _usage;
-
-    public static ReaderWriterUsage GetUsage(IReaderWriterLock lok, bool createNew)
-    {
-      if (_usage == null)
-      {
-        _usage = new Dictionary<IReaderWriterLock, ReaderWriterUsage>();
-      }
-      if (!_usage.ContainsKey(lok) || createNew)
-      {
-        _usage[lok] = new ReaderWriterUsage(lok);
-      }
-      return _usage[lok];
     }
   }
 }
