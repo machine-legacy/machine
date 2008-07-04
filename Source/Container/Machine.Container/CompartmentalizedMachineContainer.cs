@@ -92,7 +92,6 @@ namespace Machine.Container
       _serviceGraph = new ServiceGraph(_listenerInvoker);
       _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
       _activatorStore = new ActivatorStore();
-      // _activatorStrategy = new DefaultActivatorFactory(new DotNetObjectFactory(), _resolver, new ServiceDependencyInspector());
       _activatorFactory = _containerInfrastructureFactory.CreateActivatorFactory(_resolver);
       _objectInstances = new ObjectInstances(_listenerInvoker, _containerInfrastructureFactory.CreateInstanceTrackingPolicy());
       _lifestyleFactory = new LifestyleFactory(_activatorFactory);
@@ -105,7 +104,7 @@ namespace Machine.Container
     public virtual void PrepareForServices()
     {
       _pluginManager.Initialize();
-      _listenerInvoker.Initialize(this);
+      _listenerInvoker.InitializeListener(this);
       _state.PrepareForServices();
       RegisterContainerInContainer();
       _listenerInvoker.PreparedForServices();

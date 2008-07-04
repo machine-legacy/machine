@@ -2,12 +2,17 @@
 using System.Collections.Generic;
 
 using Machine.Container.Model;
+using Machine.Container.Services;
 
 namespace Machine.Container.Plugins.Starter
 {
   public class StartablePlugin : AbstractServiceContainerListener, IServiceContainerPlugin
   {
     private readonly List<ServiceEntry> _startables = new List<ServiceEntry>();
+
+    public virtual void Initialize(IMachineContainer container)
+    {
+    }
 
     public override void OnRegistration(ServiceEntry entry)
     {

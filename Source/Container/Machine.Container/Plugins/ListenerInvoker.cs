@@ -16,11 +16,11 @@ namespace Machine.Container.Plugins
     }
 
     #region IServiceContainerListener Members
-    public void Initialize(IMachineContainer container)
+    public void InitializeListener(IMachineContainer container)
     {
       foreach (IServiceContainerListener listener in _pluginManager.AllListeners)
       {
-        listener.Initialize(container);
+        listener.InitializeListener(container);
       }
     }
 

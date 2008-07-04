@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
@@ -12,11 +12,13 @@ namespace Machine.Container.Plugins.Disposition
     private bool _initialized;
 
     #region IServiceContainerListener Members
-    public override void Initialize(IMachineContainer container)
+    public virtual void Initialize(IMachineContainer container)
     {
-      if (_initialized) return;
       container.AddListener(this);
-      _initialized = true;
+    }
+
+    public override void InitializeListener(IMachineContainer container)
+    {
     }
 
     public override void OnActivation(ResolvedServiceEntry entry, Activation activation)

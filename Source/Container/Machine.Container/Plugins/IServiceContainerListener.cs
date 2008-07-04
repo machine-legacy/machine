@@ -8,7 +8,7 @@ namespace Machine.Container.Plugins
 {
   public interface IServiceContainerListener : IDisposable
   {
-    void Initialize(IMachineContainer container);
+    void InitializeListener(IMachineContainer container);
     void PreparedForServices();
     void OnRegistration(ServiceEntry entry);
     void Started();

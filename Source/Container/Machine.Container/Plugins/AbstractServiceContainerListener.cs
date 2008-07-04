@@ -16,7 +16,7 @@ namespace Machine.Container.Plugins
     }
 
     #region IServiceContainerListener Members
-    public virtual void Initialize(IMachineContainer container)
+    public virtual void InitializeListener(IMachineContainer container)
     {
       _container = container;
     }

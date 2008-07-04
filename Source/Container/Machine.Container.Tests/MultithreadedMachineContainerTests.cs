@@ -142,7 +142,7 @@ namespace Machine.Container
     }
 
     #region IServiceContainerListener Members
-    public void Initialize(IMachineContainer container)
+    public void InitializeListener(IMachineContainer container)
     {
     }
 
