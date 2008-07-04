@@ -27,7 +27,7 @@ namespace Machine.Testing.AutoMocking
     {
       if (entry.ServiceType.IsInterface)
       {
-        return services.ActivatorStrategy.CreateStaticActivator(entry, Get(entry.ServiceType));
+        return services.ActivatorFactory.CreateStaticActivator(entry, Get(entry.ServiceType));
       }
       return null;
     }

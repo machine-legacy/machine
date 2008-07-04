@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
@@ -57,7 +57,7 @@ namespace Machine.Container.Configuration
 
     public RegistrationConfigurer Is(object instance)
     {
-      IActivator activator = _containerServices.ActivatorStrategy.CreateStaticActivator(_entry, instance);
+      IActivator activator = _containerServices.ActivatorFactory.CreateStaticActivator(_entry, instance);
       _containerServices.ActivatorStore.AddActivator(_entry, activator);
       return this;
     }

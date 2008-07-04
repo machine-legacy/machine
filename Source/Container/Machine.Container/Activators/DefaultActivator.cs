@@ -56,7 +56,6 @@ namespace Machine.Container.Activators
       }
       object[] parameters = ResolveConstructorDependencies(services);
       object instance = _objectFactory.CreateObject(_selectedCandidate.Candidate, parameters);
-      // services.ObjectInstances.Remember();
       return new Activation(_entry, instance, true);
     }
 

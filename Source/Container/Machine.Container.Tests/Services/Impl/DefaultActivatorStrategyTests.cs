@@ -15,7 +15,7 @@ namespace Machine.Container.Services.Impl
     private IObjectFactory _objectFactory;
     private IServiceDependencyInspector _serviceDependencyInspector;
     private IServiceEntryResolver _serviceEntryResolver;
-    private DefaultActivatorStrategy _strategy;
+    private DefaultActivatorFactory _activatorFactory;
     private ServiceEntry _entry;
     #endregion
 
@@ -27,7 +27,7 @@ namespace Machine.Container.Services.Impl
       _objectFactory = _mocks.StrictMock<IObjectFactory>();
       _serviceDependencyInspector = _mocks.DynamicMock<IServiceDependencyInspector>();
       _serviceEntryResolver = _mocks.DynamicMock<IServiceEntryResolver>();
-      _strategy = new DefaultActivatorStrategy(_objectFactory, _serviceEntryResolver, _serviceDependencyInspector);
+      _activatorFactory = new DefaultActivatorFactory(_objectFactory, _serviceDependencyInspector, _serviceEntryResolver);
     }
     #endregion
 
@@ -35,13 +35,13 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void CreateActivatorInstance_ReturnsInstanceActivator_ReturnsSameOne()
     {
-      Assert.IsInstanceOfType(typeof(StaticActivator), _strategy.CreateStaticActivator(_entry, new Service1()));
+      Assert.IsInstanceOfType(typeof(StaticActivator), _activatorFactory.CreateStaticActivator(_entry, new Service1()));
     }
 
     [Test]
     public void CreateDefaultActivator_Always_IsDefaultActivator()
     {
-      Assert.IsInstanceOfType(typeof(DefaultActivator), _strategy.CreateDefaultActivator(_entry));
+      Assert.IsInstanceOfType(typeof(DefaultActivator), _activatorFactory.CreateDefaultActivator(_entry));
     }
     #endregion
   }

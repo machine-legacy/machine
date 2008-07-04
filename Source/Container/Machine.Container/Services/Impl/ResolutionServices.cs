@@ -38,9 +38,9 @@ namespace Machine.Container.Services.Impl
       get { return _containerServices.ActivatorStore; }
     }
 
-    public IActivatorStrategy ActivatorStrategy
+    public IActivatorFactory ActivatorFactory
     {
-      get { return _containerServices.ActivatorStrategy; }
+      get { return _containerServices.ActivatorFactory; }
     }
 
     public ILifestyleFactory LifestyleFactory

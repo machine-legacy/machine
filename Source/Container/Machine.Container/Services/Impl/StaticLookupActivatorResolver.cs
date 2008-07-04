@@ -15,7 +15,7 @@ namespace Machine.Container.Services.Impl
       {
         return null;
       }
-      return services.ActivatorStrategy.CreateStaticActivator(entry, value);
+      return services.ActivatorFactory.CreateStaticActivator(entry, value);
     }
     #endregion
   }

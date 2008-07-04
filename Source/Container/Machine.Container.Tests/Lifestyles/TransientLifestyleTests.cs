@@ -23,9 +23,9 @@ namespace Machine.Container.Lifestyles
     public void Initialize_Always_CreateDefaultActivator()
     {
       Run(
-        delegate { SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_entry)).Return(Get<IActivator>()); });
+        delegate { SetupResult.For(Get<IActivatorFactory>().CreateDefaultActivator(_entry)).Return(Get<IActivator>()); });
       _target.Initialize();
-      _mocks.Verify(Get<IActivatorStrategy>());
+      _mocks.Verify(Get<IActivatorFactory>());
     }
 
     [Test]
@@ -34,7 +34,7 @@ namespace Machine.Container.Lifestyles
       Activation activation = new Activation(_entry, _instance);
       Run(delegate
       {
-        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_entry)).Return(Get<IActivator>());
+        SetupResult.For(Get<IActivatorFactory>().CreateDefaultActivator(_entry)).Return(Get<IActivator>());
         Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(activation);
       });
       _target.Initialize();
@@ -48,7 +48,7 @@ namespace Machine.Container.Lifestyles
       Activation activation2 = new Activation(_entry, _instance);
       Run(delegate
       {
-        SetupResult.For(Get<IActivatorStrategy>().CreateDefaultActivator(_entry)).Return(Get<IActivator>());
+        SetupResult.For(Get<IActivatorFactory>().CreateDefaultActivator(_entry)).Return(Get<IActivator>());
         Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(activation1);
         Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(activation2);
       });
@@ -61,7 +61,7 @@ namespace Machine.Container.Lifestyles
     #region Methods
     protected override TransientLifestyle Create()
     {
-      return new TransientLifestyle(Get<IActivatorStrategy>(), _entry);
+      return new TransientLifestyle(Get<IActivatorFactory>(), _entry);
     }
     #endregion
   }

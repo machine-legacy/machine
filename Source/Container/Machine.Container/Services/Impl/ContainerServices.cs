@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   [CoverageExclude]
   public class ContainerServices : IContainerServices
   {
-    private readonly IActivatorStrategy _activatorStrategy;
+    private readonly IActivatorFactory _activatorFactory;
     private readonly IActivatorStore _activatorStore;
     private readonly ILifestyleFactory _lifestyleFactory;
     private readonly IServiceEntryResolver _serviceEntryResolver;
@@ -16,20 +16,20 @@ namespace Machine.Container.Services.Impl
     private readonly IObjectInstances _objectInstances;
     private readonly IServiceGraph _serviceGraph;
 
-    public ContainerServices(IActivatorStore activatorStore, IActivatorStrategy activatorStrategy, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph)
+    public ContainerServices(IActivatorStore activatorStore, IActivatorFactory activatorFactory, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph)
     {
       _activatorStore = activatorStore;
       _serviceGraph = serviceGraph;
-      _activatorStrategy = activatorStrategy;
+      _activatorFactory = activatorFactory;
       _lifestyleFactory = lifestyleFactory;
       _listenerInvoker = listenerInvoker;
       _objectInstances = objectInstances;
       _serviceEntryResolver = serviceEntryResolver;
     }
 
-    public IActivatorStrategy ActivatorStrategy
+    public IActivatorFactory ActivatorFactory
     {
-      get { return _activatorStrategy; }
+      get { return _activatorFactory; }
     }
 
     public IActivatorStore ActivatorStore

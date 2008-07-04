@@ -24,8 +24,8 @@ namespace Machine.Container.Services.Impl
       {
         SetupResult.For(Get<IResolutionServices>().Overrides).Return(Get<IOverrideLookup>());
         SetupResult.For(Get<IOverrideLookup>().LookupOverride(_entry)).Return(instance);
-        SetupResult.For(Get<IResolutionServices>().ActivatorStrategy).Return(Get<IActivatorStrategy>());
-        SetupResult.For(Get<IActivatorStrategy>().CreateStaticActivator(_entry, instance)).Return(Get<IActivator>());
+        SetupResult.For(Get<IResolutionServices>().ActivatorFactory).Return(Get<IActivatorFactory>());
+        SetupResult.For(Get<IActivatorFactory>().CreateStaticActivator(_entry, instance)).Return(Get<IActivator>());
       });
       Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(Get<IResolutionServices>(), _entry));
     }

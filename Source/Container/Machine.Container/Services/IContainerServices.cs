@@ -12,7 +12,7 @@ namespace Machine.Container.Services
       get;
     }
 
-    IActivatorStrategy ActivatorStrategy
+    IActivatorFactory ActivatorFactory
     {
       get;
     }

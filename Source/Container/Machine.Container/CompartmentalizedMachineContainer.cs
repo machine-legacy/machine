@@ -16,7 +16,7 @@ namespace Machine.Container
     protected readonly IContainerInfrastructureFactory _containerInfrastructureFactory;
     protected IObjectInstances _objectInstances;
     protected IServiceEntryResolver _resolver;
-    protected IActivatorStrategy _activatorStrategy;
+    protected IActivatorFactory _activatorFactory;
     protected IActivatorStore _activatorStore;
     protected ILifestyleFactory _lifestyleFactory;
     protected IServiceGraph _serviceGraph;
@@ -89,13 +89,13 @@ namespace Machine.Container
     {
       IActivatorResolver activatorResolver = _containerInfrastructureFactory.CreateDependencyResolver();
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
-      IServiceDependencyInspector serviceDependencyInspector = new ServiceDependencyInspector();
       _serviceGraph = new ServiceGraph(_listenerInvoker);
       _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
-      _activatorStrategy = new DefaultActivatorStrategy(new DotNetObjectFactory(), _resolver, serviceDependencyInspector);
       _activatorStore = new ActivatorStore();
-      _lifestyleFactory = new LifestyleFactory(_activatorStrategy);
+      // _activatorStrategy = new DefaultActivatorFactory(new DotNetObjectFactory(), _resolver, new ServiceDependencyInspector());
+      _activatorFactory = _containerInfrastructureFactory.CreateActivatorFactory(_resolver);
       _objectInstances = new ObjectInstances(_listenerInvoker, _containerInfrastructureFactory.CreateInstanceTrackingPolicy());
+      _lifestyleFactory = new LifestyleFactory(_activatorFactory);
       _containerServices = CreateContainerServices();
       _containerRegisterer = new ContainerRegisterer(_containerServices);
       _containerResolver = new ContainerResolver(_containerServices, _containerRegisterer);
@@ -137,7 +137,7 @@ namespace Machine.Container
 
     protected virtual IContainerServices CreateContainerServices()
     {
-      return new ContainerServices(_activatorStore, _activatorStrategy, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
+      return new ContainerServices(_activatorStore, _activatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
     }
 
     protected virtual void RegisterContainerInContainer()
@@ -148,14 +148,19 @@ namespace Machine.Container
   public class DefaultContainerInfrastructureFactory : IContainerInfrastructureFactory
   {
     #region IContainerInfrastructureFactory Members
-    public IActivatorResolver CreateDependencyResolver()
+    public virtual IActivatorResolver CreateDependencyResolver()
     {
       return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
     }
 
-    public IInstanceTrackingPolicy CreateInstanceTrackingPolicy()
+    public virtual IInstanceTrackingPolicy CreateInstanceTrackingPolicy()
     {
       return new GlobalActivationScope();
+    }
+
+    public virtual IActivatorFactory CreateActivatorFactory(IServiceEntryResolver entryResolver)
+    {
+      return new DefaultActivatorFactory(new DotNetObjectFactory(), new ServiceDependencyInspector(), entryResolver);
     }
     #endregion
   }

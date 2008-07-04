@@ -7,20 +7,20 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Services.Impl
 {
-  public class DefaultActivatorStrategy : IActivatorStrategy
+  public class DefaultActivatorFactory : IActivatorFactory
   {
     #region Member Data
     private readonly IObjectFactory _objectFactory;
-    private readonly IServiceEntryResolver _serviceEntryResolver;
+    private readonly IServiceEntryResolver _entryResolver;
     private readonly IServiceDependencyInspector _serviceDependencyInspector;
     #endregion
 
     #region DefaultActivatorStrategy()
-    public DefaultActivatorStrategy(IObjectFactory objectFactory, IServiceEntryResolver serviceEntryResolver, IServiceDependencyInspector serviceDependencyInspector)
+    public DefaultActivatorFactory(IObjectFactory objectFactory, IServiceDependencyInspector serviceDependencyInspector, IServiceEntryResolver serviceEntryResolver)
     {
       _objectFactory = objectFactory;
       _serviceDependencyInspector = serviceDependencyInspector;
-      _serviceEntryResolver = serviceEntryResolver;
+      _entryResolver = serviceEntryResolver;
     }
     #endregion
 
@@ -32,7 +32,7 @@ namespace Machine.Container.Services.Impl
 
     public IActivator CreateDefaultActivator(ServiceEntry entry)
     {
-      return new DefaultActivator(_objectFactory, _serviceDependencyInspector, _serviceEntryResolver, entry);
+      return new DefaultActivator(_objectFactory, _serviceDependencyInspector, _entryResolver, entry);
     }
     #endregion
   }

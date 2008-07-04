@@ -32,7 +32,7 @@ namespace Machine.Testing.AutoMocking
       return _mockingDependencyResolver.Get<TService>();
     }
   }
-  public class MockingDependencyResolverFactory : IContainerInfrastructureFactory
+  public class MockingDependencyResolverFactory : DefaultContainerInfrastructureFactory
   {
     private readonly MockingDependencyResolver _mockingDependencyResolver;
 
@@ -42,14 +42,9 @@ namespace Machine.Testing.AutoMocking
     }
 
     #region IContainerInfrastructureFactory Members
-    public IActivatorResolver CreateDependencyResolver()
+    public override IActivatorResolver CreateDependencyResolver()
     {
       return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
-    }
-
-    public IInstanceTrackingPolicy CreateInstanceTrackingPolicy()
-    {
-      return new GlobalActivationScope();
     }
     #endregion
   }

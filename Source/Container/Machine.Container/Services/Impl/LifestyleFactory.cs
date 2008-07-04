@@ -9,13 +9,13 @@ namespace Machine.Container.Services.Impl
   public class LifestyleFactory : ILifestyleFactory
   {
     #region Member Data
-    private readonly IActivatorStrategy _activatorStrategy;
+    private readonly IActivatorFactory _activatorFactory;
     #endregion
 
     #region LifestyleFactory()
-    public LifestyleFactory(IActivatorStrategy activatorStrategy)
+    public LifestyleFactory(IActivatorFactory activatorFactory)
     {
-      _activatorStrategy = activatorStrategy;
+      _activatorFactory = activatorFactory;
     }
     #endregion
 
@@ -35,14 +35,14 @@ namespace Machine.Container.Services.Impl
 
     public ILifestyle CreateSingletonLifestyle(ServiceEntry entry)
     {
-      ILifestyle lifestyle = new SingletonLifestyle(_activatorStrategy, entry);
+      ILifestyle lifestyle = new SingletonLifestyle(_activatorFactory, entry);
       lifestyle.Initialize();
       return lifestyle;
     }
 
     public ILifestyle CreateTransientLifestyle(ServiceEntry entry)
     {
-      ILifestyle lifestyle = new TransientLifestyle(_activatorStrategy, entry);
+      ILifestyle lifestyle = new TransientLifestyle(_activatorFactory, entry);
       lifestyle.Initialize();
       return lifestyle;
     }
