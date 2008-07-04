@@ -60,7 +60,7 @@ namespace Machine.Container
     }
 
     // Miscellaneous
-    public bool HasService<T>()
+    public bool CanResolve<T>()
     {
       _state.AssertIsInitialized();
       ServiceEntry entry = _resolver.LookupEntry(typeof(T));

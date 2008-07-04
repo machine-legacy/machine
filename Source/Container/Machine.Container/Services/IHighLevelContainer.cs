@@ -21,7 +21,7 @@ namespace Machine.Container.Services
     IEnumerable<ServiceRegistration> RegisteredServices { get; }
 
     void Deactivate(object instance);
-    bool HasService<T>();
+    bool CanResolve<T>();
   }
   public interface IHighLevelContainer : IMachineContainer
   {

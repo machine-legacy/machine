@@ -140,9 +140,9 @@ namespace Machine.Container
       _container.Deactivate(instance);
     }
 
-    public bool HasService<T>()
+    public bool CanResolve<T>()
     {
-      return _container.HasService<T>();
+      return _container.CanResolve<T>();
     }
     #endregion
 

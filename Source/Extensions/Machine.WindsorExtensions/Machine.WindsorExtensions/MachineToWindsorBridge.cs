@@ -89,7 +89,7 @@ namespace Machine.WindsorExtensions
       _windsor.Release(instance);
     }
 
-    public bool HasService<T>()
+    public bool CanResolve<T>()
     {
       return _windsor.Kernel.HasComponent(typeof(T));
     }
@@ -129,7 +129,7 @@ namespace Machine.WindsorExtensions
     }
     #endregion
 
-    LifestyleType Convert(Machine.Container.Model.LifestyleType lifestyleType)
+    private static LifestyleType Convert(Machine.Container.Model.LifestyleType lifestyleType)
     {
       switch (lifestyleType)
       {
