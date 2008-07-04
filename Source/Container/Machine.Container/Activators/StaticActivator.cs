@@ -30,7 +30,7 @@ namespace Machine.Container.Activators
       return _activation;
     }
 
-    public void Release(IResolutionServices services, object instance)
+    public void Deactivate(IResolutionServices services, object instance)
     {
       throw new ServiceContainerException("Releasing staticly registered instances is weird!");
     }

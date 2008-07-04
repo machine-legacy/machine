@@ -175,11 +175,11 @@ namespace Machine.Container
     }
 
     [Test]
-    public void Resolve_And_Release_Change_Entry_Works()
+    public void Resolve_And_Deactivate_Change_Entry_Works()
     {
       _machineContainer.Add<IService1, SimpleService1>();
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
-      _machineContainer.Release(service1);
+      _machineContainer.Deactivate(service1);
       _machineContainer.Register.Type<IService1>().AsTransient();
       _machineContainer.ResolveObject<IService1>();
     }
@@ -202,45 +202,45 @@ namespace Machine.Container
 
     [Test]
     [ExpectedException(typeof(ServiceContainerException))]
-    public void ReleaseNotCreatedByContainer_Throws()
+    public void DeactivateNotCreatedByContainer_Throws()
     {
       _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
-      _machineContainer.Release(new SimpleService1());
+      _machineContainer.Deactivate(new SimpleService1());
     }
 
     [Test]
-    public void ReleaseFirstTime_JustDoesThat()
+    public void DeactivateFirstTime_JustDoesThat()
     {
       _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
-      _machineContainer.Release(service1);
+      _machineContainer.Deactivate(service1);
     }
 
     [Test]
     [ExpectedException(typeof(ServiceContainerException))]
-    public void ReleaseSecondTime_Throws()
+    public void DeactivateSecondTime_Throws()
     {
       _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
-      _machineContainer.Release(service1);
-      _machineContainer.Release(service1);
+      _machineContainer.Deactivate(service1);
+      _machineContainer.Deactivate(service1);
     }
 
     [Test]
-    public void ReleaseADisposable_CallsDispose()
+    public void DeactivateADisposable_CallsDispose()
     {
       _machineContainer.Add<IDisposableService, DisposableService>();
       IDisposableService disposable = _machineContainer.ResolveObject<IDisposableService>();
-      _machineContainer.Release(disposable);
+      _machineContainer.Deactivate(disposable);
       Assert.IsTrue(disposable.IsDisposed);
     }
 
     [Test]
-    public void ReleaseASingleton_Creates_New_Instance_Afterwards()
+    public void DeactivateASingleton_Creates_New_Instance_Afterwards()
     {
       _machineContainer.Add<IService1, SimpleService1>();
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
-      _machineContainer.Release(service1);
+      _machineContainer.Deactivate(service1);
       IService1 service2 = _machineContainer.ResolveObject<IService1>();
       Assert.AreNotEqual(service1, service2);
     }

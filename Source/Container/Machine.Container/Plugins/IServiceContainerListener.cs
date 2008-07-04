@@ -10,9 +10,9 @@ namespace Machine.Container.Plugins
   {
     void Initialize(IMachineContainer container);
     void PreparedForServices();
-    void ServiceRegistered(ServiceEntry entry);
+    void OnRegistration(ServiceEntry entry);
     void Started();
-    void InstanceCreated(ResolvedServiceEntry entry, Activation activation);
-    void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation);
+    void OnActivation(ResolvedServiceEntry entry, Activation activation);
+    void OnDeactivation(ResolvedServiceEntry entry, Deactivation deactivation);
   }
 }

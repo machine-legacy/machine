@@ -84,7 +84,7 @@ namespace Machine.WindsorExtensions
       throw new NotImplementedException();
     }
 
-    public void Release(object instance)
+    public void Deactivate(object instance)
     {
       _windsor.Release(instance);
     }

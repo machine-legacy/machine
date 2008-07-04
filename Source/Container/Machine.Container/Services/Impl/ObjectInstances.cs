@@ -24,17 +24,17 @@ namespace Machine.Container.Services.Impl
     {
       if (_trackingPolicy.Remember(entry, activation) == TrackingStatus.New)
       {
-        _listenerInvoker.InstanceCreated(entry, activation);
+        _listenerInvoker.OnActivation(entry, activation);
         entry.IncrementActiveInstances();
         _log.Info("Remembering: " + entry + " - " + activation);
       }
     }
 
-    public void Release(IResolutionServices services, object instance)
+    public void Deactivate(IResolutionServices services, object instance)
     {
       Deactivation deactivation = new Deactivation(instance);
       ResolvedServiceEntry resolvedEntry = _trackingPolicy.RetrieveAndForget(instance);
-      _listenerInvoker.InstanceReleased(resolvedEntry, deactivation);
+      _listenerInvoker.OnDeactivation(resolvedEntry, deactivation);
       resolvedEntry.DecrementActiveInstances();
       resolvedEntry.Release(services, instance);
     }

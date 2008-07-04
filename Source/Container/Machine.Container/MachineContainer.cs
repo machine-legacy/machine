@@ -135,9 +135,9 @@ namespace Machine.Container
       get { return _container.RegisteredServices; }
     }
 
-    public void Release(object instance)
+    public void Deactivate(object instance)
     {
-      _container.Release(instance);
+      _container.Deactivate(instance);
     }
 
     public bool HasService<T>()

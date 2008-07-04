@@ -32,11 +32,11 @@ namespace Machine.Container.Plugins
       }
     }
 
-    public void ServiceRegistered(ServiceEntry entry)
+    public void OnRegistration(ServiceEntry entry)
     {
       foreach (IServiceContainerListener listener in _pluginManager.AllListeners)
       {
-        listener.ServiceRegistered(entry);
+        listener.OnRegistration(entry);
       }
     }
 
@@ -48,19 +48,19 @@ namespace Machine.Container.Plugins
       }
     }
 
-    public void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
+    public void OnActivation(ResolvedServiceEntry entry, Activation activation)
     {
       foreach (IServiceContainerListener listener in _pluginManager.AllListeners)
       {
-        listener.InstanceCreated(entry, activation);
+        listener.OnActivation(entry, activation);
       }
     }
 
-    public void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
+    public void OnDeactivation(ResolvedServiceEntry entry, Deactivation deactivation)
     {
       foreach (IServiceContainerListener listener in _pluginManager.AllListeners)
       {
-        listener.InstanceReleased(entry, deactivation);
+        listener.OnDeactivation(entry, deactivation);
       }
     }
     #endregion

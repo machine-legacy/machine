@@ -25,7 +25,7 @@ namespace Machine.Container.Plugins
     {
     }
 
-    public virtual void ServiceRegistered(ServiceEntry entry)
+    public virtual void OnRegistration(ServiceEntry entry)
     {
     }
 
@@ -33,11 +33,11 @@ namespace Machine.Container.Plugins
     {
     }
 
-    public virtual void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
+    public virtual void OnActivation(ResolvedServiceEntry entry, Activation activation)
     {
     }
 
-    public virtual void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
+    public virtual void OnDeactivation(ResolvedServiceEntry entry, Deactivation deactivation)
     {
     }
     #endregion

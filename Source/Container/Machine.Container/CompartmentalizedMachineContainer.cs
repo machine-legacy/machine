@@ -51,12 +51,12 @@ namespace Machine.Container
       _pluginManager.AddListener(listener);
     }
 
-    // Releasing
-    public void Release(object instance)
+    // Deactivation
+    public void Deactivate(object instance)
     {
-      _state.AssertCanRelease();
+      _state.AssertCanDeactivate();
       IResolutionServices services = _containerServices.CreateResolutionServices(new object[0]);
-      _objectInstances.Release(services, instance);
+      _objectInstances.Deactivate(services, instance);
     }
 
     // Miscellaneous
@@ -130,7 +130,7 @@ namespace Machine.Container
     {
       get
       {
-        _state.AssertCanResolve();
+        _state.AssertCanActivate();
         return _containerResolver;
       }
     }

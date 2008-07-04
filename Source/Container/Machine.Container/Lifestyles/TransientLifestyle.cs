@@ -43,9 +43,9 @@ namespace Machine.Container.Lifestyles
       return _defaultActivator.Activate(services);
     }
 
-    public virtual void Release(IResolutionServices services, object instance)
+    public virtual void Deactivate(IResolutionServices services, object instance)
     {
-      _defaultActivator.Release(services, instance);
+      _defaultActivator.Deactivate(services, instance);
     }
     #endregion
   }

@@ -19,7 +19,7 @@ namespace Machine.Container.Plugins.Disposition
       _initialized = true;
     }
 
-    public override void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
+    public override void OnActivation(ResolvedServiceEntry entry, Activation activation)
     {
       IDisposable disposable = activation.Instance as IDisposable;
       if (disposable == null) return;
@@ -29,7 +29,7 @@ namespace Machine.Container.Plugins.Disposition
       }
     }
 
-    public override void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
+    public override void OnDeactivation(ResolvedServiceEntry entry, Deactivation deactivation)
     {
       IDisposable disposable = deactivation.Instance as IDisposable;
       if (disposable == null) return;

@@ -31,14 +31,14 @@ namespace Machine.Container
       AssertState("Add Listener", ContainerState.PluginRegistration);
     }
 
-    public void AssertCanResolve()
+    public void AssertCanActivate()
     {
-      AssertState("Resolve", ContainerState.ServiceRegistration, ContainerState.Started);
+      AssertState("Activate", ContainerState.ServiceRegistration, ContainerState.Started);
     }
 
-    public void AssertCanRelease()
+    public void AssertCanDeactivate()
     {
-      AssertState("Release", ContainerState.Started);
+      AssertState("Deactivate", ContainerState.Started);
     }
 
     public void AssertCanAddServices()

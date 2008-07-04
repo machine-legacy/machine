@@ -48,7 +48,7 @@ namespace Machine.Container.Lifestyles
       }
     }
 
-    public override void Release(IResolutionServices services, object instance)
+    public override void Deactivate(IResolutionServices services, object instance)
     {
       if (_firstActivation == null)
       {

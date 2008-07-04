@@ -9,7 +9,7 @@ namespace Machine.Container.Plugins.Starter
   {
     private readonly List<ServiceEntry> _startables = new List<ServiceEntry>();
 
-    public override void ServiceRegistered(ServiceEntry entry)
+    public override void OnRegistration(ServiceEntry entry)
     {
       Type startable = typeof(IStartable);
       if (startable.IsAssignableFrom(entry.ImplementationType))
@@ -18,7 +18,7 @@ namespace Machine.Container.Plugins.Starter
       }
     }
 
-    public override void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
+    public override void OnActivation(ResolvedServiceEntry entry, Activation activation)
     {
     }
 

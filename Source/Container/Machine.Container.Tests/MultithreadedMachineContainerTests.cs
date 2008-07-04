@@ -100,7 +100,7 @@ namespace Machine.Container
         for (int i = 0; i < 20; ++i)
         {
           Service1DependsOn2 service = _machineContainer.Resolve.Object<Service1DependsOn2>();
-          _machineContainer.Release(service);
+          _machineContainer.Deactivate(service);
         }
         PerThreadUsages.CopyThreadUsagesToMainCollection(statistics);
       };
@@ -150,7 +150,7 @@ namespace Machine.Container
     {
     }
 
-    public void ServiceRegistered(ServiceEntry entry)
+    public void OnRegistration(ServiceEntry entry)
     {
     }
 
@@ -159,12 +159,12 @@ namespace Machine.Container
       _creations.Clear();
     }
 
-    public void InstanceCreated(ResolvedServiceEntry entry, Activation activation)
+    public void OnActivation(ResolvedServiceEntry entry, Activation activation)
     {
       _creations.Add(entry, activation);
     }
 
-    public void InstanceReleased(ResolvedServiceEntry entry, Deactivation deactivation)
+    public void OnDeactivation(ResolvedServiceEntry entry, Deactivation deactivation)
     {
     }
     #endregion

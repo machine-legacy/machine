@@ -60,7 +60,7 @@ namespace Machine.Container.Activators
       return new Activation(_entry, instance, true);
     }
 
-    public void Release(IResolutionServices services, object instance)
+    public void Deactivate(IResolutionServices services, object instance)
     {
     }
     #endregion

@@ -9,6 +9,6 @@ namespace Machine.Container.Services
   {
     bool CanActivate(IResolutionServices services);
     Activation Activate(IResolutionServices services);
-    void Release(IResolutionServices services, object instance);
+    void Deactivate(IResolutionServices services, object instance);
   }
 }

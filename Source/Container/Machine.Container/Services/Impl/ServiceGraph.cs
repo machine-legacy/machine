@@ -44,7 +44,7 @@ namespace Machine.Container.Services.Impl
         _log.Info("Adding: " + entry);
         _map[entry.ServiceType] = entry;
         _registrationOrder.Add(entry.ServiceType);
-        _listenerInvoker.ServiceRegistered(entry);
+        _listenerInvoker.OnRegistration(entry);
       }
     }
 
