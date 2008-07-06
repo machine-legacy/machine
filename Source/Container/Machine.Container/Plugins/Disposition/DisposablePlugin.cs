@@ -9,12 +9,11 @@ namespace Machine.Container.Plugins.Disposition
   public class DisposablePlugin : AbstractServiceContainerListener, IServiceContainerPlugin
   {
     private readonly List<IDisposable> _disposables = new List<IDisposable>();
-    private bool _initialized;
 
     #region IServiceContainerListener Members
-    public virtual void Initialize(IMachineContainer container)
+    public virtual void Initialize(PluginServices services)
     {
-      container.AddListener(this);
+      services.Container.AddListener(this);
     }
 
     public override void InitializeListener(IMachineContainer container)

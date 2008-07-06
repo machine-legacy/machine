@@ -12,18 +12,16 @@ namespace Machine.Testing.AutoMocking
 {
   public class AutoMockingContainer : MachineContainer
   {
-    private readonly MockRepository _mocks;
     private readonly MockingDependencyResolver _mockingDependencyResolver;
 
     public AutoMockingContainer(MockRepository mocks)
-      : this(mocks, new MockingDependencyResolver(mocks))
+      : this(new MockingDependencyResolver(mocks))
     {
     }
 
-    public AutoMockingContainer(MockRepository mocks, MockingDependencyResolver mockingDependencyResolver)
+    public AutoMockingContainer(MockingDependencyResolver mockingDependencyResolver)
       : base(new CompartmentalizedMachineContainer(new MockingDependencyResolverFactory(mockingDependencyResolver)))
     {
-      _mocks = mocks;
       _mockingDependencyResolver = mockingDependencyResolver;
     }
 
@@ -42,9 +40,11 @@ namespace Machine.Testing.AutoMocking
     }
 
     #region IContainerInfrastructureFactory Members
-    public override IActivatorResolver CreateDependencyResolver()
+    public override IRootActivatorResolver CreateDependencyResolver()
     {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), _mockingDependencyResolver, new ThrowsPendingActivatorResolver());
+      IRootActivatorResolver resolver = base.CreateDependencyResolver();
+      resolver.AddAfter(typeof(ActivatorStoreActivatorResolver), _mockingDependencyResolver);
+      return resolver;
     }
     #endregion
   }

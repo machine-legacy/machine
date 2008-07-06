@@ -7,9 +7,9 @@ namespace Machine.Container.Plugins
 {
   public interface IPluginManager
   {
+    void Initialize(PluginServices services);
     void AddListener(IServiceContainerListener listener);
     void AddPlugin(IServiceContainerPlugin plugin);
-    void Initialize();
     void Dispose();
     IEnumerable<IServiceContainerListener> AllListeners
     {

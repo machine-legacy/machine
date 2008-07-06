@@ -9,4 +9,11 @@ namespace Machine.Container.Services
   {
     IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry);
   }
+  public interface IRootActivatorResolver : IActivatorResolver
+  {
+    void AddFirst(IActivatorResolver resolver);
+    void AddAfter(Type type, IActivatorResolver resolver);
+    void AddBefore(Type type, IActivatorResolver resolver);
+    void AddLast(IActivatorResolver resolver);
+  }
 }

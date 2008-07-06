@@ -5,16 +5,29 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services.Impl
 {
-  public class RootActivatorResolver : IActivatorResolver
+  public class RootActivatorResolver : IRootActivatorResolver
   {
-    #region Member Data
-    private readonly IActivatorResolver[] _resolvers;
-    #endregion
+    private readonly List<IActivatorResolver> _resolvers = new List<IActivatorResolver>();
 
-    #region RootDependencyResolver()
-    public RootActivatorResolver(params IActivatorResolver[] resolvers)
+    #region IRootActivatorResolver Members
+    public void AddFirst(IActivatorResolver resolver)
     {
-      _resolvers = resolvers;
+      _resolvers.Insert(0, resolver);
+    }
+
+    public void AddAfter(Type type, IActivatorResolver resolver)
+    {
+      _resolvers.Insert(_resolvers.IndexOf(FindByType(type)) + 1, resolver);
+    }
+
+    public void AddBefore(Type type, IActivatorResolver resolver)
+    {
+      _resolvers.Insert(_resolvers.IndexOf(FindByType(type)), resolver);
+    }
+
+    public void AddLast(IActivatorResolver resolver)
+    {
+      _resolvers.Add(resolver);
     }
     #endregion
 
@@ -29,8 +42,20 @@ namespace Machine.Container.Services.Impl
           return activator;
         }
       }
-      return null;
+      throw new ServiceContainerException();
     }
     #endregion
+
+    private IActivatorResolver FindByType(Type type)
+    {
+      foreach (IActivatorResolver resolver in _resolvers)
+      {
+        if (type.IsInstanceOfType(resolver))
+        {
+          return resolver;
+        }
+      }
+      throw new ServiceContainerException("Unable to find ActivatorResolver of type: " + type.FullName);
+    }
   }
 }

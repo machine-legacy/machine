@@ -8,14 +8,12 @@ namespace Machine.Container.Plugins
 {
   public class PluginManager : IPluginManager
   {
-    private readonly IMachineContainer _container;
     private readonly List<IServiceContainerPlugin> _plugins = new List<IServiceContainerPlugin>();
     private readonly List<IServiceContainerListener> _listeners = new List<IServiceContainerListener>();
     private bool _initialized;
 
-    public PluginManager(IMachineContainer container)
+    public PluginManager()
     {
-      _container = container;
     }
 
     #region IPluginManager Members
@@ -31,12 +29,12 @@ namespace Machine.Container.Plugins
       _plugins.Add(plugin);
     }
 
-    public void Initialize()
+    public void Initialize(PluginServices services)
     {
       AssertNotInitialized();
       foreach (IServiceContainerPlugin plugin in _plugins)
       {
-        plugin.Initialize(_container);
+        plugin.Initialize(services);
       }
       _initialized = true;
     }

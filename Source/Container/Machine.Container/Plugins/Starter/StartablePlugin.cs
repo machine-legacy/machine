@@ -10,7 +10,7 @@ namespace Machine.Container.Plugins.Starter
   {
     private readonly List<ServiceEntry> _startables = new List<ServiceEntry>();
 
-    public virtual void Initialize(IMachineContainer container)
+    public virtual void Initialize(PluginServices services)
     {
     }
 

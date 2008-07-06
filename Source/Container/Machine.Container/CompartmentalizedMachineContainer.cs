@@ -10,25 +10,27 @@ namespace Machine.Container
   public class CompartmentalizedMachineContainer : IMachineContainer
   {
     #region Member Data
-    protected readonly ContainerStatePolicy _state = new ContainerStatePolicy();
-    protected readonly IPluginManager _pluginManager;
-    protected readonly IListenerInvoker _listenerInvoker;
-    protected readonly IContainerInfrastructureFactory _containerInfrastructureFactory;
-    protected IObjectInstances _objectInstances;
-    protected IServiceEntryResolver _resolver;
-    protected IActivatorFactory _activatorFactory;
-    protected IActivatorStore _activatorStore;
-    protected ILifestyleFactory _lifestyleFactory;
-    protected IServiceGraph _serviceGraph;
-    protected IContainerServices _containerServices;
-    protected ContainerRegisterer _containerRegisterer;
-    protected ContainerResolver _containerResolver;
+    private readonly ContainerStatePolicy _state = new ContainerStatePolicy();
+    private readonly IPluginManager _pluginManager;
+    private readonly IListenerInvoker _listenerInvoker;
+    private readonly IContainerInfrastructureFactory _containerInfrastructureFactory;
+    private IObjectInstances _objectInstances;
+    private IServiceEntryResolver _resolver;
+    private IActivatorFactory _activatorFactory;
+    private IActivatorStore _activatorStore;
+    private ILifestyleFactory _lifestyleFactory;
+    private IServiceGraph _serviceGraph;
+    private IContainerServices _containerServices;
+    private ContainerRegisterer _containerRegisterer;
+    private ContainerResolver _containerResolver;
+    private IRootActivatorResolver _rootActivatorResolver;
+    private PluginServices _pluginServices;
     #endregion
 
     public CompartmentalizedMachineContainer(IContainerInfrastructureFactory containerInfrastructureFactory)
     {
       _containerInfrastructureFactory = containerInfrastructureFactory;
-      _pluginManager = new PluginManager(this);
+      _pluginManager = new PluginManager();
       _listenerInvoker = new ListenerInvoker(_pluginManager);
     }
 
@@ -87,10 +89,11 @@ namespace Machine.Container
 
     public virtual void Initialize()
     {
-      IActivatorResolver activatorResolver = _containerInfrastructureFactory.CreateDependencyResolver();
+      _rootActivatorResolver = _containerInfrastructureFactory.CreateDependencyResolver();
+      _pluginServices = new PluginServices(this, _rootActivatorResolver);
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
       _serviceGraph = new ServiceGraph(_listenerInvoker);
-      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, activatorResolver);
+      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, _rootActivatorResolver);
       _activatorStore = new ActivatorStore();
       _activatorFactory = _containerInfrastructureFactory.CreateActivatorFactory(_resolver);
       _objectInstances = new ObjectInstances(_listenerInvoker, _containerInfrastructureFactory.CreateInstanceTrackingPolicy());
@@ -103,7 +106,7 @@ namespace Machine.Container
 
     public virtual void PrepareForServices()
     {
-      _pluginManager.Initialize();
+      _pluginManager.Initialize(_pluginServices);
       _listenerInvoker.InitializeListener(this);
       _state.PrepareForServices();
       RegisterContainerInContainer();
@@ -147,9 +150,13 @@ namespace Machine.Container
   public class DefaultContainerInfrastructureFactory : IContainerInfrastructureFactory
   {
     #region IContainerInfrastructureFactory Members
-    public virtual IActivatorResolver CreateDependencyResolver()
+    public virtual IRootActivatorResolver CreateDependencyResolver()
     {
-      return new RootActivatorResolver(new StaticLookupActivatorResolver(), new ActivatorStoreActivatorResolver(), new ThrowsPendingActivatorResolver());
+      RootActivatorResolver resolver = new RootActivatorResolver();
+      resolver.AddLast(new StaticLookupActivatorResolver());
+      resolver.AddLast(new ActivatorStoreActivatorResolver());
+      resolver.AddLast(new ThrowsPendingActivatorResolver());
+      return resolver;
     }
 
     public virtual IInstanceTrackingPolicy CreateInstanceTrackingPolicy()

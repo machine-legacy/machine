@@ -72,6 +72,7 @@
     <Compile Include="Plugins\IServiceContainerListener.cs" />
     <Compile Include="Plugins\IServiceContainerPlugin.cs" />
     <Compile Include="Plugins\ListenerInvoker.cs" />
+    <Compile Include="Plugins\PluginServices.cs" />
     <Compile Include="Plugins\Starter\StartablePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceResolutionException.cs" />

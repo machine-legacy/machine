@@ -19,6 +19,7 @@ namespace Machine.Container.Services.Impl
 
     #region Test Methods
     [Test]
+    [ExpectedException(typeof(ServiceContainerException))]
     public void ResolveActivator_CantResolveAtAll_ThrowsAfterTrying()
     {
       Run(delegate
@@ -26,7 +27,7 @@ namespace Machine.Container.Services.Impl
         Expect.Call(_resolver1.ResolveActivator(Get<IResolutionServices>(), _entry)).Return(null);
         Expect.Call(_resolver2.ResolveActivator(Get<IResolutionServices>(), _entry)).Return(null);
       });
-      Assert.IsNull(_target.ResolveActivator(Get<IResolutionServices>(), _entry));
+      _target.ResolveActivator(Get<IResolutionServices>(), _entry);
     }
 
     [Test]
@@ -45,7 +46,10 @@ namespace Machine.Container.Services.Impl
     {
       _resolver1 = _mocks.DynamicMock<IActivatorResolver>();
       _resolver2 = _mocks.DynamicMock<IActivatorResolver>();
-      return new RootActivatorResolver(new IActivatorResolver[] { _resolver1, _resolver2 });
+      RootActivatorResolver resolver = new RootActivatorResolver();
+      resolver.AddLast(_resolver1);
+      resolver.AddLast(_resolver2);
+      return resolver;
     }
     #endregion
   }

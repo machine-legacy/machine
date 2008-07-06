@@ -7,7 +7,7 @@ namespace Machine.Container.Services
 {
   public interface IContainerInfrastructureFactory
   {
-    IActivatorResolver CreateDependencyResolver();
+    IRootActivatorResolver CreateDependencyResolver();
     IInstanceTrackingPolicy CreateInstanceTrackingPolicy();
     IActivatorFactory CreateActivatorFactory(IServiceEntryResolver entryResolver);
   }

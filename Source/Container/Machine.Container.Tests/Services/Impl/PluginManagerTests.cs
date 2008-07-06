@@ -8,6 +8,8 @@ namespace Machine.Container.Services.Impl
   [TestFixture]
   public class PluginManager_NotInitialized : ScaffoldTests<PluginManager>
   {
+    private PluginServices _pluginServices;
+
     [Test]
     public void AddPlugin_Always_Just_Adds_It()
     {
@@ -20,16 +22,17 @@ namespace Machine.Container.Services.Impl
     {
       IServiceContainerPlugin plugin = _mocks.DynamicMock<IServiceContainerPlugin>();
       _target.AddPlugin(plugin);
-      plugin.Initialize(Get<IHighLevelContainer>());
+      plugin.Initialize(_pluginServices);
 
       _mocks.ReplayAll();
-      _target.Initialize();
+      _target.Initialize(_pluginServices);
 
       _mocks.Verify(plugin);
     }
 
     protected override PluginManager Create()
     {
+      _pluginServices = new PluginServices(Get<IHighLevelContainer>(), Get<IRootActivatorResolver>());
       return new PluginManager(Get<IHighLevelContainer>());
     }
   }
@@ -41,7 +44,7 @@ namespace Machine.Container.Services.Impl
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddPlugin_Throws()
     {
-      _target.Initialize();
+      _target.Initialize(new PluginServices(Get<IHighLevelContainer>(), Get<IRootActivatorResolver>()));
       _target.AddPlugin(_mocks.DynamicMock<IServiceContainerPlugin>());
     }
   }
