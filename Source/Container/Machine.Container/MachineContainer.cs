@@ -142,7 +142,12 @@ namespace Machine.Container
 
     public bool CanResolve<T>()
     {
-      return _container.CanResolve<T>();
+      return CanResolve(typeof(T));
+    }
+
+    public bool CanResolve(Type type)
+    {
+      return _container.CanResolve(type);
     }
     #endregion
 

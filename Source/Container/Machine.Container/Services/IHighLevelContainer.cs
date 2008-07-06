@@ -22,6 +22,7 @@ namespace Machine.Container.Services
 
     void Deactivate(object instance);
     bool CanResolve<T>();
+    bool CanResolve(Type type);
   }
   public interface IHighLevelContainer : IMachineContainer
   {

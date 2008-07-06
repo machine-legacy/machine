@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
@@ -64,8 +65,13 @@ namespace Machine.Container
     // Miscellaneous
     public bool CanResolve<T>()
     {
+      return CanResolve(typeof(T));
+    }
+
+    public bool CanResolve(Type type)
+    {
       _state.AssertIsInitialized();
-      ServiceEntry entry = _resolver.LookupEntry(typeof(T));
+      ServiceEntry entry = _resolver.LookupEntry(type);
       return entry != null;
     }
 

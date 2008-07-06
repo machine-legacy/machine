@@ -94,6 +94,11 @@ namespace Machine.WindsorExtensions
       return _windsor.Kernel.HasComponent(typeof(T));
     }
 
+    public bool CanResolve(Type type)
+    {
+      return _windsor.Kernel.HasComponent(type);
+    }
+
     public IEnumerable<ServiceRegistration> RegisteredServices
     {
       get { throw new NotImplementedException(); }

@@ -33,7 +33,7 @@ namespace Machine.Container.Services.Impl
     protected override PluginManager Create()
     {
       _pluginServices = new PluginServices(Get<IHighLevelContainer>(), Get<IRootActivatorResolver>());
-      return new PluginManager(Get<IHighLevelContainer>());
+      return new PluginManager();
     }
   }
 
