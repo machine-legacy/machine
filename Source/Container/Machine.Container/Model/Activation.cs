@@ -28,7 +28,7 @@ namespace Machine.Container.Model
     }
 
     public Activation(ServiceEntry entry, object instance)
-     : this(entry, instance, false)
+     : this(entry, instance, true)
     {
     }
 
