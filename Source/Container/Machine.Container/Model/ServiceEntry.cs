@@ -123,19 +123,24 @@ namespace Machine.Container.Model
       }
     }
 
-    public ServiceEntryLock Lock
-    {
-      get { return ServiceEntryLockBroker.Singleton.GetLockForEntry(this); }
-    }
-
     public void AddInterceptor(Type interceptorType)
     {
       AssertHasNoActiveInstances();
       InterceptorApplication interceptor = new InterceptorApplication(interceptorType);
-      if (!_interceptors.Contains(interceptor))
+      if (!HasInterceptor(interceptor))
       {
         _interceptors.Add(interceptor);
       }
+    }
+
+    public bool HasInterceptor(Type interceptorType)
+    {
+      return HasInterceptor(new InterceptorApplication(interceptorType));
+    }
+
+    public bool HasInterceptor(InterceptorApplication interceptor)
+    {
+      return _interceptors.Contains(interceptor);
     }
 
     public IEnumerable<InterceptorApplication> Interceptors
@@ -143,9 +148,14 @@ namespace Machine.Container.Model
       get { return _interceptors; }
     }
 
-    public bool HasInterceptors
+    public bool HasInterceptorsApplied
     {
       get { return _interceptors.Count > 0; }
+    }
+
+    public ServiceEntryLock Lock
+    {
+      get { return ServiceEntryLockBroker.Singleton.GetLockForEntry(this); }
     }
   }
 }

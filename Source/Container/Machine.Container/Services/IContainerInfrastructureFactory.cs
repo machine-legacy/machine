@@ -9,6 +9,6 @@ namespace Machine.Container.Services
   {
     IRootActivatorResolver CreateDependencyResolver();
     IInstanceTrackingPolicy CreateInstanceTrackingPolicy();
-    IActivatorFactory CreateActivatorFactory(IServiceEntryResolver entryResolver);
+    IRootActivatorFactory CreateActivatorFactory(IServiceEntryResolver entryResolver);
   }
 }

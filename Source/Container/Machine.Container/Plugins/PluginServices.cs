@@ -11,6 +11,7 @@ namespace Machine.Container.Plugins
     private readonly ContainerStatePolicy _statePolicy;
     private readonly IMachineContainer _container;
     private readonly IRootActivatorResolver _resolver;
+    private readonly IRootActivatorFactory _factory;
 
     public ContainerStatePolicy StatePolicy
     {
@@ -27,9 +28,15 @@ namespace Machine.Container.Plugins
       get { return _resolver; }
     }
 
-    public PluginServices(ContainerStatePolicy statePolicy, IMachineContainer container, IRootActivatorResolver resolver)
+    public IRootActivatorFactory Factory
+    {
+      get { return _factory; }
+    }
+
+    public PluginServices(ContainerStatePolicy statePolicy, IMachineContainer container, IRootActivatorResolver resolver, IRootActivatorFactory factory)
     {
       _statePolicy = statePolicy;
+      _factory = factory;
       _container = container;
       _resolver = resolver;
     }

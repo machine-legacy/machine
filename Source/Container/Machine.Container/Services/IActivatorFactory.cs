@@ -10,4 +10,7 @@ namespace Machine.Container.Services
     IActivator CreateStaticActivator(ServiceEntry entry, object instance);
     IActivator CreateDefaultActivator(ServiceEntry entry);
   }
+  public interface IRootActivatorFactory : IActivatorFactory, IChain<IActivatorFactory>
+  {
+  }
 }

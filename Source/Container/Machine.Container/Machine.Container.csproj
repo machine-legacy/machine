@@ -47,6 +47,10 @@
     <Compile Include="ContainerRegisterer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
+    <Compile Include="Services\IChain.cs" />
+    <Compile Include="Services\Impl\RootActivatorFactoryChain.cs" />
+    <Compile Include="Services\Impl\Chain.cs" />
+    <Compile Include="Services\Impl\DefaultContainerInfrastructureFactory.cs" />
     <Compile Include="Model\ContainerStatePolicy.cs" />
     <Compile Include="MachineContainer.cs" />
     <Compile Include="IoC.cs" />
@@ -102,7 +106,7 @@
     <Compile Include="Services\Impl\StaticLookupActivatorResolver.cs" />
     <Compile Include="Services\IObjectInstances.cs" />
     <Compile Include="Services\ResolutionMessageBuilder.cs" />
-    <Compile Include="Services\Impl\RootActivatorResolver.cs" />
+    <Compile Include="Services\Impl\ActivatorResolverChain.cs" />
     <Compile Include="Services\Impl\ServiceDependencyInspector.cs" />
     <Compile Include="Services\Impl\ServiceEntryFactory.cs" />
     <Compile Include="Services\Impl\ServiceEntryResolver.cs" />

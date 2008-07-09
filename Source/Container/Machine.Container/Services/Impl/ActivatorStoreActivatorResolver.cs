@@ -14,7 +14,6 @@ namespace Machine.Container.Services.Impl
     #region IActivatorResolver Members
     public virtual IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry)
     {
-      // _log.Info("ResolveActivator: " + entry);
       if (!services.ActivatorStore.HasActivator(entry))
       {
         return null;

@@ -9,7 +9,7 @@ using Rhino.Mocks;
 namespace Machine.Container.Services.Impl
 {
   [TestFixture]
-  public class RootActivatorResolverTests : ScaffoldTests<RootActivatorResolver>
+  public class RootActivatorResolverTests : ScaffoldTests<RootActivatorResolverChain>
   {
     #region Member Data
     private readonly ServiceEntry _entry = ServiceEntryHelper.NewEntry();
@@ -42,11 +42,11 @@ namespace Machine.Container.Services.Impl
     #endregion
 
     #region Methods
-    protected override RootActivatorResolver Create()
+    protected override RootActivatorResolverChain Create()
     {
       _resolver1 = _mocks.DynamicMock<IActivatorResolver>();
       _resolver2 = _mocks.DynamicMock<IActivatorResolver>();
-      RootActivatorResolver resolver = new RootActivatorResolver();
+      RootActivatorResolverChain resolver = new RootActivatorResolverChain();
       resolver.AddLast(_resolver1);
       resolver.AddLast(_resolver2);
       return resolver;

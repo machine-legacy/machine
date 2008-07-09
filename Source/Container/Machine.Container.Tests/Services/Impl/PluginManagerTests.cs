@@ -34,7 +34,7 @@ namespace Machine.Container.Services.Impl
 
     protected override PluginManager Create()
     {
-      _pluginServices = new PluginServices(new ContainerStatePolicy(), Get<IHighLevelContainer>(), Get<IRootActivatorResolver>());
+      _pluginServices = new PluginServices(new ContainerStatePolicy(), Get<IHighLevelContainer>(), Get<IRootActivatorResolver>(), Get<IRootActivatorFactory>());
       return new PluginManager();
     }
   }
@@ -46,7 +46,7 @@ namespace Machine.Container.Services.Impl
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddPlugin_Throws()
     {
-      _target.Initialize(new PluginServices(new ContainerStatePolicy(), Get<IHighLevelContainer>(), Get<IRootActivatorResolver>()));
+      _target.Initialize(new PluginServices(new ContainerStatePolicy(), Get<IHighLevelContainer>(), Get<IRootActivatorResolver>(), Get<IRootActivatorFactory>()));
       _target.AddPlugin(_mocks.DynamicMock<IServiceContainerPlugin>());
     }
   }

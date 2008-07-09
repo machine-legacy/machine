@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
@@ -9,12 +8,8 @@ namespace Machine.Container.Services
   {
     IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry);
   }
-  public interface IRootActivatorResolver : IActivatorResolver
+
+  public interface IRootActivatorResolver : IActivatorResolver, IChain<IActivatorResolver>
   {
-    void AddFirst(IActivatorResolver resolver);
-    void AddAfter(Type type, IActivatorResolver resolver);
-    void AddBefore(Type type, IActivatorResolver resolver);
-    void AddLast(IActivatorResolver resolver);
-    void Replace(Type type, IActivatorResolver resolver);
   }
 }

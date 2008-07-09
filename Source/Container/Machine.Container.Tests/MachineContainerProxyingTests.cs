@@ -42,7 +42,7 @@ namespace Machine.Container
     }
 
     [Test]
-    [ExpectedException(typeof(ServiceContainerException))]
+    [ExpectedException(typeof(DynamicProxyException))]
     public void Intercept_When_No_Service_Fails()
     {
       _machineContainer.Register.Type<SimpleService1>().Intercept<SimpleInterceptor>();
