@@ -61,5 +61,17 @@ namespace Machine.Container.Configuration
       _containerServices.ActivatorStore.AddActivator(_entry, activator);
       return this;
     }
+
+    public RegistrationConfigurer Intercept(Type type)
+    {
+      _containerServices.StatePolicy.AssertSupports(SupportedFeature.Interceptors);
+      _entry.AddInterceptor(type);
+      return this;
+    }
+
+    public RegistrationConfigurer Intercept<TType>()
+    {
+      return Intercept(typeof(TType));
+    }
   }
 }

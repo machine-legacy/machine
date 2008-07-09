@@ -47,7 +47,7 @@
     <Compile Include="ContainerRegisterer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
-    <Compile Include="ContainerStatePolicy.cs" />
+    <Compile Include="Model\ContainerStatePolicy.cs" />
     <Compile Include="MachineContainer.cs" />
     <Compile Include="IoC.cs" />
     <Compile Include="Lifestyles\SingletonLifestyle.cs" />
@@ -56,6 +56,7 @@
     <Compile Include="Model\ConstructorCandidate.cs" />
     <Compile Include="Model\DependencyType.cs" />
     <Compile Include="Model\InstanceTrackingPolicy.cs" />
+    <Compile Include="Model\InterceptorApplication.cs" />
     <Compile Include="Model\LifestyleType.cs" />
     <Compile Include="Model\Deactivation.cs" />
     <Compile Include="Model\RemberedActivation.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="Model\ServiceEntryLock.cs" />
     <Compile Include="Model\ServiceEntryLockBroker.cs" />
     <Compile Include="Model\ServiceRegistration.cs" />
+    <Compile Include="Model\SupportedFeature.cs" />
     <Compile Include="Plugins\AbstractServiceContainerListener.cs" />
     <Compile Include="Plugins\Disposition\DisposablePlugin.cs" />
     <Compile Include="Plugins\IListenerInvoker.cs" />

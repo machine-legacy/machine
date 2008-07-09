@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+using Machine.Container.Model;
 using Machine.Container.Plugins;
 
 namespace Machine.Container.Services.Impl
@@ -31,6 +32,11 @@ namespace Machine.Container.Services.Impl
     public DependencyGraphTracker DependencyGraphTracker
     {
       get { return _dependencyGraphTracker; }
+    }
+
+    public ContainerStatePolicy StatePolicy
+    {
+      get { return _containerServices.StatePolicy; }
     }
 
     public IActivatorStore ActivatorStore

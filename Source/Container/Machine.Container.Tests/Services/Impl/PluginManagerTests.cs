@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+
+using Machine.Container.Model;
 using Machine.Container.Plugins;
 using NUnit.Framework;
 
@@ -32,7 +34,7 @@ namespace Machine.Container.Services.Impl
 
     protected override PluginManager Create()
     {
-      _pluginServices = new PluginServices(Get<IHighLevelContainer>(), Get<IRootActivatorResolver>());
+      _pluginServices = new PluginServices(new ContainerStatePolicy(), Get<IHighLevelContainer>(), Get<IRootActivatorResolver>());
       return new PluginManager();
     }
   }
@@ -44,7 +46,7 @@ namespace Machine.Container.Services.Impl
     [ExpectedException(typeof(InvalidOperationException))]
     public void AddPlugin_Throws()
     {
-      _target.Initialize(new PluginServices(Get<IHighLevelContainer>(), Get<IRootActivatorResolver>()));
+      _target.Initialize(new PluginServices(new ContainerStatePolicy(), Get<IHighLevelContainer>(), Get<IRootActivatorResolver>()));
       _target.AddPlugin(_mocks.DynamicMock<IServiceContainerPlugin>());
     }
   }

@@ -96,7 +96,7 @@ namespace Machine.Container
     public virtual void Initialize()
     {
       _rootActivatorResolver = _containerInfrastructureFactory.CreateDependencyResolver();
-      _pluginServices = new PluginServices(this, _rootActivatorResolver);
+      _pluginServices = new PluginServices(_state, this, _rootActivatorResolver);
       IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
       _serviceGraph = new ServiceGraph(_listenerInvoker);
       _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, _rootActivatorResolver);
@@ -145,7 +145,7 @@ namespace Machine.Container
 
     protected virtual IContainerServices CreateContainerServices()
     {
-      return new ContainerServices(_activatorStore, _activatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph);
+      return new ContainerServices(_activatorStore, _activatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph, _state);
     }
 
     protected virtual void RegisterContainerInContainer()

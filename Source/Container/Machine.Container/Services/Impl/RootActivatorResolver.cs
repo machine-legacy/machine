@@ -29,6 +29,13 @@ namespace Machine.Container.Services.Impl
     {
       _resolvers.Add(resolver);
     }
+
+    public void Replace(Type type, IActivatorResolver resolver)
+    {
+      int index = _resolvers.IndexOf(FindByType(type));
+      _resolvers.Insert(index + 1, resolver);
+      _resolvers.RemoveAt(index);
+    }
     #endregion
 
     #region IActivatorResolver Members

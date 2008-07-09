@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using Castle.Core.Interceptor;
+
 using Machine.Container.Model;
 using Machine.Container.Plugins.Disposition;
 using Machine.Container.Services.Impl;
@@ -296,6 +298,9 @@ namespace Machine.Container
   }
   public class Service1 : IService1, IExampleService
   {
+    public void SayHello()
+    {
+    }
   }
   public class Service2DependsOn1 : IService2, IExampleService
   {
@@ -312,9 +317,15 @@ namespace Machine.Container
     {
       _s2 = s2;
     }
+    public void SayHello()
+    {
+    }
   }
   public class SimpleService1 : IService1
   {
+    public void SayHello()
+    {
+    }
   }
   public class SimpleService2 : IService2, IExampleService
   {
@@ -339,6 +350,23 @@ namespace Machine.Container
     public void Dispose()
     {
       _disposed = true;
+    }
+    #endregion
+  }
+  public class SimpleInterceptor : IInterceptor
+  {
+    private readonly List<IInvocation> _invocations = new List<IInvocation>();
+
+    public List<IInvocation> Invocations
+    {
+      get { return _invocations; }
+    }
+
+    #region IInterceptor Members
+    public void Intercept(IInvocation invocation)
+    {
+      _invocations.Add(invocation);
+      invocation.Proceed();
     }
     #endregion
   }

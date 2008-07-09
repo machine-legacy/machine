@@ -15,5 +15,6 @@ namespace Machine.Container.Services
     void AddAfter(Type type, IActivatorResolver resolver);
     void AddBefore(Type type, IActivatorResolver resolver);
     void AddLast(IActivatorResolver resolver);
+    void Replace(Type type, IActivatorResolver resolver);
   }
 }

@@ -1,6 +1,7 @@
 using System;
+using System.Collections.Generic;
 
-namespace Machine.Container
+namespace Machine.Container.Model
 {
   public class ContainerStatePolicy
   {
@@ -11,6 +12,8 @@ namespace Machine.Container
       ServiceRegistration,
       Started
     }
+
+    private readonly List<SupportedFeature> _supportedFeatures = new List<SupportedFeature>();
     private ContainerState _state = ContainerState.Unknown;
 
     private void AssertState(string attempting, params ContainerState[] states)
@@ -67,6 +70,22 @@ namespace Machine.Container
     {
       AssertState("Starting Container", ContainerState.ServiceRegistration);
       _state = ContainerState.Started;
+    }
+
+    public void AddSupportedFeature(SupportedFeature feature)
+    {
+      lock (_supportedFeatures)
+      {
+        _supportedFeatures.Add(feature);
+      }
+    }
+
+    public void AssertSupports(SupportedFeature feature)
+    {
+      if (!_supportedFeatures.Contains(feature))
+      {
+        throw new ServiceContainerException(String.Format("Support for the feature {0} is missing!", feature));
+      }
     }
   }
 }

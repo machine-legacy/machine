@@ -89,6 +89,7 @@ namespace Machine.Container.Services.Impl
 
   public interface IService1
   {
+    void SayHello();
   }
 
   public interface IService2

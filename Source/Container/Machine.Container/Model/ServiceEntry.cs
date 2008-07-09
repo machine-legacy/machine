@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace Machine.Container.Model
 {
@@ -9,6 +10,7 @@ namespace Machine.Container.Model
     private Type _implementationType;
     private LifestyleType _lifestyleType;
     private long _numberOfActiveInstances;
+    private List<InterceptorApplication> _interceptors = new List<InterceptorApplication>();
     #endregion
 
     #region Properties
@@ -124,6 +126,26 @@ namespace Machine.Container.Model
     public ServiceEntryLock Lock
     {
       get { return ServiceEntryLockBroker.Singleton.GetLockForEntry(this); }
+    }
+
+    public void AddInterceptor(Type interceptorType)
+    {
+      AssertHasNoActiveInstances();
+      InterceptorApplication interceptor = new InterceptorApplication(interceptorType);
+      if (!_interceptors.Contains(interceptor))
+      {
+        _interceptors.Add(interceptor);
+      }
+    }
+
+    public IEnumerable<InterceptorApplication> Interceptors
+    {
+      get { return _interceptors; }
+    }
+
+    public bool HasInterceptors
+    {
+      get { return _interceptors.Count > 0; }
     }
   }
 }
