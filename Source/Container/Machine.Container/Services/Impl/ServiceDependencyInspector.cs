@@ -25,7 +25,7 @@ namespace Machine.Container.Services.Impl
         }
         else
         {
-          BailOutIfEqualNumberOfArguments(selected, candidate);
+          BailOutIfEqualNumberOfArguments(type, selected, candidate);
           selected = ChooseOneWithMoreArguments(selected, candidate);
         }
       }
@@ -52,11 +52,11 @@ namespace Machine.Container.Services.Impl
       return candidates;
     }
 
-    private static void BailOutIfEqualNumberOfArguments(ConstructorCandidate first, ConstructorCandidate second)
+    private static void BailOutIfEqualNumberOfArguments(Type type, ConstructorCandidate first, ConstructorCandidate second)
     {
       if (first.Dependencies.Count == second.Dependencies.Count)
       {
-        throw new InvalidOperationException();
+        throw new InvalidOperationException("Two constructors with equal number of arguments on " + type);
       }
     }
 
