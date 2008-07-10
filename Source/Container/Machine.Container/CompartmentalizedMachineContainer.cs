@@ -117,6 +117,7 @@ namespace Machine.Container
       _state.PrepareForServices();
       RegisterContainerInContainer();
       _listenerInvoker.PreparedForServices();
+      _pluginManager.ReadyForServices(_pluginServices);
     }
 
     public virtual void Start()

@@ -14,6 +14,10 @@ namespace Machine.Container.Plugins.Starter
     {
     }
 
+    public virtual void ReadyForServices(PluginServices services)
+    {
+    }
+
     public override void OnRegistration(ServiceEntry entry)
     {
       Type startable = typeof(IStartable);

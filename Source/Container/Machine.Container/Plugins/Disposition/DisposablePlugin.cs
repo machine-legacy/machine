@@ -16,6 +16,10 @@ namespace Machine.Container.Plugins.Disposition
       services.Container.AddListener(this);
     }
 
+    public virtual void ReadyForServices(PluginServices services)
+    {
+    }
+
     public override void InitializeListener(IMachineContainer container)
     {
     }

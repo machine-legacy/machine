@@ -39,6 +39,14 @@ namespace Machine.Container.Plugins
       _initialized = true;
     }
 
+    public void ReadyForServices(PluginServices services)
+    {
+      foreach (IServiceContainerPlugin plugin in _plugins)
+      {
+        plugin.ReadyForServices(services);
+      }
+    }
+
     public void Dispose()
     {
       if (!_initialized)

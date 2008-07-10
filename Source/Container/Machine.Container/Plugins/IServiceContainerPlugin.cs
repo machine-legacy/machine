@@ -6,5 +6,6 @@ namespace Machine.Container.Plugins
   public interface IServiceContainerPlugin : IDisposable
   {
     void Initialize(PluginServices services);
+    void ReadyForServices(PluginServices services);
   }
 }
