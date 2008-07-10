@@ -108,11 +108,21 @@ namespace Machine.Container
     public void Initialize()
     {
       _container.Initialize();
+      ReadyForPlugins();
+    }
+
+    public virtual void ReadyForPlugins()
+    {
     }
 
     public void PrepareForServices()
     {
       _container.PrepareForServices();
+      ReadyForServices();
+    }
+
+    public virtual void ReadyForServices()
+    {
     }
 
     public void Start()

@@ -11,9 +11,9 @@ namespace Machine.Container
 {
   public class ContainerRegistrationHelper
   {
-    private readonly IHighLevelContainer _container;
+    private readonly IMachineContainer _container;
 
-    public ContainerRegistrationHelper(IHighLevelContainer container)
+    public ContainerRegistrationHelper(IMachineContainer container)
     {
       _container = container;
     }
@@ -28,10 +28,10 @@ namespace Machine.Container
           switch (lifestyleAttribute.Lifestyle)
           {
             case LifestyleType.Transient:
-              _container.Add(type, LifestyleType.Transient);
+              _container.Register.Type(type).AsTransient();
               break;
             case LifestyleType.Singleton:
-              _container.Add(type, LifestyleType.Singleton);
+              _container.Register.Type(type).AsSingleton();
               break;
             default:
               throw new NotSupportedException("Not supported lifestyle: " + lifestyleAttribute.Lifestyle);
@@ -42,11 +42,11 @@ namespace Machine.Container
 
     public virtual void AddCore()
     {
-      _container.Add<Clock>();
-      _container.Add<Namer>();
-      _container.Add<FileSystem>();
-      _container.Add<DotNetObjectActivator>();
-      _container.Add<ThreadManager>();
+      _container.Register.Type<Clock>();
+      _container.Register.Type<Namer>();
+      _container.Register.Type<FileSystem>();
+      _container.Register.Type<DotNetObjectActivator>();
+      _container.Register.Type<ThreadManager>();
     }
   }
 }
