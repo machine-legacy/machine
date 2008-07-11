@@ -5,6 +5,7 @@ using Machine.Container.Activators;
 using Machine.Container.Model;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
+using Machine.Core;
 
 using NUnit.Framework;
 

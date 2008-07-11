@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Machine.Container.Model;
 using Machine.Container.Services;
+using Machine.Core;
 
 namespace Machine.Container.Lifestyles
 {

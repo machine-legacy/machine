@@ -52,29 +52,6 @@ namespace Machine.Container
 
   [Serializable]
   [CoverageExclude]
-  public class YouFoundABugException : ServiceContainerException
-  {
-    public YouFoundABugException()
-    {
-    }
-
-    public YouFoundABugException(string message) : base(message)
-    {
-    }
-
-    public YouFoundABugException(string message, Exception innerException) : base(message, innerException)
-    {
-    }
-
-    #if !SILVERLIGHT
-    protected YouFoundABugException(SerializationInfo info, StreamingContext context) : base(info, context)
-    {
-    }
-    #endif
-  }
-
-  [Serializable]
-  [CoverageExclude]
   public class CircularDependencyException : ServiceContainerException
   {
     public CircularDependencyException()
