@@ -54,6 +54,7 @@
     <Compile Include="Message.cs" />
     <Compile Include="QueuedPeriodicallyOverTime.cs" />
     <Compile Include="TestFrameworkLogging.cs" />
+    <Compile Include="TestFrameworkSettings.cs" />
     <Compile Include="ThreadPoolFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueuedWithABatchAndLetDormant.cs" />

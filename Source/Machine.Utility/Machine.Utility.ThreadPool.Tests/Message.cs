@@ -29,14 +29,19 @@ namespace Machine.Utility.ThreadPool
   }
   public class MessageConsumer : IConsumer<Message>
   {
-    public int NumberProcessed;
+    private long _numberOfMessagesProcessed;
+
+    public long NumberOfMessagesProcessed
+    {
+      get { return _numberOfMessagesProcessed; }
+    }
 
     #region IConsumer<Message> Members
     public void Consume(Message message)
     {
-      Thread.Sleep(TimeSpan.FromSeconds(1.0));
+      Thread.Sleep(TestFrameworkSettings.TimeToConsumeMessage);
       message.WasConsumed = true;
-      Interlocked.Increment(ref NumberProcessed);
+      Interlocked.Increment(ref _numberOfMessagesProcessed);
     }
     #endregion
   }

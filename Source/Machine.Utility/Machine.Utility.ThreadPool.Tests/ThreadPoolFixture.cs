@@ -12,5 +12,10 @@ namespace Machine.Utility.ThreadPool
     {
       TestFrameworkLogging.SetupLogging();
     }
+
+    public static Random Random
+    {
+      get { return TestFrameworkSettings.Random; }
+    }
   }
 }

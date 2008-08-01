@@ -12,17 +12,16 @@ namespace Machine.Utility.ThreadPool
     [Test]
     public void Queued_Randomly_For_Twenty_Seconds()
     {
-      Random random = new Random((Int32)DateTime.Now.Ticks);
       ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.FiveAndTen);
       pool.Start();
       DateTime startedAt = DateTime.Now;
-      while (DateTime.Now - startedAt < TimeSpan.FromSeconds(20.0))
+      while (DateTime.Now - startedAt < TimeSpan.FromSeconds(10.0))
       {
-        foreach (Message message in MessageBuilder.MakeMessages(random.Next(10)))
+        foreach (Message message in MessageBuilder.MakeMessages(Random.Next(10)))
         {
           pool.Queue(new MessageConsumer(), message);
         }
-        Thread.Sleep(TimeSpan.FromSeconds(random.NextDouble()));
+        Thread.Sleep(TimeSpan.FromSeconds(Random.NextDouble()));
       }
       pool.Stop();
     }

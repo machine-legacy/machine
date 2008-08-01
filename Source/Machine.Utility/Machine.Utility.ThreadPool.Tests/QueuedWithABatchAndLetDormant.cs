@@ -20,9 +20,9 @@ namespace Machine.Utility.ThreadPool
       {
         pool.Queue(consumer, message);
       }
-      Thread.Sleep(TimeSpan.FromSeconds(20.0));
+      Thread.Sleep(TimeSpan.FromSeconds(10.0));
       pool.Stop();
-      Assert.AreEqual(40, consumer.NumberProcessed);
+      Assert.AreEqual(40, consumer.NumberOfMessagesProcessed);
     }
 
     [Test]
@@ -35,9 +35,9 @@ namespace Machine.Utility.ThreadPool
       {
         pool.Queue(consumer, message);
       }
-      Thread.Sleep(TimeSpan.FromSeconds(20.0));
+      Thread.Sleep(TimeSpan.FromSeconds(10.0));
       pool.Stop();
-      Assert.AreEqual(30, consumer.NumberProcessed);
+      Assert.AreEqual(30, consumer.NumberOfMessagesProcessed);
     }
 
     [Test]
@@ -50,9 +50,9 @@ namespace Machine.Utility.ThreadPool
       {
         pool.Queue(consumer, message);
       }
-      Thread.Sleep(TimeSpan.FromSeconds(20.0));
+      Thread.Sleep(TimeSpan.FromSeconds(10.0));
       pool.Stop();
-      Assert.AreEqual(30, consumer.NumberProcessed);
+      Assert.AreEqual(30, consumer.NumberOfMessagesProcessed);
     }
   }
 }
