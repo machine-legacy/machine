@@ -17,7 +17,7 @@ namespace Machine.Core.Services
   }
   public interface IThread
   {
-    bool IsAlive
+    bool IsRunning
     {
       get;
     }

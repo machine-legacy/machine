@@ -70,7 +70,7 @@ namespace Machine.Core.Services.Impl
       get { return _thread; }
     }
 
-    public bool IsAlive
+    public bool IsRunning
     {
       get { return _thread.IsAlive; }
     }
