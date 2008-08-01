@@ -10,7 +10,7 @@ using Machine.Utility.ThreadPool.Workers;
 
 namespace Machine.Utility.ThreadPool
 {
-  public class ThreadPool
+  public class ThreadPool : IDisposable
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ThreadPool));
     private readonly IThreadManager _threadManager;
@@ -83,6 +83,13 @@ namespace Machine.Utility.ThreadPool
       GrowIfNecessary();
       ShrinkOfPossible();
     }
+
+    #region IDisposable Members
+    public void Dispose()
+    {
+      this.Stop();
+    }
+    #endregion
 
     private void AddAndStartWorker(Worker worker, bool ignoreIfMaximumReached)
     {
