@@ -16,11 +16,13 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
   }
   public class QueueAffinityStrategy<TType, TKey> : QueuePerWorkerStrategy where TType: IHasQueuingAffinity<TKey>
   {
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(QueuePerWorkerStrategy));
     private readonly Dictionary<TKey, QueueOfRunnables> _keyToQueue = new Dictionary<TKey, QueueOfRunnables>();
     private readonly Dictionary<QueueOfRunnables, List<TKey>> _queueToKeys = new Dictionary<QueueOfRunnables, List<TKey>>();
 
     protected override void RetireQueueUnderLock(QueueOfRunnables queue)
     {
+      _log.Info("Clearing Queue State");
       if (!_queueToKeys.ContainsKey(queue))
       {
         return;
@@ -40,6 +42,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
       if (RWLock.UpgradeToWriterIf(lok, delegate() { return !_keyToQueue.ContainsKey(key); }))
       {
         QueueOfRunnables queue = base.SelectQueue(queues, runnable, lok);
+        ResetQueueStateIfPossible(queue);
         _keyToQueue[key] = queue;
         if (!_queueToKeys.ContainsKey(queue))
         {
@@ -48,6 +51,14 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
         _queueToKeys[queue].Add(key);
       }
       return _keyToQueue[key];
+    }
+
+    protected virtual void ResetQueueStateIfPossible(QueueOfRunnables queue)
+    {
+      if (queue.IsEmpty)
+      {
+        RetireQueueUnderLock(queue);
+      }
     }
   }
 }

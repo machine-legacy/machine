@@ -12,6 +12,11 @@ namespace Machine.Utility.ThreadPool
     private int _counter;
     private bool _closed;
 
+    public bool IsEmpty
+    {
+      get { return this.NumberOfItems == 0; }
+    }
+
     public int NumberOfItems
     {
       get { return _counter; }
