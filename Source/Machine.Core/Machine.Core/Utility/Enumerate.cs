@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Machine.Core.Utility
 {
@@ -14,6 +15,11 @@ namespace Machine.Core.Utility
           yield return (TType)value;
         }
       }
+    }
+
+    public static IEnumerable<TType> AndChange<TType>(IEnumerable<TType> original)
+    {
+      return new ReadOnlyCollection<TType>(new List<TType>(original));
     }
   }
 }
