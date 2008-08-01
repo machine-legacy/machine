@@ -77,6 +77,7 @@
     <Compile Include="Utility\ListHelper.cs" />
     <Compile Include="Utility\LoggingHelper.cs" />
     <Compile Include="Utility\PerformanceMeasuringReaderWriterLock.cs" />
+    <Compile Include="Utility\PerformanceWatcher.cs" />
     <Compile Include="Utility\ReaderWriterLockFactory.cs" />
     <Compile Include="Utility\ReaderWriterLockStatistics.cs" />
     <Compile Include="Utility\ReaderWriterUsage.cs" />
