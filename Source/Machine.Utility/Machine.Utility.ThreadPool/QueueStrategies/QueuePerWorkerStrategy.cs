@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Machine.Core.Services;
+using Machine.Core.Utility;
 using Machine.Utility.ThreadPool.Workers;
 
 namespace Machine.Utility.ThreadPool.QueueStrategies
@@ -9,12 +11,12 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
   public class QueuePerWorkerStrategy : QueueStrategy
   {
     private readonly List<QueueOfRunnables> _queues = new List<QueueOfRunnables>();
-    private readonly object _lock = new object();
+    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
     private int _index;
 
     public override QueueOfRunnables CreateQueueForWorker(Worker worker)
     {
-      lock (_lock)
+      using (RWLock.AsWriter(_lock))
       {
         QueueOfRunnables queue = new QueueOfRunnables();
         _queues.Add(queue);
@@ -24,7 +26,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
 
     public override void RetireQueue(QueueOfRunnables queue)
     {
-      lock (_lock)
+      using (RWLock.AsWriter(_lock))
       {
         _queues.Remove(queue);
       }
@@ -33,7 +35,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
 
     public override void DrainstopAllQueues()
     {
-      lock (_lock)
+      using (RWLock.AsReader(_lock))
       {
         foreach (QueueOfRunnables queue in _queues)
         {
@@ -44,7 +46,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
 
     public override void Queue(IRunnable runnable)
     {
-      lock (_lock)
+      using (RWLock.AsReader(_lock))
       {
         SelectQueue(_queues, runnable).Enqueue(runnable);
       }
