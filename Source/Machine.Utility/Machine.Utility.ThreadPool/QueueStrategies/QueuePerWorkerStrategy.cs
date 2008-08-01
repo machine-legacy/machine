@@ -49,11 +49,11 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
     {
       using (RWLock.AsReader(_lock))
       {
-        SelectQueue(_queues, runnable, _lock).Enqueue(runnable);
+        SelectQueue(_lock, _queues, runnable).Enqueue(runnable);
       }
     }
 
-    protected virtual QueueOfRunnables SelectQueue(List<QueueOfRunnables> queues, IRunnable runnable, ReaderWriterLock lok)
+    protected virtual QueueOfRunnables SelectQueue(ReaderWriterLock lok, List<QueueOfRunnables> queues, IRunnable runnable)
     {
       _index = (++_index % queues.Count);
       return queues[_index];

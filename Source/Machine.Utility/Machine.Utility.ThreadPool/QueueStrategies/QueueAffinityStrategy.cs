@@ -35,13 +35,13 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
       _queueToKeys.Remove(queue);
     }
 
-    protected override QueueOfRunnables SelectQueue(List<QueueOfRunnables> queues, IRunnable runnable, ReaderWriterLock lok)
+    protected override QueueOfRunnables SelectQueue(ReaderWriterLock lok, List<QueueOfRunnables> queues, IRunnable runnable)
     {
       ConsumingRunnable<TType> consumerRunnable = (ConsumingRunnable<TType>)runnable;
       TKey key = consumerRunnable.Value.QueueAffinityKey;
       if (RWLock.UpgradeToWriterIf(lok, delegate() { return !_keyToQueue.ContainsKey(key); }))
       {
-        QueueOfRunnables queue = base.SelectQueue(queues, runnable, lok);
+        QueueOfRunnables queue = base.SelectQueue(lok, queues, runnable);
         ResetQueueStateIfPossible(queue);
         _keyToQueue[key] = queue;
         if (!_queueToKeys.ContainsKey(queue))
