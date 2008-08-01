@@ -2,11 +2,30 @@
 using System.Collections.Generic;
 using System.Threading;
 
+using Machine.Utility.ThreadPool.QueueStrategies;
+
 namespace Machine.Utility.ThreadPool
 {
-  public class Message
+  public class Message : IHasQueuingAffinity<string>
   {
-    public bool WasConsumed;
+    private bool _wasConsumed;
+    private readonly string _name;
+
+    public bool WasConsumed
+    {
+      get { return _wasConsumed; }
+      set { _wasConsumed = value; }
+    }
+
+    public string QueueAffinityKey
+    {
+      get { return _name; }
+    }
+
+    public Message(string name)
+    {
+      _name = name;
+    }
   }
   public class MessageConsumer : IConsumer<Message>
   {
@@ -32,9 +51,14 @@ namespace Machine.Utility.ThreadPool
 
     public static IEnumerable<Message> MakeMessages(int number)
     {
+      string[] names = new string[]
+      {
+        "Larry", "Curley", "Moe"
+      };
+      Random random = new Random();
       for (int i = 0; i < number; ++i)
       {
-        yield return new Message();
+        yield return new Message(names[random.Next(names.Length)]);
       }
     }
   }

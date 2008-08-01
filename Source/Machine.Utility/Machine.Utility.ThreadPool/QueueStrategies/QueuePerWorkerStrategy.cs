@@ -29,6 +29,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
       using (RWLock.AsWriter(_lock))
       {
         _queues.Remove(queue);
+        RetireQueueUnderLock(queue);
       }
       queue.Drainstop();
     }
@@ -48,14 +49,18 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
     {
       using (RWLock.AsReader(_lock))
       {
-        SelectQueue(_queues, runnable).Enqueue(runnable);
+        SelectQueue(_queues, runnable, _lock).Enqueue(runnable);
       }
     }
 
-    protected virtual QueueOfRunnables SelectQueue(List<QueueOfRunnables> queues, IRunnable runnable)
+    protected virtual QueueOfRunnables SelectQueue(List<QueueOfRunnables> queues, IRunnable runnable, ReaderWriterLock lok)
     {
       _index = (++_index % queues.Count);
       return queues[_index];
+    }
+
+    protected virtual void RetireQueueUnderLock(QueueOfRunnables queue)
+    {
     }
   }
 }

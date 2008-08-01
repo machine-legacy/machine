@@ -39,5 +39,20 @@ namespace Machine.Utility.ThreadPool
       pool.Stop();
       Assert.AreEqual(30, consumer.NumberProcessed);
     }
+
+    [Test]
+    public void Queued_And_Then_Left_Over_A_Period_Of_Time_With_Affinity_Strategy()
+    {
+      MessageConsumer consumer = new MessageConsumer();
+      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.FiveAndTen, new QueueAffinityStrategy<Message, string>());
+      pool.Start();
+      foreach (Message message in MessageBuilder.MakeMessages(30))
+      {
+        pool.Queue(consumer, message);
+      }
+      Thread.Sleep(TimeSpan.FromSeconds(20.0));
+      pool.Stop();
+      Assert.AreEqual(30, consumer.NumberProcessed);
+    }
   }
 }
