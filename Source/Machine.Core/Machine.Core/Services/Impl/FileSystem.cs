@@ -17,6 +17,11 @@ namespace Machine.Core.Services.Impl
       return Directory.GetFiles(path);
     }
 
+    public string[] GetFiles(string path, string pattern)
+    {
+      return Directory.GetFiles(path, pattern);
+    }
+
     public string[] GetEntries(string path)
     {
       return Directory.GetFileSystemEntries(path);

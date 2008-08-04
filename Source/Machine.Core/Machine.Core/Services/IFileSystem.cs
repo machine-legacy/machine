@@ -10,6 +10,7 @@ namespace Machine.Core.Services
   {
     string[] GetDirectories(string path);
     string[] GetFiles(string path);
+    string[] GetFiles(string path, string pattern);
     string[] GetEntries(string path);
     bool IsFile(string path);
     bool IsDirectory(string path);
