@@ -32,7 +32,7 @@ namespace Machine.Container.Services.Impl
 
     public IActivator CreateDefaultActivator(ServiceEntry entry)
     {
-      return new DefaultActivator(_objectFactory, _serviceDependencyInspector, _entryResolver, entry);
+      return new PropertySettingActivator(new DefaultActivator(_objectFactory, _serviceDependencyInspector, _entryResolver, entry), entry);
     }
     #endregion
   }

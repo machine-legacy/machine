@@ -42,12 +42,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activators\PropertySettingActivator.cs" />
     <Compile Include="CompartmentalizedMachineContainer.cs" />
     <Compile Include="Configuration\RegistrationConfigurer.cs" />
     <Compile Include="ContainerRegisterer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
+    <Compile Include="Model\IPropertySettings.cs" />
     <Compile Include="Services\IChain.cs" />
+    <Compile Include="Services\Impl\ParentContainerActivatorResolver.cs" />
     <Compile Include="Services\Impl\RootActivatorFactoryChain.cs" />
     <Compile Include="Services\Impl\Chain.cs" />
     <Compile Include="Services\Impl\DefaultContainerInfrastructureFactory.cs" />

@@ -10,7 +10,8 @@ namespace Machine.Container.Model
     private Type _implementationType;
     private LifestyleType _lifestyleType;
     private long _numberOfActiveInstances;
-    private List<InterceptorApplication> _interceptors = new List<InterceptorApplication>();
+    private readonly List<InterceptorApplication> _interceptors = new List<InterceptorApplication>();
+    private IPropertySettings _propertySettings;
     #endregion
 
     #region Properties
@@ -59,6 +60,16 @@ namespace Machine.Container.Model
           return _serviceType;
         }
         return null;
+      }
+    }
+
+    public IPropertySettings PropertySettings
+    {
+      get { return _propertySettings; }
+      set
+      {
+        AssertHasNoActiveInstances();
+        _propertySettings = value;
       }
     }
     #endregion
@@ -141,6 +152,11 @@ namespace Machine.Container.Model
     public bool HasInterceptor(InterceptorApplication interceptor)
     {
       return _interceptors.Contains(interceptor);
+    }
+
+    public bool HasPropertySettings()
+    {
+      return _propertySettings != null;
     }
 
     public IEnumerable<InterceptorApplication> Interceptors
