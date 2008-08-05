@@ -288,6 +288,16 @@ namespace Machine.Container
       IService1 service = _machineContainer.ResolveObject<IService1>();
       Assert.IsTrue(propertySettings.WasApplied);
     }
+
+    [Test]
+    public void Registering_With_Dictionary_Property_Settings_Applies_Them_Correctly()
+    {
+      DictionaryPropertySettings settings = new DictionaryPropertySettings();
+      settings["ServiceKey"] = "Jacob";
+      _machineContainer.Register.Type<Service1>().Using(settings);
+      Service1 service = _machineContainer.ResolveObject<Service1>();
+      Assert.AreEqual("Jacob", service.ServiceKey);
+    }
     #endregion
   }
   public class MockPropertySettings : IPropertySettings
@@ -323,6 +333,14 @@ namespace Machine.Container
   }
   public class Service1 : IService1, IExampleService
   {
+    private string _serviceKey;
+
+    public string ServiceKey
+    {
+      get { return _serviceKey; }
+      set { _serviceKey = value; }
+    }
+
     public void SayHello()
     {
     }
