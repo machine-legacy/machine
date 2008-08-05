@@ -279,6 +279,31 @@ namespace Machine.Container
       ISomething<string> something = _machineContainer.ResolveObject<ISomething<string>>();
       Assert.IsNotNull(something);
     }
+
+    [Test]
+    public void Registering_With_Property_Settings_Will_Use_Them()
+    {
+      MockPropertySettings propertySettings = new MockPropertySettings();
+      _machineContainer.Register.Type<Service1>().Using(propertySettings);
+      IService1 service = _machineContainer.ResolveObject<IService1>();
+      Assert.IsTrue(propertySettings.WasApplied);
+    }
+    #endregion
+  }
+  public class MockPropertySettings : IPropertySettings
+  {
+    private bool _wasApplied;
+
+    public bool WasApplied
+    {
+      get { return _wasApplied; }
+    }
+
+    #region IPropertySettings Members
+    public void Apply(object instance)
+    {
+      _wasApplied = true;
+    }
     #endregion
   }
   public interface ISomething<TType>

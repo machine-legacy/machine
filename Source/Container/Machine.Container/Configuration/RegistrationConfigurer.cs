@@ -55,6 +55,12 @@ namespace Machine.Container.Configuration
       return Provides(typeof(TType));
     }
 
+    public RegistrationConfigurer Using(IPropertySettings propertySettings)
+    {
+      _entry.PropertySettings = propertySettings;
+      return this;
+    }
+
     public RegistrationConfigurer Is(object instance)
     {
       IActivator activator = _containerServices.ActivatorFactory.CreateStaticActivator(_entry, instance);

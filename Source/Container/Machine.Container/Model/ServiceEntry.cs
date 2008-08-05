@@ -69,6 +69,10 @@ namespace Machine.Container.Model
       set
       {
         AssertHasNoActiveInstances();
+        if (_propertySettings != null)
+        {
+          throw new InvalidOperationException("Overwriting existing PropertySettings for " + this);
+        }
         _propertySettings = value;
       }
     }
