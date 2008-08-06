@@ -28,8 +28,10 @@ namespace Machine.Container.Plugins.Disposition
     {
       IDisposable disposable = activation.Instance as IDisposable;
       if (disposable == null) return;
+      /* Get Reader Lock */
       if (!_disposables.Contains(disposable))
       {
+        /* Get Writer Lock */
         _disposables.Add(disposable);
       }
     }
@@ -38,6 +40,7 @@ namespace Machine.Container.Plugins.Disposition
     {
       IDisposable disposable = deactivation.Instance as IDisposable;
       if (disposable == null) return;
+      /* Get Writer Lock */
       disposable.Dispose();
       _disposables.Remove(disposable);
     }
@@ -46,6 +49,8 @@ namespace Machine.Container.Plugins.Disposition
     #region IDisposable Members
     public override void Dispose()
     {
+      /* Get Writer Lock */
+      _disposables.Reverse();
       while (_disposables.Count > 0)
       {
         _disposables[0].Dispose();
