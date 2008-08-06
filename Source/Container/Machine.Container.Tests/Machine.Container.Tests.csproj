@@ -85,7 +85,7 @@
     <Compile Include="Services\Impl\ThrowsPendingActivatorResolverTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Machine.Container.DynamicProxySupport\Machine.Container.DynamicProxySupport.csproj">
+    <ProjectReference Include="..\Machine.Container.DynamicProxySupport\Machine.Container.DynamicProxySupport.csproj">
       <Project>{37BCCFC1-AA9E-4E79-9B5D-BB8F44B0BA55}</Project>
       <Name>Machine.Container.DynamicProxySupport</Name>
     </ProjectReference>
