@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Plugins;
+using Machine.Container.Services;
 
 using MassTransit.ServiceBus.Internal;
 using MassTransit.ServiceBus.Subscriptions;
@@ -18,13 +19,7 @@ namespace Machine.MassTransitExtensions
 
     public virtual void ReadyForServices(PluginServices services)
     {
-      services.Container.Register.Type<IMassTransit>().ImplementedBy<MassTransitController>();
-      services.Container.Register.Type<FollowerRepository>();
-      services.Container.Register.Type<EndpointResolver>();
-      services.Container.Register.Type<LocalSubscriptionCache>();
-      services.Container.Register.Type<HostedServicesController>();
-      services.Container.Register.Type<MachineObjectBuilder>();
-      services.Container.Register.Type<NHibernateSubscriptionStorage>();
+      RegisterServices(services.Container);
     }
     #endregion
 
@@ -33,5 +28,16 @@ namespace Machine.MassTransitExtensions
     {
     }
     #endregion
+
+    public virtual void RegisterServices(IMachineContainer container)
+    {
+      container.Register.Type<IMassTransit>().ImplementedBy<MassTransitController>();
+      container.Register.Type<FollowerRepository>();
+      container.Register.Type<EndpointResolver>();
+      container.Register.Type<LocalSubscriptionCache>();
+      container.Register.Type<HostedServicesController>();
+      container.Register.Type<MachineObjectBuilder>();
+      container.Register.Type<NHibernateSubscriptionStorage>();
+    }
   }
 }
