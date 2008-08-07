@@ -6,8 +6,8 @@ namespace Machine.MassTransitExtensions
   {
     private bool _isSubscriptionManager;
     private Type _transportType;
-    private Uri _localEndpointUri;
-    private Uri _subscriptionEndpointUri;
+    private Uri _defaultLocalEndpointUri;
+    private Uri _subscriptionManagerEndpointUri;
 
     public bool IsSubscriptionManager
     {
@@ -21,23 +21,33 @@ namespace Machine.MassTransitExtensions
       set { _transportType = value; }
     }
 
-    public Uri LocalEndpointUri
+    public Uri DefaultLocalEndpointUri
     {
-      get { return _localEndpointUri; }
-      set { _localEndpointUri = value; }
+      get { return _defaultLocalEndpointUri; }
+      set { _defaultLocalEndpointUri = value; }
     }
 
-    public Uri SubscriptionEndpointUri
+    public Uri SubscriptionManagerEndpointUri
     {
-      get { return _subscriptionEndpointUri; }
-      set { _subscriptionEndpointUri = value; }
+      get { return _subscriptionManagerEndpointUri; }
+      set { _subscriptionManagerEndpointUri = value; }
     }
 
-    public MassTransitConfiguration(bool isSubscriptionManager, Uri subscriptionEndpointUri, Uri localEndpointUri)
+    public MassTransitConfiguration(string subscriptionEndpointUri, string localEndpointUri)
+     : this(new Uri(subscriptionEndpointUri), new Uri(localEndpointUri), false)
+    {
+    }
+
+    public MassTransitConfiguration(string subscriptionEndpointUri, string localEndpointUri, bool isSubscriptionManager)
+     : this(new Uri(subscriptionEndpointUri), new Uri(localEndpointUri), isSubscriptionManager)
+    {
+    }
+
+    public MassTransitConfiguration(Uri subscriptionEndpointUri, Uri localEndpointUri, bool isSubscriptionManager)
     {
       _isSubscriptionManager = isSubscriptionManager;
-      _localEndpointUri = localEndpointUri;
-      _subscriptionEndpointUri = subscriptionEndpointUri;
+      _defaultLocalEndpointUri = localEndpointUri;
+      _subscriptionManagerEndpointUri = subscriptionEndpointUri;
       _transportType = typeof(MassTransit.ServiceBus.MSMQ.MsmqEndpoint);
     }
   }
