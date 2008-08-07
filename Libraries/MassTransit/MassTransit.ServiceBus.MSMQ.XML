@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MassTransit.ServiceBus.MSMQ</name>
+    </assembly>
+    <members>
+        <member name="T:MassTransit.ServiceBus.MSMQ.IMsmqEndpoint">
+            <summary>
+            An extension of the IEndpoint interface for the additional support of Message Queue backed endpoints
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.MSMQ.IMsmqEndpoint.Open(System.Messaging.QueueAccessMode)">
+            <summary>
+            Opens a message queue
+            </summary>
+            <param name="mode">The access mode for the queue</param>
+            <returns>An open <c ref="MessageQueue" /> object</returns>
+        </member>
+        <member name="P:MassTransit.ServiceBus.MSMQ.IMsmqEndpoint.QueuePath">
+            <summary>
+            The path of the message queue for the endpoint. Suitable for use with <c ref="MessageQueue" />.Open
+            to access a message queue.
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.MSMQ.MsmqEndpoint">
+            <summary>
+            A MessageQueueEndpoint is an implementation of an endpoint using the Microsoft Message Queue service.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.#ctor(System.String)">
+            <summary>
+            Initializes a <c ref="MessageQueueEndpoint" /> instance with the specified URI string.
+            </summary>
+            <param name="uriString">The URI for the endpoint</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.#ctor(System.Uri)">
+            <summary>
+            Initializes a <c ref="MessageQueueEndpoint" /> instance with the specified URI.
+            </summary>
+            <param name="uri">The URI for the endpoint</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.#ctor(System.Messaging.MessageQueue)">
+            <summary>
+            Creates an instance of the <c ref="MessageQueueEndpoint" /> class using the specified queue
+            </summary>
+            <param name="queue">A Microsoft Message Queue</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.op_Implicit(System.String)~MassTransit.ServiceBus.MSMQ.MsmqEndpoint">
+            <summary>
+            Implicitly creates a <c ref="MsmqEndpoint" />.
+            </summary>
+            <param name="queueUri">A string identifying the URI of the message queue (ex. msmq://localhost/my_queue)</param>
+            <returns>An instance of the MessageQueueEndpoint class</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.op_Implicit(MassTransit.ServiceBus.MSMQ.MsmqEndpoint)~System.String">
+            <summary>
+            Returns the URI string for the message queue endpoint.
+            </summary>
+            <param name="endpoint">The endpoint to use to generate the URI string</param>
+            <returns>A URI string that identifies the message queue endpoint</returns>
+        </member>
+        <member name="P:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.QueuePath">
+            <summary>
+            The path of the message queue for the endpoint. Suitable for use with <c ref="MessageQueue" />.Open
+            to access a message queue.
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.MSMQ.MsmqEndpoint.Uri">
+            <summary>
+            The address of the endpoint, in URI format
+            </summary>
+        </member>
+    </members>
+</doc>

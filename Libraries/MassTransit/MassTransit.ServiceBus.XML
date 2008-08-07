@@ -1,0 +1,567 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MassTransit.ServiceBus</name>
+    </assembly>
+    <members>
+        <member name="T:MassTransit.ServiceBus.Internal.BatchDistributor`2">
+            <summary>
+            A batch distributor is subscribed to a message type so that it can dispatch batches of messages
+            to new consumers for each batch
+            </summary>
+            <typeparam name="TMessage">The type of message that is being batched</typeparam>
+            <typeparam name="TBatchId">The type for the batch id</typeparam>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Transports.HttpEndpoint">
+            <summary>
+            An HttpEndpoint is designed to allow applications to participate in a remote service bus instance
+            via HTTP instead of MSMQ. The messages are delivered through an ASHX handler within IIS to leverage
+            the already available web serving platform and to integrate with other application concerns, such as
+            security and logging. 
+            
+            Example URI structure
+            
+            	http://localhost/bus/endpoint_name
+            
+            When a subscription is obtained by the remote service bus that is within the network, it would
+            publish using a mapped address:
+            
+            	http://localhost/bus/endpoint_name/proxy/identifier
+            
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.IEndpoint">
+            <summary>
+            IEndpoint is implemented by an endpoint. An endpoint is an addressable location on the network.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Send``1(``0)">
+            <summary>
+            Sends a message to the endpoint
+            </summary>
+            <typeparam name="T">The type of the message to send</typeparam>
+            <param name="message">The message to send</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Send``1(``0,System.TimeSpan)">
+            <summary>
+            Sends a message to the endpoint
+            </summary>
+            <typeparam name="T">The type of the message to send</typeparam>
+            <param name="message">The message to send</param>
+            <param name="timeToLive">The maximum time for the message to be received before it expires</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive">
+            <summary>
+            Receives any message from the endpoint
+            </summary>
+            <returns>The message object</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive(System.TimeSpan)">
+            <summary>
+            Receives any message from the endpoint
+            </summary>
+            <param name="timeout">The timeout to wait for the message</param>
+            <returns>The message object</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive(System.Predicate{System.Object})">
+            <summary>
+            Receives any message from the endpoint
+            </summary>
+            <param name="accept">A predicate to see if the message is accepted by the caller</param>
+            <returns>The message object</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive(System.TimeSpan,System.Predicate{System.Object})">
+            <summary>
+            Receives any message from the endpoint
+            </summary>
+            <param name="timeout">The timeout to wait for the message</param>
+            <param name="accept">A predicate to see if the message is accepted by the caller</param>
+            <returns>The message object</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1">
+            <summary>
+            Receives a message from the endpoint
+            </summary>
+            <typeparam name="T">The type of message to receive</typeparam>
+            <returns>A message read from the endpoint</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1(System.TimeSpan)">
+            <summary>
+            Receives a message from the endpoint
+            </summary>
+            <typeparam name="T">The type of message to receive</typeparam>
+            <param name="timeout">The timeout to wait for the message</param>
+            <returns>A message read from the endpoint</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1(System.Predicate{``0})">
+            <summary>
+            Receives a message from the endpoint
+            </summary>
+            <typeparam name="T">The type of message to receive</typeparam>
+            <param name="accept">A predicate used to determine if the message would be accepted</param>
+            <returns>A message read from the endpoint</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1(System.TimeSpan,System.Predicate{``0})">
+            <summary>
+            Receives a message from the endpoint
+            </summary>
+            <typeparam name="T">The type of message to receive</typeparam>
+            <param name="timeout">The timeout to wait for the message</param>
+            <param name="accept">A predicate used to determine if the message would be accepted</param>
+            <returns>A message read from the endpoint</returns>
+        </member>
+        <member name="P:MassTransit.ServiceBus.IEndpoint.Uri">
+            <summary>
+            The address of the endpoint, in URI format
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Internal.MessageTypeDispatcher">
+            <summary>
+            Manages and dispatches messages to correlated message consumers
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Internal.IMessageDispatcher">
+            <summary>
+            A correlated message dispatcher sends a message to any attached consumers
+            with a matching correlation identifier
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBusRequest.Complete">
+            <summary>
+            Called by the consumer class to indicate that the operation is complete
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBusRequest.Cancel">
+            <summary>
+            Cancels a pending asynchronous request. Any messages received after the request is cancelled are ignored.
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.RequestBuilder">
+            <summary>
+            The first step in building a request, this class is returned by IServiceBus.Request()
+            and creates a specific RequestBuilder for the component making the request
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.RequestBuilder.#ctor(MassTransit.ServiceBus.IServiceBus)">
+            <summary>
+            The service bus where the request originated
+            </summary>
+            <param name="bus"></param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.RequestBuilder.From``1(``0)">
+            <summary>
+            Associates a component with the request. Immediately before the request is sent
+            the component is subscribed on the service bus. This registered any correlated
+            handlers on the bus to receive messages sent in response to this request
+            </summary>
+            <typeparam name="T">The type of the component</typeparam>
+            <param name="component">The component to associate with the request</param>
+            <returns></returns>
+        </member>
+        <member name="T:MassTransit.ServiceBus.RequestBuilder`1">
+            <summary>
+            A specialized request builder for the component making the request
+            </summary>
+            <typeparam name="TComponent">The type of component making the request</typeparam>
+        </member>
+        <member name="M:MassTransit.ServiceBus.RequestBuilder`1.#ctor(`0,MassTransit.ServiceBus.IServiceBus)">
+            <summary>
+            Creates a RequestBuilder object
+            </summary>
+            <param name="component"></param>
+            <param name="bus">The service bus coordinating the request</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.RequestBuilder`1.op_Implicit(MassTransit.ServiceBus.RequestBuilder{`0})~MassTransit.ServiceBus.ServiceBusRequest{`0}">
+            <summary>
+            Converts the builder to an instance of the ServiceBusRequest class.
+            </summary>
+            <param name="builder"></param>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.RequestBuilder`1.WithCallback(System.AsyncCallback,System.Object)">
+            <summary>
+            Specifies a callback to invoke when the component signals the request/response has completed.
+            </summary>
+            <param name="callback"></param>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="T:MassTransit.ServiceBus.DispatchMode">
+            <summary>
+            The method used to dispatch the message to the service bus
+            </summary>
+        </member>
+        <member name="F:MassTransit.ServiceBus.DispatchMode.Synchronous">
+            <summary>
+            Dispatch the message in a synchronous fashion (default)
+            </summary>
+        </member>
+        <member name="F:MassTransit.ServiceBus.DispatchMode.Asynchronous">
+            <summary>
+            Dipatch the message using an asynchronous handler
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.IHostedService">
+            <summary>
+            This interface should be implemented by classes that want to automatically register
+            message consumers with the service bus when loaded. The service bus bootloader will
+            enumerate the classes in any references assemblies to determine if the interface is 
+            supported and call those classes to register their handlers on the service bus.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.HealthMonitoring.HealthClient.#ctor(MassTransit.ServiceBus.IServiceBus,System.Int32)">
+            <summary>
+            Constructs a new HealthClient object
+            </summary>
+            <param name="bus">The service bus to monitor</param>
+            <param name="heartbeatInterval">The heartbeat interval in seconds</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IMessageContext`1.Reply(System.Object)">
+            <summary>
+            Builds an envelope with the correlation id set to the id of the incoming envelope
+            </summary>
+            <param name="message">The messages to include with the reply</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IMessageContext`1.HandleMessageLater(System.Object)">
+            <summary>
+            Moves the specified messages to the back of the list of available 
+            messages so they can be handled later. Could screw up message order.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IMessageContext`1.MarkPoison">
+            <summary>
+            Marks the whole context as poison
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IMessageContext`1.MarkPoison(System.Object)">
+            <summary>
+            Marks a specific message as poison
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.IMessageContext`1.Message">
+            <summary>
+            The actual message being delivered
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.IMessageContext`1.Bus">
+            <summary>
+            The service bus on which the message was received
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IObjectBuilder.Build(System.Type)">
+            <summary>
+            Build an object of the specified type
+            </summary>
+            <param name="objectType">The type of object to build</param>
+            <returns>The object that was built</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IObjectBuilder.Build``1">
+            <summary>
+            Build an object of the specified type
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IObjectBuilder.Release``1(``0)">
+            <summary>
+            Releases an object back to the container
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="obj"></param>
+        </member>
+        <member name="T:MassTransit.ServiceBus.IServiceBus">
+            <summary>
+            The base service bus interface
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Subscribe``1(System.Action{MassTransit.ServiceBus.IMessageContext{``0}})">
+            <summary>
+            Adds a message handler to the service bus for handling a specific type of message
+            </summary>
+            <typeparam name="T">The message type to handle, often inferred from the callback specified</typeparam>
+            <param name="callback">The callback to invoke when messages of the specified type arrive on the service bus</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Subscribe``1(System.Action{MassTransit.ServiceBus.IMessageContext{``0}},System.Predicate{``0})">
+            <summary>
+            Adds a message handler to the service bus for handling a specific type of message
+            </summary>
+            <typeparam name="T">The message type to handle, often inferred from the callback specified</typeparam>
+            <param name="callback">The callback to invoke when messages of the specified type arrive on the service bus</param>
+            <param name="condition">A condition predicate to filter which messages are handled by the callback</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Subscribe``1(``0)">
+            <summary>
+            Connects any consumers for the component to the message dispatcher
+            </summary>
+            <typeparam name="T">The component type</typeparam>
+            <param name="component">The component</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Unsubscribe``1(System.Action{MassTransit.ServiceBus.IMessageContext{``0}})">
+            <summary>
+            Removes a message handler from the service bus
+            </summary>
+            <typeparam name="T">The message type handled by the handler</typeparam>
+            <param name="callback">The callback to remove</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Unsubscribe``1(System.Action{MassTransit.ServiceBus.IMessageContext{``0}},System.Predicate{``0})">
+            <summary>
+            Removes a message handler from the service bus
+            </summary>
+            <typeparam name="T">The message type handled by the handler</typeparam>
+            <param name="callback">The callback to remove</param>
+            <param name="condition">A condition predicate to filter which messages are handled by the callback</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Unsubscribe``1(``0)">
+            <summary>
+            Disconnects any consumers for the component from the message dispatcher
+            </summary>
+            <typeparam name="T">The component type</typeparam>
+            <param name="component">The component</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.AddComponent``1">
+            <summary>
+            Adds a component to the dispatcher that will be created on demand to handle messages
+            </summary>
+            <typeparam name="TComponent">The type of the component to add</typeparam>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.RemoveComponent``1">
+            <summary>
+            Adds a component to the dispatcher that will be created on demand to handle messages
+            </summary>
+            <typeparam name="TComponent">The type of the component to add</typeparam>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.AttachProducers``1(``0)">
+            <summary>
+            Binds message publishers to the all of the Produces interfaces in the component
+            to allow publishing directly from the component without knowledge of the IServiceBus
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="producer"></param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.GetProducers``1">
+            <summary>
+            Returns a hashtable of injectable producers for the component specified
+            </summary>
+            <typeparam name="TComponent"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Publish``1(``0)">
+            <summary>
+            Publishes a message to all subscribed consumers for the message type
+            </summary>
+            <typeparam name="T">The type of the message</typeparam>
+            <param name="message">The messages to be published</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.IServiceBus.Request">
+            <summary>
+            Returns a request builder for this service bus to handle a request/response
+            </summary>
+            <returns>A request builder</returns>
+        </member>
+        <member name="P:MassTransit.ServiceBus.IServiceBus.Endpoint">
+            <summary>
+            The endpoint associated with this instance
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.IServiceBus.PoisonEndpoint">
+            <summary>
+            The poison endpoint associated with this instance where exception messages are sent
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionRepository.Save(MassTransit.ServiceBus.Subscriptions.Subscription)">
+            <summary>
+            Add a new subscription to the repository for storage
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionRepository.Remove(MassTransit.ServiceBus.Subscriptions.Subscription)">
+            <summary>
+            Remove a subscription from the repository
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionRepository.List">
+            <summary>
+            Return a list of subscriptions stored in the repository
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ServerHandlers.CacheUpdateRequestHandler.RemoveNHibernateness(System.Collections.Generic.IEnumerable{MassTransit.ServiceBus.Subscriptions.Subscription})">
+            <summary>
+            The NHibernate objects don't serialize, so we rip that off here.
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Subscriptions.ISubscriptionCache">
+            <summary>
+            Defines storage for subscriptions
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionCache.List(System.String)">
+            <summary>
+            Returns a list of endpoints that are subscribed to the specified message type
+            </summary>
+            <param name="messageName">Message to find the Uri's for</param>
+            <returns>A list of endpoints subscribed to the message type</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionCache.List(System.String,System.String)">
+            <summary>
+            Returns a list of endpoints that are subscribed to the specified message type
+            </summary>
+            <param name="messageName">Message to find the Uri's for</param>
+            <param name="correlationId">The correlation id to include in the query</param>
+            <returns>A list of endpoints subscribed to the message type</returns>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionCache.Add(MassTransit.ServiceBus.Subscriptions.Subscription)">
+            <summary>
+            Add a message type and endpointUri pair to the subscription storage
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Subscriptions.ISubscriptionCache.Remove(MassTransit.ServiceBus.Subscriptions.Subscription)">
+            <summary>
+            Removes a message from the subscription store.
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Internal.MessageContext`1">
+            <summary>
+            A message context contains the participants in a message exchange that is
+            received on the service bus.
+            </summary>
+            <typeparam name="T">The message type</typeparam>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Internal.MessageContext`1.#ctor(MassTransit.ServiceBus.IServiceBus,`0)">
+            <summary>
+            Initializes an instance of the <c ref="MessageContext" /> class
+            </summary>
+            <param name="bus">The service bus on which the message was received</param>
+            <param name="message">The individual message from the envelope being received</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Internal.MessageContext`1.Reply(System.Object)">
+            <summary>
+            Builds an envelope with the correlation id set to the id of the incoming envelope
+            </summary>
+            <param name="message">The messages to include with the reply</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Internal.MessageContext`1.HandleMessageLater(System.Object)">
+            <summary>
+            Moves the specified messages to the back of the list of available 
+            messages so they can be handled later. Could screw up message order.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Internal.MessageContext`1.MarkPoison">
+            <summary>
+            Marks the whole context as poison
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Internal.MessageContext`1.MarkPoison(System.Object)">
+            <summary>
+            Marks a specific message as poison
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.Internal.MessageContext`1.Message">
+            <summary>
+            The actual message being delivered
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.Internal.MessageContext`1.Bus">
+            <summary>
+            The service bus on which the message was received
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.ServiceBus">
+            <summary>
+            A service bus is used to attach message handlers (services) to endpoints, as well as 
+            communicate with other service bus instances in a distributed application
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.ServiceBus.#ctor(MassTransit.ServiceBus.IEndpoint,MassTransit.ServiceBus.IObjectBuilder)">
+            <summary>
+            Uses an in-memory subscription manager and the default object builder
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.ServiceBus.#ctor(MassTransit.ServiceBus.IEndpoint,MassTransit.ServiceBus.IObjectBuilder,MassTransit.ServiceBus.Subscriptions.ISubscriptionCache,MassTransit.ServiceBus.Internal.IEndpointResolver)">
+            <summary>
+            Uses the specified subscription cache
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.ServiceBus.Publish``1(``0)">
+            <summary>
+            Publishes a message to all subscribed consumers for the message type
+            </summary>
+            <typeparam name="T">The type of the message</typeparam>
+            <param name="message">The messages to be published</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.ServiceBus.Subscribe``1(System.Action{MassTransit.ServiceBus.IMessageContext{``0}})">
+            <summary>
+            Adds a message handler to the service bus for handling a specific type of message
+            </summary>
+            <typeparam name="T">The message type to handle, often inferred from the callback specified</typeparam>
+            <param name="callback">The callback to invoke when messages of the specified type arrive on the service bus</param>
+        </member>
+        <member name="M:MassTransit.ServiceBus.ServiceBus.Subscribe``1(System.Action{MassTransit.ServiceBus.IMessageContext{``0}},System.Predicate{``0})">
+            <summary>
+            Adds a message handler to the service bus for handling a specific type of message
+            </summary>
+            <typeparam name="T">The message type to handle, often inferred from the callback specified</typeparam>
+            <param name="callback">The callback to invoke when messages of the specified type arrive on the service bus</param>
+            <param name="condition">A condition predicate to filter which messages are handled by the callback</param>
+        </member>
+        <member name="P:MassTransit.ServiceBus.ServiceBus.Endpoint">
+            <summary>
+            The endpoint associated with this instance
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.ServiceBus.PoisonEndpoint">
+            <summary>
+            The poison endpoint associated with this instance where exception messages are sent
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Threading.ManagedThreadPool`1">
+            <summary>
+            A managed collection of threads for handling tasks
+            </summary>
+        </member>
+        <member name="P:MassTransit.ServiceBus.Threading.ManagedThreadPool`1.MaxQueueDepth">
+            <summary>
+            The maximum depth of the queue
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Util.Check">
+            <summary>
+            Check class for verifying the condition of items included in interface contracts
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Util.PreconditionException.#ctor">
+            <summary>
+            Precondition Exception.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Util.PreconditionException.#ctor(System.String)">
+            <summary>
+            Precondition Exception.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Util.PreconditionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Precondition Exception.
+            </summary>
+        </member>
+        <member name="T:MassTransit.ServiceBus.Util.PostconditionException">
+            <summary>
+            Exception raised when a postcondition fails.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Util.PostconditionException.#ctor">
+            <summary>
+            Postcondition Exception.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Util.PostconditionException.#ctor(System.String)">
+            <summary>
+            Postcondition Exception.
+            </summary>
+        </member>
+        <member name="M:MassTransit.ServiceBus.Util.PostconditionException.#ctor(System.String,System.Exception)">
+            <summary>
+            Postcondition Exception.
+            </summary>
+        </member>
+    </members>
+</doc>

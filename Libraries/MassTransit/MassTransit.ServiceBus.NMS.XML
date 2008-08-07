@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MassTransit.ServiceBus.NMS</name>
+    </assembly>
+    <members>
+    </members>
+</doc>
