@@ -16,7 +16,7 @@ namespace Machine.MassTransitExtensions
 
     public Uri CreateUri(Uri uri)
     {
-      return new Uri("activemq://" + uri.Host + ":61616/" + uri.AbsolutePath);
+      return new Uri("activemq://" + uri.Host + ":61616" + uri.AbsolutePath);
     }
   }
 }
