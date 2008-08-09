@@ -30,7 +30,7 @@ namespace Machine.MassTransitExtensions
 
     public virtual void RegisterServices(IMachineContainer container)
     {
-      container.Register.Type<IMassTransit>().ImplementedBy<MassTransitController>();
+      container.Register.Type<MassTransitController>();
       container.Register.Type<MassTransitUriFactory>();
       container.Register.Type<FollowerRepository>();
       container.Register.Type<EndpointResolver>();
