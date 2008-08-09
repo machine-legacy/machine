@@ -12,10 +12,12 @@ namespace Machine.Container.Services.Impl
     private readonly DependencyGraphTracker _dependencyGraphTracker = new DependencyGraphTracker();
     private readonly IOverrideLookup _overrideLookup;
     private readonly IContainerServices _containerServices;
+    private readonly LookupFlags _flags;
 
-    public ResolutionServices(IContainerServices containerServices, IOverrideLookup overrideLookup)
+    public ResolutionServices(IContainerServices containerServices, IOverrideLookup overrideLookup, LookupFlags flags)
     {
       _containerServices = containerServices;
+      _flags = flags;
       _overrideLookup = overrideLookup;
     }
 
@@ -72,6 +74,11 @@ namespace Machine.Container.Services.Impl
     public IServiceGraph ServiceGraph
     {
       get { return _containerServices.ServiceGraph; }
+    }
+
+    public LookupFlags Flags
+    {
+      get { return _flags; }
     }
   }
 }

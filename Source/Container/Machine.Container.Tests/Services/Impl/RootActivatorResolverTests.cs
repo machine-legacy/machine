@@ -24,6 +24,7 @@ namespace Machine.Container.Services.Impl
     {
       Run(delegate
       {
+        Expect.Call(Get<IResolutionServices>().Flags).Return(LookupFlags.Default);
         Expect.Call(_resolver1.ResolveActivator(Get<IResolutionServices>(), _entry)).Return(null);
         Expect.Call(_resolver2.ResolveActivator(Get<IResolutionServices>(), _entry)).Return(null);
       });
@@ -35,6 +36,7 @@ namespace Machine.Container.Services.Impl
     {
       Run(delegate
       {
+        Expect.Call(Get<IResolutionServices>().Flags).Return(LookupFlags.Default);
         Expect.Call(_resolver1.ResolveActivator(Get<IResolutionServices>(), _entry)).Return(Get<IActivator>());
       });
       Assert.AreEqual(Get<IActivator>(), _target.ResolveActivator(Get<IResolutionServices>(), _entry));

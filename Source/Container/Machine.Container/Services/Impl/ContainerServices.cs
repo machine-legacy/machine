@@ -70,9 +70,9 @@ namespace Machine.Container.Services.Impl
       get { return _serviceGraph; }
     }
 
-    public IResolutionServices CreateResolutionServices(object[] overrides)
+    public IResolutionServices CreateResolutionServices(object[] overrides, LookupFlags flags)
     {
-      return new ResolutionServices(this, new StaticOverrideLookup(overrides));
+      return new ResolutionServices(this, new StaticOverrideLookup(overrides), flags);
     }
   }
 }

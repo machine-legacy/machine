@@ -50,6 +50,6 @@ namespace Machine.Container.Services
   }
   public interface IContainerServices : IInternalServices
   {
-    IResolutionServices CreateResolutionServices(object[] overrides);
+    IResolutionServices CreateResolutionServices(object[] overrides, LookupFlags flags);
   }
 }

@@ -58,7 +58,7 @@ namespace Machine.Container
     public void Deactivate(object instance)
     {
       _state.AssertCanDeactivate();
-      IResolutionServices services = _containerServices.CreateResolutionServices(new object[0]);
+      IResolutionServices services = _containerServices.CreateResolutionServices(new object[0], LookupFlags.Default);
       _objectInstances.Deactivate(services, instance);
     }
 
