@@ -12,18 +12,16 @@ namespace Machine.MassTransitExtensions
     private readonly HostedServicesController _hostedServicesController;
     private readonly IMachineContainer _container;
     private readonly ISubscriptionCache _subscriptionCache;
-    private readonly IEndpointResolver _endpointResolver;
-    private readonly IObjectBuilder _objectBuilder;
     private readonly IStandardEndpoints _standardEndpoints;
+    private readonly IServiceBusFactory _serviceBusFactory;
     private ISubscriptionRepository _subscriptionRepository;
     private IServiceBus _bus;
 
-    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, IEndpointResolver endpointResolver, IObjectBuilder objectBuilder, MassTransitConfiguration configuration, IStandardEndpoints standardEndpoints)
+    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, IEndpointResolver endpointResolver, IObjectBuilder objectBuilder, MassTransitConfiguration configuration, IStandardEndpoints standardEndpoints, IServiceBusFactory serviceBusFactory)
     {
       _container = container;
+      _serviceBusFactory = serviceBusFactory;
       _standardEndpoints = standardEndpoints;
-      _objectBuilder = objectBuilder;
-      _endpointResolver = endpointResolver;
       _subscriptionCache = subscriptionCache;
       _hostedServicesController = hostedServicesController;
       _configuration = configuration;
@@ -66,16 +64,7 @@ namespace Machine.MassTransitExtensions
 
     public virtual IServiceBus CreateServiceBus()
     {
-      return new ServiceBus(_standardEndpoints.DefaultLocalEndpoint, _objectBuilder, _subscriptionCache, _endpointResolver);
-    }
-
-    public virtual IHostedService CreateSubscriptionService()
-    {
-      if (_configuration.IsSubscriptionManager)
-      {
-        return new SubscriptionService(_bus, _subscriptionCache, _subscriptionRepository);
-      }
-      return new SubscriptionClient(_bus, _subscriptionCache, _standardEndpoints.SubscriptionManagerEndpoint);
+      return _serviceBusFactory.CreateServiceBus(_configuration.DefaultLocalEndpointUri);
     }
   }
 }
