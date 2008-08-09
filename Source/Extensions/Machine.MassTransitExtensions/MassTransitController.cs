@@ -12,16 +12,13 @@ namespace Machine.MassTransitExtensions
     private readonly HostedServicesController _hostedServicesController;
     private readonly IMachineContainer _container;
     private readonly ISubscriptionCache _subscriptionCache;
-    private readonly IStandardEndpoints _standardEndpoints;
     private readonly IServiceBusFactory _serviceBusFactory;
-    private ISubscriptionRepository _subscriptionRepository;
     private IServiceBus _bus;
 
-    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, IEndpointResolver endpointResolver, IObjectBuilder objectBuilder, MassTransitConfiguration configuration, IStandardEndpoints standardEndpoints, IServiceBusFactory serviceBusFactory)
+    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, MassTransitConfiguration configuration, IServiceBusFactory serviceBusFactory)
     {
       _container = container;
       _serviceBusFactory = serviceBusFactory;
-      _standardEndpoints = standardEndpoints;
       _subscriptionCache = subscriptionCache;
       _hostedServicesController = hostedServicesController;
       _configuration = configuration;
@@ -31,10 +28,6 @@ namespace Machine.MassTransitExtensions
     public virtual void Start()
     {
       EndpointResolver.AddTransport(_configuration.TransportType);
-      if (_configuration.IsSubscriptionManager)
-      {
-        _subscriptionRepository = _container.Resolve.Object<ISubscriptionRepository>();
-      }
       _bus = CreateServiceBus();
       _container.Register.Type<IServiceBus>().Is(_bus);
       _container.Resolve.Object<ISubscriptionService>().Start();
@@ -55,10 +48,6 @@ namespace Machine.MassTransitExtensions
       _bus.Dispose();
       _subscriptionCache.Dispose();
       _container.Resolve.Object<ISubscriptionService>().Dispose();
-      if (_subscriptionRepository != null)
-      {
-        _subscriptionRepository.Dispose();
-      }
     }
     #endregion
 
