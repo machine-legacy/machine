@@ -56,6 +56,8 @@
     <Compile Include="IMassTransit.cs" />
     <Compile Include="IMassTransitUriFactory.cs" />
     <Compile Include="IServiceBusFactory.cs" />
+    <Compile Include="IServiceBusHub.cs" />
+    <Compile Include="IServiceBusHubFactory.cs" />
     <Compile Include="IStandardEndpoints.cs" />
     <Compile Include="ISubscriptionService.cs" />
     <Compile Include="MachineObjectBuilder.cs" />
@@ -67,6 +69,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerSubscriptionService.cs" />
     <Compile Include="ServiceBusFactory.cs" />
+    <Compile Include="ServiceBusHub.cs" />
+    <Compile Include="ServiceBusHubFactory.cs" />
     <Compile Include="StandardEndpoints.cs" />
     <Compile Include="SubscriptionManagerService.cs" />
   </ItemGroup>

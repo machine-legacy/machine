@@ -10,11 +10,9 @@ namespace Machine.MassTransitExtensions
   {
     private readonly MassTransitConfiguration _configuration;
     private readonly HostedServicesController _hostedServicesController;
-    private readonly IMachineContainer _container;
 
-    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, MassTransitConfiguration configuration)
+    public MassTransitController(HostedServicesController hostedServicesController, MassTransitConfiguration configuration)
     {
-      _container = container;
       _hostedServicesController = hostedServicesController;
       _configuration = configuration;
     }
@@ -23,14 +21,12 @@ namespace Machine.MassTransitExtensions
     public virtual void Start()
     {
       EndpointResolver.AddTransport(_configuration.TransportType);
-      _container.Resolve.Object<ISubscriptionService>().Start();
       _hostedServicesController.Start();
     }
 
     public virtual void Stop()
     {
       _hostedServicesController.Stop();
-      _container.Resolve.Object<ISubscriptionService>().Stop();
     }
     #endregion
 

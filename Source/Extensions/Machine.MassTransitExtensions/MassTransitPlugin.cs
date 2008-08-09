@@ -39,6 +39,7 @@ namespace Machine.MassTransitExtensions
       container.Register.Type<MachineObjectBuilder>();
       container.Register.Type<StandardEndpoints>();
       container.Register.Type<ServiceBusFactory>();
+      container.Register.Type<ServiceBusHubFactory>();
     }
   }
 }

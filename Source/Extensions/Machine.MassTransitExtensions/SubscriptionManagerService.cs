@@ -5,8 +5,8 @@ namespace Machine.MassTransitExtensions
 {
   public class SubscriptionManagerService : AbstractSubscriptionService
   {
-    public SubscriptionManagerService(IStandardServiceBuses buses, ISubscriptionCache subscriptionCache, ISubscriptionRepository subscriptionRepository)
-      : base(new SubscriptionService(buses.DefaultServiceBus, subscriptionCache, subscriptionRepository))
+    public SubscriptionManagerService(IServiceBus bus, ISubscriptionCache subscriptionCache, ISubscriptionRepository subscriptionRepository)
+      : base(new SubscriptionService(bus, subscriptionCache, subscriptionRepository))
     {
     }
   }
