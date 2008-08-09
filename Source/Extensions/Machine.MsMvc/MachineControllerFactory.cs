@@ -8,11 +8,11 @@ namespace Machine.MsMvc
 {
   public class MachineControllerFactory : IControllerFactory
   {
-    private readonly IHighLevelContainer _container;
+    private readonly IMachineContainer _container;
     private readonly IControllerPreparer _controllerPreparer;
     private readonly IControllerTypeMap _controllerTypeMap;
 
-    public MachineControllerFactory(IHighLevelContainer container, IControllerPreparer controllerPreparer, IControllerTypeMap controllerTypeMap)
+    public MachineControllerFactory(IMachineContainer container, IControllerPreparer controllerPreparer, IControllerTypeMap controllerTypeMap)
     {
       _container = container;
       _controllerTypeMap = controllerTypeMap;
@@ -27,7 +27,7 @@ namespace Machine.MsMvc
       {
         throw new ArgumentNullException("Unable to find controller type: " + controllerName);
       }
-      IController controller = (IController)_container.ResolveObject(controllerType);
+      IController controller = (IController)_container.Resolve.Object(controllerType);
       return _controllerPreparer.PrepareController(controllerType, controller);
     }
 

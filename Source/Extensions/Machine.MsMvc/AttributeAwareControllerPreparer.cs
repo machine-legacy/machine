@@ -9,9 +9,9 @@ namespace Machine.MsMvc
 {
   public class AttributeAwareControllerPreparer : IControllerPreparer
   {
-    private readonly IHighLevelContainer _container;
+    private readonly IMachineContainer _container;
 
-    public AttributeAwareControllerPreparer(IHighLevelContainer container)
+    public AttributeAwareControllerPreparer(IMachineContainer container)
     {
       _container = container;
     }
@@ -27,7 +27,7 @@ namespace Machine.MsMvc
       ViewEngineAttribute viewEngineAttribute = ReflectionHelper.GetAttribute<ViewEngineAttribute>(controllerType, true);
       if (viewEngineAttribute != null)
       {
-        IViewEngine viewEngine = (IViewEngine)_container.ResolveObject(viewEngineAttribute.ViewEngineType);
+        IViewEngine viewEngine = (IViewEngine)_container.Resolve.Object(viewEngineAttribute.ViewEngineType);
         defaultController.ViewEngine = viewEngine;
       }
       return defaultController;
