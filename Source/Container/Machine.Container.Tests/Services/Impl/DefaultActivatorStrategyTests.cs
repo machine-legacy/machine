@@ -39,9 +39,9 @@ namespace Machine.Container.Services.Impl
     }
 
     [Test]
-    public void CreateDefaultActivator_Always_IsDefaultActivator()
+    public void CreateDefaultActivator_Always_Is_Property_Setting_Activator_For_Now()
     {
-      Assert.IsInstanceOfType(typeof(DefaultActivator), _activatorFactory.CreateDefaultActivator(_entry));
+      Assert.IsInstanceOfType(typeof(PropertySettingActivator), _activatorFactory.CreateDefaultActivator(_entry));
     }
     #endregion
   }
