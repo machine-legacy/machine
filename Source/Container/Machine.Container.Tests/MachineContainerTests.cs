@@ -107,8 +107,7 @@ namespace Machine.Container
     }
 
     [Test]
-    [ExpectedException(typeof(ServiceResolutionException))]
-    public void Add_Duplicate_Throws()
+    public void Add_Replaces_The_Old_Service()
     {
       _machineContainer.Add<IService2, Service2DependsOn1>();
       _machineContainer.Add<IService2, SimpleService2>();

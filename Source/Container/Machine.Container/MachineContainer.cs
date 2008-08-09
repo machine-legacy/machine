@@ -55,7 +55,7 @@ namespace Machine.Container
 
     public void Add(Type serviceType, Type implementationType, LifestyleType lifestyleType)
     {
-      Register.Type(implementationType).Provides(serviceType).WithLifestyle(lifestyleType);
+      Register.Type(serviceType).ImplementedBy(implementationType).WithLifestyle(lifestyleType);
     }
 
     public void Add<TService>(object instance)

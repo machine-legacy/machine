@@ -14,9 +14,7 @@ namespace Machine.Container.Services.Impl
   {
     #region Member Data
     private IServiceGraph _serviceGraph;
-    private IServiceDependencyInspector _serviceDependencyInspector;
     private IServiceEntryFactory _serviceEntryFactory;
-    private IResolutionServices _services;
     #endregion
 
     #region Test Setup and Teardown Methods
@@ -24,9 +22,7 @@ namespace Machine.Container.Services.Impl
     {
       base.Setup();
       _serviceGraph = Get<IServiceGraph>();
-      _serviceDependencyInspector = Get<IServiceDependencyInspector>();
       _serviceEntryFactory = Get<IServiceEntryFactory>();
-      _services = Create<ResolutionServices>();
     }
     #endregion
 
