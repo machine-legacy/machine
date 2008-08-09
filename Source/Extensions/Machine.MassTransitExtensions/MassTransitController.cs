@@ -12,13 +12,10 @@ namespace Machine.MassTransitExtensions
     private readonly HostedServicesController _hostedServicesController;
     private readonly IMachineContainer _container;
     private readonly ISubscriptionCache _subscriptionCache;
-    private readonly IServiceBusFactory _serviceBusFactory;
-    private IServiceBus _bus;
 
-    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, MassTransitConfiguration configuration, IServiceBusFactory serviceBusFactory)
+    public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, MassTransitConfiguration configuration)
     {
       _container = container;
-      _serviceBusFactory = serviceBusFactory;
       _subscriptionCache = subscriptionCache;
       _hostedServicesController = hostedServicesController;
       _configuration = configuration;
@@ -28,8 +25,6 @@ namespace Machine.MassTransitExtensions
     public virtual void Start()
     {
       EndpointResolver.AddTransport(_configuration.TransportType);
-      _bus = CreateServiceBus();
-      _container.Register.Type<IServiceBus>().Is(_bus);
       _container.Resolve.Object<ISubscriptionService>().Start();
       _hostedServicesController.Start();
     }
@@ -45,15 +40,9 @@ namespace Machine.MassTransitExtensions
     public virtual void Dispose()
     {
       _hostedServicesController.Dispose();
-      _bus.Dispose();
       _subscriptionCache.Dispose();
       _container.Resolve.Object<ISubscriptionService>().Dispose();
     }
     #endregion
-
-    public virtual IServiceBus CreateServiceBus()
-    {
-      return _serviceBusFactory.CreateServiceBus(_configuration.DefaultLocalEndpointUri);
-    }
   }
 }
