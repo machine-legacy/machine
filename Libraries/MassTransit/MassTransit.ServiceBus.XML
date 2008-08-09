@@ -50,24 +50,11 @@
             <param name="message">The message to send</param>
             <param name="timeToLive">The maximum time for the message to be received before it expires</param>
         </member>
-        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive">
-            <summary>
-            Receives any message from the endpoint
-            </summary>
-            <returns>The message object</returns>
-        </member>
         <member name="M:MassTransit.ServiceBus.IEndpoint.Receive(System.TimeSpan)">
             <summary>
             Receives any message from the endpoint
             </summary>
             <param name="timeout">The timeout to wait for the message</param>
-            <returns>The message object</returns>
-        </member>
-        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive(System.Predicate{System.Object})">
-            <summary>
-            Receives any message from the endpoint
-            </summary>
-            <param name="accept">A predicate to see if the message is accepted by the caller</param>
             <returns>The message object</returns>
         </member>
         <member name="M:MassTransit.ServiceBus.IEndpoint.Receive(System.TimeSpan,System.Predicate{System.Object})">
@@ -77,38 +64,6 @@
             <param name="timeout">The timeout to wait for the message</param>
             <param name="accept">A predicate to see if the message is accepted by the caller</param>
             <returns>The message object</returns>
-        </member>
-        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1">
-            <summary>
-            Receives a message from the endpoint
-            </summary>
-            <typeparam name="T">The type of message to receive</typeparam>
-            <returns>A message read from the endpoint</returns>
-        </member>
-        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1(System.TimeSpan)">
-            <summary>
-            Receives a message from the endpoint
-            </summary>
-            <typeparam name="T">The type of message to receive</typeparam>
-            <param name="timeout">The timeout to wait for the message</param>
-            <returns>A message read from the endpoint</returns>
-        </member>
-        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1(System.Predicate{``0})">
-            <summary>
-            Receives a message from the endpoint
-            </summary>
-            <typeparam name="T">The type of message to receive</typeparam>
-            <param name="accept">A predicate used to determine if the message would be accepted</param>
-            <returns>A message read from the endpoint</returns>
-        </member>
-        <member name="M:MassTransit.ServiceBus.IEndpoint.Receive``1(System.TimeSpan,System.Predicate{``0})">
-            <summary>
-            Receives a message from the endpoint
-            </summary>
-            <typeparam name="T">The type of message to receive</typeparam>
-            <param name="timeout">The timeout to wait for the message</param>
-            <param name="accept">A predicate used to determine if the message would be accepted</param>
-            <returns>A message read from the endpoint</returns>
         </member>
         <member name="P:MassTransit.ServiceBus.IEndpoint.Uri">
             <summary>
