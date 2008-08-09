@@ -71,7 +71,7 @@ namespace Machine.Container.Services.Impl
     {
       _target.Add(ServiceEntryHelper.NewEntry(typeof(Service1DependsOn2)));
       _target.Add(ServiceEntryHelper.NewEntry(typeof(Service1)));
-      Assert.IsNull(_target.Lookup(typeof(IService1), false));
+      Assert.IsNull(_target.Lookup(typeof(IService1), LookupFlags.ThrowIfUnable));
     }
   }
 }

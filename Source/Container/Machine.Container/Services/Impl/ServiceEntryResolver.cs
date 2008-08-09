@@ -49,10 +49,10 @@ namespace Machine.Container.Services.Impl
       return _serviceGraph.Lookup(type);
     }
 
-    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type type, bool throwIfAmbiguous)
+    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type type, LookupFlags flags)
     {
       _log.Info("ResolveEntry: " + type);
-      ServiceEntry entry = _serviceGraph.Lookup(type, throwIfAmbiguous);
+      ServiceEntry entry = _serviceGraph.Lookup(type, flags);
       if (entry == null)
       {
         entry = _serviceEntryFactory.CreateServiceEntry(type, type, LifestyleType.Override);

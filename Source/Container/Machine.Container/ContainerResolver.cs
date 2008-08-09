@@ -59,7 +59,7 @@ namespace Machine.Container
     protected virtual object Resolve(Type type, params object[] overrides)
     {
       IResolutionServices services = _containerServices.CreateResolutionServices(overrides);
-      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type, true);
+      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type, LookupFlags.Default);
       Activation activation = entry.Activate(services);
       activation.AssertIsFullyActivated();
       return activation.Instance;

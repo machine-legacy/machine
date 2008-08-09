@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
@@ -27,14 +26,14 @@ namespace Machine.Container.Services.Impl
     }
 
     #region IServiceGraph Members
-    public ServiceEntry Lookup(Type type, bool throwIfAmbiguous)
+    public ServiceEntry Lookup(Type type, LookupFlags flags)
     {
-      return LookupLazily(type, throwIfAmbiguous);
+      return LookupLazily(type, flags);
     }
 
     public ServiceEntry Lookup(Type type)
     {
-      return LookupLazily(type, true);
+      return LookupLazily(type, LookupFlags.Default);
     }
 
     public void Add(ServiceEntry entry)
@@ -66,7 +65,7 @@ namespace Machine.Container.Services.Impl
     }
     #endregion
 
-    protected virtual ServiceEntry LookupLazily(Type type, bool throwIfAmbiguous)
+    protected virtual ServiceEntry LookupLazily(Type type, LookupFlags flags)
     {
       using (RWLock.AsReader(_lock))
       {
@@ -83,7 +82,7 @@ namespace Machine.Container.Services.Impl
         {
           return matches[0];
         }
-        else if (matches.Count > 1 && throwIfAmbiguous)
+        else if (matches.Count > 1 && (flags & LookupFlags.ThrowIfAmbiguous) == LookupFlags.ThrowIfAmbiguous)
         {
           throw new AmbiguousServicesException(type.ToString());
         }
