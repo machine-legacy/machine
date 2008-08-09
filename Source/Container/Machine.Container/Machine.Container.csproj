@@ -49,8 +49,10 @@
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
     <Compile Include="Model\IPropertySettings.cs" />
+    <Compile Include="Plugins\ParentContainers\ParentContainer.cs" />
+    <Compile Include="Plugins\ParentContainers\ParentContainerActivator.cs" />
     <Compile Include="Services\IChain.cs" />
-    <Compile Include="Services\Impl\ParentContainerActivatorResolver.cs" />
+    <Compile Include="Plugins\ParentContainers\ParentContainerActivatorResolver.cs" />
     <Compile Include="Services\Impl\RootActivatorFactoryChain.cs" />
     <Compile Include="Services\Impl\Chain.cs" />
     <Compile Include="Services\Impl\DefaultContainerInfrastructureFactory.cs" />
