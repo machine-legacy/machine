@@ -71,8 +71,9 @@ namespace Machine.Container
     public bool CanResolve(Type type)
     {
       _state.AssertIsInitialized();
-      ServiceEntry entry = _resolver.LookupEntry(type);
-      return entry != null;
+      IResolutionServices services = _containerServices.CreateResolutionServices(new object[0], LookupFlags.None);
+      ResolvedServiceEntry dependencyEntry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type);
+      return dependencyEntry != null;
     }
 
     public IEnumerable<ServiceRegistration> RegisteredServices

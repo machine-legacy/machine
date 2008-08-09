@@ -18,7 +18,11 @@ namespace Machine.Container.Services.Impl
           return activator;
         }
       }
-      throw new ServiceContainerException("Unable to resolve Activator for: " + entry);
+      if ((services.Flags & LookupFlags.ThrowIfUnable) == LookupFlags.ThrowIfUnable)
+      {
+        throw new ServiceContainerException("Unable to resolve Activator for: " + entry);
+      }
+      return null;
     }
     #endregion
   }

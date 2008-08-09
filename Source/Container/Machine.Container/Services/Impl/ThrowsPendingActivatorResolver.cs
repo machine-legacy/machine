@@ -10,7 +10,11 @@ namespace Machine.Container.Services.Impl
     #region IActivatorResolver Members
     public IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry)
     {
-      throw new PendingDependencyException(services.DependencyGraphTracker.BuildProgressMessage(entry));
+      if ((services.Flags & LookupFlags.ThrowIfUnable) == LookupFlags.ThrowIfUnable)
+      {
+        throw new PendingDependencyException(services.DependencyGraphTracker.BuildProgressMessage(entry));
+      }
+      return null;
     }
     #endregion
   }
