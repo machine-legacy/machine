@@ -11,12 +11,10 @@ namespace Machine.MassTransitExtensions
     private readonly MassTransitConfiguration _configuration;
     private readonly HostedServicesController _hostedServicesController;
     private readonly IMachineContainer _container;
-    private readonly ISubscriptionCache _subscriptionCache;
 
     public MassTransitController(IMachineContainer container, HostedServicesController hostedServicesController, ISubscriptionCache subscriptionCache, MassTransitConfiguration configuration)
     {
       _container = container;
-      _subscriptionCache = subscriptionCache;
       _hostedServicesController = hostedServicesController;
       _configuration = configuration;
     }
@@ -39,9 +37,6 @@ namespace Machine.MassTransitExtensions
     #region IDisposable Members
     public virtual void Dispose()
     {
-      _hostedServicesController.Dispose();
-      _subscriptionCache.Dispose();
-      _container.Resolve.Object<ISubscriptionService>().Dispose();
     }
     #endregion
   }
