@@ -9,6 +9,7 @@ namespace Machine.Container.Plugins.ObjectFactories
 {
   public class FactoriesActivatorResolver : IActivatorResolver
   {
+    private readonly object _lock = new object();
     private readonly IMachineContainer _container;
 
     public FactoriesActivatorResolver(IMachineContainer container)
@@ -28,7 +29,17 @@ namespace Machine.Container.Plugins.ObjectFactories
       {
         return null;
       }
-      return new FactoriesActivator(_container, entry);
+      lock (_lock)
+      {
+        if (services.ActivatorStore.HasActivator(entry))
+        {
+          return services.ActivatorStore.ResolveActivator(entry);
+        }
+        IActivator activator = new FactoriesActivator(_container, entry);
+        services.ActivatorStore.AddActivator(entry, activator);
+        services.ServiceGraph.Add(entry);
+        return activator;
+      }
     }
     #endregion
   }
