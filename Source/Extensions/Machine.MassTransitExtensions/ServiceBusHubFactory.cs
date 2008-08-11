@@ -8,15 +8,15 @@ namespace Machine.MassTransitExtensions
 {
   public class ServiceBusHubFactory : IServiceBusHubFactory
   {
-    private readonly MassTransitConfiguration _configuration;
+    private readonly IMassTransitConfigurationProvider _configurationProvider;
     private readonly IMassTransitUriFactory _uriFactory;
     private readonly IObjectBuilder _objectBuilder;
     private readonly IEndpointResolver _endpointResolver;
     private readonly ISubscriptionRepository _subscriptionRepository;
 
-    public ServiceBusHubFactory(MassTransitConfiguration configuration, IEndpointResolver endpointResolver, IObjectBuilder objectBuilder, IMassTransitUriFactory uriFactory, ISubscriptionRepository subscriptionRepository)
+    public ServiceBusHubFactory(IMassTransitConfigurationProvider configurationProvider, IEndpointResolver endpointResolver, IObjectBuilder objectBuilder, IMassTransitUriFactory uriFactory, ISubscriptionRepository subscriptionRepository)
     {
-      _configuration = configuration;
+      _configurationProvider = configurationProvider;
       _endpointResolver = endpointResolver;
       _subscriptionRepository = subscriptionRepository;
       _objectBuilder = objectBuilder;
@@ -45,10 +45,7 @@ namespace Machine.MassTransitExtensions
 
     private IEndpoint SubscriptionManagerEndpoint
     {
-      get
-      {
-        return _endpointResolver.Resolve(_uriFactory.CreateUri(_configuration.SubscriptionManagerEndpointUri));
-      }
+      get { return _endpointResolver.Resolve(_uriFactory.CreateUri(_configurationProvider.Configuration.SubscriptionManagerEndpointUri)); }
     }
   }
 }

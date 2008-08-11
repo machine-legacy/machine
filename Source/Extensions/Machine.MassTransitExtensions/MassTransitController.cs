@@ -1,26 +1,22 @@
-using Machine.Container.Services;
-
-using MassTransit.ServiceBus;
 using MassTransit.ServiceBus.Internal;
-using MassTransit.ServiceBus.Subscriptions;
 
 namespace Machine.MassTransitExtensions
 {
   public class MassTransitController : IMassTransit
   {
-    private readonly MassTransitConfiguration _configuration;
+    private readonly IMassTransitConfigurationProvider _configurationProvider;
     private readonly HostedServicesController _hostedServicesController;
 
-    public MassTransitController(HostedServicesController hostedServicesController, MassTransitConfiguration configuration)
+    public MassTransitController(HostedServicesController hostedServicesController, IMassTransitConfigurationProvider configurationProvider)
     {
       _hostedServicesController = hostedServicesController;
-      _configuration = configuration;
+      _configurationProvider = configurationProvider;
     }
 
     #region IMassTransit Members
     public virtual void Start()
     {
-      EndpointResolver.AddTransport(_configuration.TransportType);
+      EndpointResolver.AddTransport(_configurationProvider.Configuration.TransportType);
       _hostedServicesController.Start();
     }
 

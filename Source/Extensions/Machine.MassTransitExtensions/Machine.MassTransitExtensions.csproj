@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="HostedServicesController.cs" />
     <Compile Include="IMassTransit.cs" />
+    <Compile Include="IMassTransitConfigurationProvider.cs" />
     <Compile Include="IMassTransitUriFactory.cs" />
     <Compile Include="IServiceBusFactory.cs" />
     <Compile Include="IServiceBusHub.cs" />

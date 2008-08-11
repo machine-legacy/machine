@@ -5,7 +5,7 @@ namespace Machine.MassTransitExtensions
 {
   public class MassTransitUriFactory : IMassTransitUriFactory
   {
-    private readonly MassTransitConfiguration _configuration;
+    private readonly IMassTransitConfigurationProvider _configurationProvider;
     private static readonly Dictionary<Type, IMassTransitUriFactory> _factories = new Dictionary<Type, IMassTransitUriFactory>();
 
     static MassTransitUriFactory()
@@ -14,24 +14,24 @@ namespace Machine.MassTransitExtensions
       _factories[typeof(MassTransit.ServiceBus.NMS.NmsEndpoint)] = new NmsFactory();
     }
 
-    public MassTransitUriFactory(MassTransitConfiguration configuration)
+    public MassTransitUriFactory(IMassTransitConfigurationProvider configurationProvider)
     {
-      _configuration = configuration;
+      _configurationProvider = configurationProvider;
     }
 
     public Uri CreateUri(string name)
     {
-      return _factories[_configuration.TransportType].CreateUri(name);
+      return _factories[_configurationProvider.Configuration.TransportType].CreateUri(name);
     }
 
     public Uri CreateUri(string address, string name)
     {
-      return _factories[_configuration.TransportType].CreateUri(address, name);
+      return _factories[_configurationProvider.Configuration.TransportType].CreateUri(address, name);
     }
 
     public Uri CreateUri(Uri uri)
     {
-      return _factories[_configuration.TransportType].CreateUri(uri);
+      return _factories[_configurationProvider.Configuration.TransportType].CreateUri(uri);
     }
 
     class NmsFactory : IMassTransitUriFactory
