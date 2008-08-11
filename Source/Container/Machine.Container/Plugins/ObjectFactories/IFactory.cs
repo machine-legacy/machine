@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Machine.Container.ObjectFactories
+namespace Machine.Container.Plugins.ObjectFactories
 {
   public interface IFactory<TType>
   {

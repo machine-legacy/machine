@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Machine.Container.Plugins;
 using Machine.Container.Services.Impl;
 
-namespace Machine.Container.ObjectFactories
+namespace Machine.Container.Plugins.ObjectFactories
 {
   public class FactoriesPlugin : IServiceContainerPlugin
   {

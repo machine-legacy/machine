@@ -1,6 +1,6 @@
 using System;
 
-namespace Machine.Container.ObjectFactories
+namespace Machine.Container.Plugins.ObjectFactories
 {
   public static class FactoryHelper
   {

@@ -1,7 +1,7 @@
 using System;
 using System.Reflection;
 
-namespace Machine.Container.ObjectFactories
+namespace Machine.Container.Plugins.ObjectFactories
 {
   public class FactoryProxy
   {

@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 
 using Machine.Container.Model;
+using Machine.Container.Plugins.ObjectFactories;
 using Machine.Container.Services;
 
-namespace Machine.Container.ObjectFactories
+namespace Machine.Container.Plugins.ObjectFactories
 {
   public class FactoriesActivatorResolver : IActivatorResolver
   {
