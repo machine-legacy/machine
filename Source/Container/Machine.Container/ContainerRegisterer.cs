@@ -16,15 +16,16 @@ namespace Machine.Container
       _containerServices = containerServices;
     }
 
-    public virtual RegistrationConfigurer Type<TType>()
+    public virtual GenericRegistrationConfigurer<TType> Type<TType>()
     {
-      return Type(typeof(TType));
+      ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(typeof(TType));
+      return new GenericRegistrationConfigurer<TType>(_containerServices, entry);
     }
 
-    public virtual RegistrationConfigurer Type(Type type)
+    public virtual PlainRegistrationConfigurer Type(Type type)
     {
       ServiceEntry entry = _containerServices.ServiceEntryResolver.CreateEntryIfMissing(type);
-      return new RegistrationConfigurer(_containerServices, entry);
+      return new PlainRegistrationConfigurer(_containerServices, entry);
     }
   }
 }

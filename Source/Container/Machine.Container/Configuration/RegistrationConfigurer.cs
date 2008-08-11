@@ -6,12 +6,12 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Configuration
 {
-  public class RegistrationConfigurer
+  public abstract class RegistrationConfigurer
   {
     private readonly IContainerServices _containerServices;
     private readonly ServiceEntry _entry;
 
-    public RegistrationConfigurer(IContainerServices containerServices, ServiceEntry entry)
+    protected RegistrationConfigurer(IContainerServices containerServices, ServiceEntry entry)
     {
       _containerServices = containerServices;
       _entry = entry;
@@ -61,8 +61,9 @@ namespace Machine.Container.Configuration
       return this;
     }
 
-    public RegistrationConfigurer Is(object instance)
+    protected RegistrationConfigurer IsStaticInstance(object instance)
     {
+      _entry.AssertIsAcceptableInstance(instance);
       IActivator activator = _containerServices.ActivatorFactory.CreateStaticActivator(_entry, instance);
       _containerServices.ActivatorStore.AddActivator(_entry, activator);
       return this;
@@ -78,6 +79,30 @@ namespace Machine.Container.Configuration
     public RegistrationConfigurer Intercept<TType>()
     {
       return Intercept(typeof(TType));
+    }
+  }
+  public class GenericRegistrationConfigurer<TType> : RegistrationConfigurer
+  {
+    public GenericRegistrationConfigurer(IContainerServices containerServices, ServiceEntry entry)
+      : base(containerServices, entry)
+    {
+    }
+
+    public RegistrationConfigurer Is(TType instance)
+    {
+      return IsStaticInstance(instance);
+    }
+  }
+  public class PlainRegistrationConfigurer : RegistrationConfigurer
+  {
+    public PlainRegistrationConfigurer(IContainerServices containerServices, ServiceEntry entry)
+      : base(containerServices, entry)
+    {
+    }
+
+    public RegistrationConfigurer Is(object instance)
+    {
+      return IsStaticInstance(instance);
     }
   }
 }
