@@ -19,6 +19,10 @@ namespace Machine.Container.Plugins.ObjectFactories
     #region IActivatorResolver Members
     public IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry)
     {
+      if (FactoryHelper.IsFactoryType(entry.ServiceType))
+      {
+        return null;
+      }
       Type factoryType = FactoryHelper.CreateFactoryType(entry.ServiceType);
       if (!_container.CanResolve(factoryType))
       {

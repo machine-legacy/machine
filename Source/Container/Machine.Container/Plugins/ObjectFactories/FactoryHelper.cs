@@ -8,5 +8,17 @@ namespace Machine.Container.Plugins.ObjectFactories
     {
       return typeof(IFactory<>).MakeGenericType(valueType);
     }
+
+    public static bool IsFactoryType(Type type)
+    {
+      if (type.IsGenericType)
+      {
+        if (type.GetGenericTypeDefinition() == typeof(IFactory<>))
+        {
+          return true;
+        }
+      }
+      return false;
+    }
   }
 }
