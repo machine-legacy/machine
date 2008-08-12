@@ -15,7 +15,7 @@ namespace Machine.Container.Model
     public abstract LifestyleType Lifestyle { get; }
   }
   
-  [AttributeUsage(AttributeTargets.Class)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=true)]
   public class SingletonAttribute : LifestyleAttribute
   {
     public override LifestyleType Lifestyle
@@ -24,7 +24,7 @@ namespace Machine.Container.Model
     }
   }
   
-  [AttributeUsage(AttributeTargets.Class)]
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=true)]
   public class TransientAttribute : LifestyleAttribute
   {
     public override LifestyleType Lifestyle
