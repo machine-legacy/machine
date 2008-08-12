@@ -52,25 +52,19 @@ namespace Machine.Container
 
     public virtual void AddServiceCollectionsFrom(Assembly assembly)
     {
+      List<Type> types = new List<Type>();
       foreach (Type type in assembly.GetTypes())
       {
         if (typeof(IServiceCollection).IsAssignableFrom(type))
         {
-          AddServiceCollection(type);
+          _container.Register.Type(type);
+          types.Add(type);
         }
       }
-    }
-
-    public virtual void AddServiceCollection<T>() where T : IServiceCollection
-    {
-      AddServiceCollection(typeof(T));
-    }
-
-    public virtual void AddServiceCollection(Type serviceCollectionType)
-    {
-      if (!typeof(IServiceCollection).IsAssignableFrom(serviceCollectionType)) throw new ArgumentException("serviceCollectionType");
-      _container.Register.Type(serviceCollectionType);
-      AddServiceCollection((IServiceCollection)_container.Resolve.Object(serviceCollectionType));
+      foreach (Type type in types)
+      {
+        AddServiceCollection((IServiceCollection)_container.Resolve.Object(type));
+      }
     }
 
     public virtual void AddServiceCollection(IServiceCollection services)
