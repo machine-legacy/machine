@@ -19,7 +19,7 @@ namespace Machine.Container
       _container = container;
     }
 
-    public virtual void AddAttributedServices(Assembly assembly)
+    public virtual void AddAttributedServicesFrom(Assembly assembly)
     {
       foreach (Type type in assembly.GetTypes())
       {
@@ -48,6 +48,8 @@ namespace Machine.Container
       _container.Register.Type<FileSystem>();
       _container.Register.Type<DotNetObjectActivator>();
       _container.Register.Type<ThreadManager>();
+      _container.Register.Type<DotNetDotNet>();
+      _container.Register.Type<DotNetEnvironment>();
     }
 
     public virtual void AddServiceCollectionsFrom(Assembly assembly)
