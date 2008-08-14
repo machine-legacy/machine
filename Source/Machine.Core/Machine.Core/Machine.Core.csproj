@@ -61,8 +61,12 @@
     <Compile Include="MsBuildUtilities\Log4NetMsBuildAppender.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IClock.cs" />
+    <Compile Include="Services\IDotNet.cs" />
+    <Compile Include="Services\IEnvironment.cs" />
     <Compile Include="Services\IFileSystem.cs" />
     <Compile Include="Services\Impl\Clock.cs" />
+    <Compile Include="Services\Impl\DotNetDotNet.cs" />
+    <Compile Include="Services\Impl\DotNetEnvironment.cs" />
     <Compile Include="Services\Impl\DotNetObjectActivator.cs" />
     <Compile Include="Services\Impl\FileSystem.cs" />
     <Compile Include="Services\Impl\Namer.cs" />
