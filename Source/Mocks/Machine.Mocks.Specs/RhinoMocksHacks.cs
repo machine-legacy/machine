@@ -6,19 +6,5 @@ namespace Machine.Mocks
 {
   public static class RhinoMocksHacks
   {
-    public static void AssertWasNotCalled<T>(this T mock, Action<T> action)
-    {
-      try
-      {
-        mock.AssertWasCalled(action);
-      }
-      catch (ExpectationViolationException)
-      {
-        return;
-      }
-
-      throw new ExpectationViolationException("Expectd that something " + 
-        " would not be called, but is was");
-    }
   }
 }
