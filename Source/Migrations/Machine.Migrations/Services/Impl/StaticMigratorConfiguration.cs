@@ -14,6 +14,7 @@ namespace Machine.Migrations.Services.Impl
     string _connectionString;
     string _migrationsDirectory;
     string _scope;
+    string _compilerVersion;
     short _desiredVersion = -1;
     bool _showDiagnostics;
     string[] _references = new string[0];
@@ -77,6 +78,12 @@ namespace Machine.Migrations.Services.Impl
     {
       get { return _migrationsDirectory; }
       set { _migrationsDirectory = value; }
+    }
+
+    public string CompilerVersion
+    {
+      get { return _compilerVersion; }
+      set { _compilerVersion = value; }
     }
 
     public string ConnectionString

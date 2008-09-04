@@ -18,6 +18,8 @@ namespace Machine.Migrations.Services
 
     string MigrationsDirectory { get; }
 
+    string CompilerVersion { get; }
+
     short DesiredVersion { get; }
 
     bool ShowDiagnostics { get; }

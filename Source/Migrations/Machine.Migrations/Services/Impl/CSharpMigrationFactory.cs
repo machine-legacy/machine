@@ -1,10 +1,12 @@
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.IO;
 using System.Reflection;
 
 using Machine.Core.Services;
+using Microsoft.CSharp;
 
 namespace Machine.Migrations.Services.Impl
 {
@@ -16,17 +18,14 @@ namespace Machine.Migrations.Services.Impl
 
     #region Member Data
     readonly IConfiguration _configuration;
-    readonly IFileSystem _fileSystem;
     readonly IWorkingDirectoryManager _workingDirectoryManager;
     #endregion
 
     #region CSharpMigrationFactory()
-    public CSharpMigrationFactory(IConfiguration configuration, IFileSystem fileSystem,
-      IWorkingDirectoryManager workingDirectoryManager)
+    public CSharpMigrationFactory(IConfiguration configuration, IWorkingDirectoryManager workingDirectoryManager)
     {
       _configuration = configuration;
       _workingDirectoryManager = workingDirectoryManager;
-      _fileSystem = fileSystem;
     }
     #endregion
 
@@ -39,7 +38,12 @@ namespace Machine.Migrations.Services.Impl
 
     protected override Type CompileMigration(MigrationReference migrationReference)
     {
-      CodeDomProvider provider = CodeDomProvider.CreateProvider("CSharp");
+      Dictionary<string, string> providerOptions = new Dictionary<string, string>();
+      if (!String.IsNullOrEmpty(_configuration.CompilerVersion))
+      {
+        providerOptions["CompilerVersion"] = _configuration.CompilerVersion;
+      }
+      CodeDomProvider provider = new CSharpCodeProvider(providerOptions);
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
       parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory,

@@ -21,6 +21,7 @@ namespace Machine.Migrations
     int _commandTimeout = 30;
     bool _diagnostics;
     string[] _references;
+    string _compilerVersion;
 
     public MigratorTask()
     {
@@ -69,6 +70,12 @@ namespace Machine.Migrations
     {
       get { return _desiredVersion; }
       set { _desiredVersion = value; }
+    }
+
+    public string CompilerVersion
+    {
+      get { return _compilerVersion; }
+      set { _compilerVersion = value; }
     }
 
     public bool ShowDiagnostics
