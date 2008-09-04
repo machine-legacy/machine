@@ -59,6 +59,7 @@
     <Compile Include="Plugins\ParentContainers\ParentContainer.cs" />
     <Compile Include="Plugins\ParentContainers\ParentContainerActivator.cs" />
     <Compile Include="Plugins\ServiceCollection.cs" />
+    <Compile Include="Plugins\StaticAccesses\StaticAccessesPlugin.cs" />
     <Compile Include="Services\IChain.cs" />
     <Compile Include="Plugins\ParentContainers\ParentContainerActivatorResolver.cs" />
     <Compile Include="Services\Impl\RootActivatorFactoryChain.cs" />

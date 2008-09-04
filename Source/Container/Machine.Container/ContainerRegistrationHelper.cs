@@ -52,6 +52,12 @@ namespace Machine.Container
       _container.Register.Type<DotNetEnvironment>();
     }
 
+    public virtual void AddServiceCollection<T>() where T : IServiceCollection
+    {
+      _container.Register.Type(typeof(T));
+      AddServiceCollection((IServiceCollection)_container.Resolve.Object(typeof(T)));
+    }
+
     public virtual void AddServiceCollectionsFrom(Assembly assembly)
     {
       List<Type> types = new List<Type>();
