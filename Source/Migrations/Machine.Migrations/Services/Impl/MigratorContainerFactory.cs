@@ -14,6 +14,7 @@ namespace Machine.Migrations.Services.Impl
     {
       IHighLevelContainer container = CreateContainer();
       container.Initialize();
+      container.PrepareForServices();
       container.Add<IConnectionProvider>(configuration.ConnectionProviderType);
       container.Add<ITransactionProvider>(configuration.TransactionProviderType);
       container.Add<IDatabaseProvider>(configuration.DatabaseProviderType);
@@ -33,6 +34,7 @@ namespace Machine.Migrations.Services.Impl
       container.Add<IConfiguration>(configuration);
       container.Add<CSharpMigrationFactory>();
       container.Add<BooMigrationFactory>();
+      container.Start();
       return container;
     }
     #endregion
