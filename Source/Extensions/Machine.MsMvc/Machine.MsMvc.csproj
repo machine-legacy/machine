@@ -51,16 +51,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\MsMvc\System.Web.Routing.dll</HintPath>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MsMvcServices.cs" />
     <Compile Include="ReflectiveControllerTypeMap.cs" />
     <Compile Include="IControllerTypeMap.cs" />
     <Compile Include="IControllerPreparer.cs" />
