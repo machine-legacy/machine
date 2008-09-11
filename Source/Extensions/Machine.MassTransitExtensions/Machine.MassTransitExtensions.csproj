@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E5207944-1E30-4363-8A3C-2214F9C4CEA4}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -68,7 +68,7 @@
     <Compile Include="MassTransitUriFactory.cs" />
     <Compile Include="MassTransitConfiguration.cs" />
     <Compile Include="MassTransitController.cs" />
-    <Compile Include="MassTransitPlugin.cs" />
+    <Compile Include="MassTransitExtensionServices.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerSubscriptionService.cs" />
     <Compile Include="ServiceBusFactory.cs" />
