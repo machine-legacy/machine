@@ -7,7 +7,7 @@ using log4net.Layout;
 
 using Microsoft.Build.Utilities;
 
-namespace Machine.Core.MsBuildUtilities
+namespace Machine.MsBuildExtensions
 {
   public class Log4NetMsBuildAppender : AppenderSkeleton
   {
