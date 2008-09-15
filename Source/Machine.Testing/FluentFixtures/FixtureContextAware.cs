@@ -34,4 +34,35 @@ namespace Machine.Testing.FluentFixtures
       _context = context;
     }
   }
+
+  public class StaticFixtureContextAware
+  {
+    static IFixtureContext _context;
+
+    protected static NewService New
+    {
+      get { return _context.New; }
+    }
+
+    protected static CurrentService Current
+    {
+      get { return _context.Current; }
+    }
+
+    protected static IExistingService Existing
+    {
+      get { return _context.Existing; }
+    }
+
+    protected static IFixtureContext Context
+    {
+      get { return _context; }
+      set { _context = value; }
+    }
+
+    protected static void SetContext(IFixtureContext context)
+    {
+      _context = context;
+    }
+  }
 }
