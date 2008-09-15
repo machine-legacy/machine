@@ -1,12 +1,11 @@
 ﻿using System;
 
 using Machine.Container.Services;
-using Machine.Core.MsBuildUtilities;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 using Machine.Migrations.Services;
 using Machine.Migrations.Services.Impl;
-
+using Machine.MsBuildExtensions;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 
