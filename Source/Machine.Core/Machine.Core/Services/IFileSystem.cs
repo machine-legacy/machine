@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-using Machine.Core.Services;
-
 namespace Machine.Core.Services
 {
   public interface IFileSystem
@@ -11,6 +9,8 @@ namespace Machine.Core.Services
     string[] GetDirectories(string path);
     string[] GetFiles(string path);
     string[] GetFiles(string path, string pattern);
+    string[] GetFilesRecursively(string path);
+    string[] GetFilesRecursively(string path, string pattern);
     string[] GetEntries(string path);
     bool IsFile(string path);
     bool IsDirectory(string path);

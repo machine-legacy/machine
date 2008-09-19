@@ -22,6 +22,16 @@ namespace Machine.Core.Services.Impl
       return Directory.GetFiles(path, pattern);
     }
 
+    public string[] GetFilesRecursively(string path)
+    {
+      return Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
+    }
+
+    public string[] GetFilesRecursively(string path, string pattern)
+    {
+      return Directory.GetFiles(path, pattern, SearchOption.AllDirectories);
+    }
+
     public string[] GetEntries(string path)
     {
       return Directory.GetFileSystemEntries(path);
