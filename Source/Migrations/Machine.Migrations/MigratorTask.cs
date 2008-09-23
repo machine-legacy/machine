@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Machine.Container.Services;
+using Machine.Core.Utility;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
 using Machine.Migrations.Services;
@@ -34,9 +35,9 @@ namespace Machine.Migrations
 
     public override bool Execute()
     {
+      log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log, new log4net.Layout.PatternLayout("%-5p %x %m")));
+      LoggingHelper.Disable("Machine.Container");
       IMigratorContainerFactory migratorContainerFactory = CreateContainerFactory();
-      log4net.Config.BasicConfigurator.Configure(new Log4NetMsBuildAppender(this.Log,
-        new log4net.Layout.PatternLayout("%-5p %x %m")));
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
         IHighLevelContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
