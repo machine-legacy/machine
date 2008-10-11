@@ -24,7 +24,8 @@ namespace Machine.MsMvc
       {
         _map = CreateMap();
       }
-      if (!_map.ContainsKey(controllerName.ToLowerInvariant()))
+      controllerName = controllerName.ToLowerInvariant();
+      if (!_map.ContainsKey(controllerName ))
       {
         throw new KeyNotFoundException("No controller named: " + controllerName);
       }
