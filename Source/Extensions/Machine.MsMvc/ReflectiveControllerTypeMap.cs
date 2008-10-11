@@ -24,7 +24,7 @@ namespace Machine.MsMvc
       {
         _map = CreateMap();
       }
-      if (!_map.ContainsKey(controllerName))
+      if (!_map.ContainsKey(controllerName.ToLowerInvariant()))
       {
         throw new KeyNotFoundException("No controller named: " + controllerName);
       }
@@ -39,7 +39,15 @@ namespace Machine.MsMvc
       {
         if (IsController(registration.ServiceType))
         {
-          map[GetControllerName(registration.ServiceType)] = registration.ServiceType;
+          var name = GetControllerName(registration.ServiceType);
+
+          if (map.ContainsKey(name))
+          {
+            throw new Exception(String.Format(
+@"Cannot add controller {0} because a similarly named controller {1} already exists.
+We currently only look the class name in a case insensitive manner at this time.", registration.ServiceType, map[name]));
+          }
+          map[name] = registration.ServiceType;
         }
       }
       return map;
@@ -55,7 +63,7 @@ namespace Machine.MsMvc
       string name = type.Name;
       if (name.EndsWith("Controller"))
       {
-        name = name.Substring(0, name.Length - "Controller".Length);
+        name = name.Substring(0, name.Length - "Controller".Length).ToLowerInvariant();
       }
       return name;
     }
