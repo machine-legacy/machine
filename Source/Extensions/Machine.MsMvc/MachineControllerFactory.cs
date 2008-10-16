@@ -31,7 +31,7 @@ namespace Machine.MsMvc
       return _controllerPreparer.PrepareController(controllerType, controller);
     }
 
-    public void DisposeController(IController controller)
+    public void ReleaseController(IController controller)
     {
     }
     #endregion
