@@ -16,6 +16,7 @@ namespace Machine.Container
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IContainerInfrastructureFactory _containerInfrastructureFactory;
     private IObjectInstances _objectInstances;
+    private IServiceEntryFactory _serviceEntryFactory;
     private IServiceEntryResolver _resolver;
     private IRootActivatorFactory _rootActivatorFactory;
     private IRootActivatorResolver _rootActivatorResolver;
@@ -72,7 +73,7 @@ namespace Machine.Container
     {
       _state.AssertIsInitialized();
       IResolutionServices services = _containerServices.CreateResolutionServices(new StaticOverrideLookup(new object[0]), LookupFlags.None);
-      ResolvedServiceEntry dependencyEntry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type);
+      ResolvedServiceEntry dependencyEntry = _containerServices.ServiceEntryResolver.ResolveEntry(services, services.CreateResolvableType(type));
       return dependencyEntry != null;
     }
 
@@ -97,9 +98,9 @@ namespace Machine.Container
     public virtual void Initialize()
     {
       _rootActivatorResolver = _containerInfrastructureFactory.CreateDependencyResolver();
-      IServiceEntryFactory serviceEntryFactory = new ServiceEntryFactory();
+      _serviceEntryFactory = new ServiceEntryFactory();
       _serviceGraph = new ServiceGraph(_listenerInvoker);
-      _resolver = new ServiceEntryResolver(_serviceGraph, serviceEntryFactory, _rootActivatorResolver);
+      _resolver = new ServiceEntryResolver(_serviceGraph, _serviceEntryFactory, _rootActivatorResolver);
       _activatorStore = new ActivatorStore();
       _rootActivatorFactory = _containerInfrastructureFactory.CreateActivatorFactory(_resolver);
       _pluginServices = new PluginServices(_state, this, _rootActivatorResolver, _rootActivatorFactory);
@@ -147,7 +148,7 @@ namespace Machine.Container
 
     protected virtual IContainerServices CreateContainerServices()
     {
-      return new ContainerServices(_activatorStore, _rootActivatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _resolver, _serviceGraph, _state);
+      return new ContainerServices(_activatorStore, _rootActivatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _serviceEntryFactory, _resolver, _serviceGraph, _state);
     }
 
     protected virtual void RegisterContainerInContainer()

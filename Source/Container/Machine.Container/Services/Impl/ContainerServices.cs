@@ -13,14 +13,16 @@ namespace Machine.Container.Services.Impl
     private readonly IActivatorFactory _activatorFactory;
     private readonly IActivatorStore _activatorStore;
     private readonly ILifestyleFactory _lifestyleFactory;
+    private readonly IServiceEntryFactory _serviceEntryFactory;
     private readonly IServiceEntryResolver _serviceEntryResolver;
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IObjectInstances _objectInstances;
     private readonly IServiceGraph _serviceGraph;
 
-    public ContainerServices(IActivatorStore activatorStore, IActivatorFactory activatorFactory, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph, ContainerStatePolicy statePolicy)
+    public ContainerServices(IActivatorStore activatorStore, IActivatorFactory activatorFactory, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryFactory serviceEntryFactory, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph, ContainerStatePolicy statePolicy)
     {
       _activatorStore = activatorStore;
+      _serviceEntryFactory = serviceEntryFactory;
       _statePolicy = statePolicy;
       _serviceGraph = serviceGraph;
       _activatorFactory = activatorFactory;
@@ -48,6 +50,11 @@ namespace Machine.Container.Services.Impl
     public ILifestyleFactory LifestyleFactory
     {
       get { return _lifestyleFactory; }
+    }
+
+    public IServiceEntryFactory ServiceEntryFactory
+    {
+      get { return _serviceEntryFactory; }
     }
 
     public IServiceEntryResolver ServiceEntryResolver

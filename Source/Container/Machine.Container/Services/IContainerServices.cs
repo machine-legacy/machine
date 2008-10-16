@@ -28,6 +28,11 @@ namespace Machine.Container.Services
       get;
     }
 
+    IServiceEntryFactory ServiceEntryFactory
+    {
+      get;
+    }
+
     IServiceEntryResolver ServiceEntryResolver
     {
       get;

@@ -56,6 +56,11 @@ namespace Machine.Container.Services.Impl
       get { return _containerServices.LifestyleFactory; }
     }
 
+    public IServiceEntryFactory ServiceEntryFactory
+    {
+      get { return _containerServices.ServiceEntryFactory; }
+    }
+
     public IServiceEntryResolver ServiceEntryResolver
     {
       get { return _containerServices.ServiceEntryResolver; }
