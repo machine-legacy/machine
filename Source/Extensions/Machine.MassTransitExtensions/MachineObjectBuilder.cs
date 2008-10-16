@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 using Machine.Container.Services;
 
@@ -45,6 +46,50 @@ namespace Machine.MassTransitExtensions
     public void Release<T>(T obj)
     {
       _container.Deactivate(obj);
+    }
+
+    public T GetInstance<T>(IDictionary arguments)
+    {
+      return _container.Resolve.ObjectWithParameters<T>(arguments);
+    }
+    #endregion
+
+    #region IServiceLocator Members
+    public IEnumerable<TService> GetAllInstances<TService>()
+    {
+      return _container.Resolve.All<TService>();
+    }
+
+    public IEnumerable<object> GetAllInstances(Type serviceType)
+    {
+      return _container.Resolve.All(serviceType);
+    }
+
+    public TService GetInstance<TService>(string key)
+    {
+      return _container.Resolve.Object<TService>();
+    }
+
+    public TService GetInstance<TService>()
+    {
+      return _container.Resolve.Object<TService>();
+    }
+
+    public object GetInstance(Type serviceType, string key)
+    {
+      return _container.Resolve.Object(serviceType);
+    }
+
+    public object GetInstance(Type serviceType)
+    {
+      return _container.Resolve.Object(serviceType);
+    }
+    #endregion
+
+    #region IServiceProvider Members
+    public object GetService(Type serviceType)
+    {
+      return _container.Resolve.Object(serviceType);
     }
     #endregion
   }
