@@ -58,7 +58,7 @@ namespace Machine.Container
     public void Deactivate(object instance)
     {
       _state.AssertCanDeactivate();
-      IResolutionServices services = _containerServices.CreateResolutionServices(new object[0], LookupFlags.Default);
+      IResolutionServices services = _containerServices.CreateResolutionServices(new StaticOverrideLookup(new object[0]), LookupFlags.Default);
       _objectInstances.Deactivate(services, instance);
     }
 
@@ -71,7 +71,7 @@ namespace Machine.Container
     public bool CanResolve(Type type)
     {
       _state.AssertIsInitialized();
-      IResolutionServices services = _containerServices.CreateResolutionServices(new object[0], LookupFlags.None);
+      IResolutionServices services = _containerServices.CreateResolutionServices(new StaticOverrideLookup(new object[0]), LookupFlags.None);
       ResolvedServiceEntry dependencyEntry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type);
       return dependencyEntry != null;
     }
