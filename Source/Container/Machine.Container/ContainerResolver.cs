@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Machine.Container.Model;
 using Machine.Container.Services;
+using Machine.Container.Services.Impl;
 
 namespace Machine.Container
 {
@@ -19,12 +20,12 @@ namespace Machine.Container
 
     public object Object(Type type)
     {
-      return Resolve(type);
+      return ResolveWithStaticOverrides(type);
     }
 
     public object Object(Type type, params object[] overrides)
     {
-      return Resolve(type, overrides);
+      return ResolveWithStaticOverrides(type, overrides);
     }
 
     public T Object<T>()
@@ -35,6 +36,11 @@ namespace Machine.Container
     public T Object<T>(params object[] overrides)
     {
       return (T)Object(typeof(T), overrides);
+    }
+
+    public T ObjectWithParameters<T>(System.Collections.IDictionary parameters)
+    {
+      return (T)ResolveWithParameters(typeof (T), parameters);
     }
 
     public T New<T>(params object[] overrides)
@@ -66,10 +72,20 @@ namespace Machine.Container
       return typedAs;
     }
 
-    protected virtual object Resolve(Type type, params object[] overrides)
+    protected object ResolveWithStaticOverrides(Type type, params object[] overrides)
     {
-      IResolutionServices services = _containerServices.CreateResolutionServices(new StaticOverrideLookup(overrides), LookupFlags.Default);
-      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, type);
+      return Resolve(type, new StaticOverrideLookup(overrides));
+    }
+
+    protected object ResolveWithParameters(Type type, System.Collections.IDictionary parameters)
+    {
+      return Resolve(type, new ParameterOverrideLookup(parameters));
+    }
+    
+    protected virtual object Resolve(Type type, IOverrideLookup overrides)
+    {
+      IResolutionServices services = _containerServices.CreateResolutionServices(overrides, LookupFlags.Default);
+      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, services.CreateResolvableType(type));
       Activation activation = entry.Activate(services);
       activation.AssertIsFullyActivated();
       return activation.Instance;

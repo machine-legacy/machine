@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -49,6 +49,8 @@
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
     <Compile Include="Model\IPropertySettings.cs" />
+    <Compile Include="Model\ResolvableParameterType.cs" />
+    <Compile Include="Model\ResolvableType.cs" />
     <Compile Include="Plugins\IServiceCollection.cs" />
     <Compile Include="Plugins\ObjectFactories\FactoriesActivator.cs" />
     <Compile Include="Plugins\ObjectFactories\FactoriesActivatorResolver.cs" />
@@ -62,6 +64,7 @@
     <Compile Include="Plugins\StaticAccesses\StaticAccessesPlugin.cs" />
     <Compile Include="Services\IChain.cs" />
     <Compile Include="Plugins\ParentContainers\ParentContainerActivatorResolver.cs" />
+    <Compile Include="Services\Impl\ParameterOverrideLookup.cs" />
     <Compile Include="Services\Impl\RootActivatorFactoryChain.cs" />
     <Compile Include="Services\Impl\Chain.cs" />
     <Compile Include="Services\Impl\DefaultContainerInfrastructureFactory.cs" />

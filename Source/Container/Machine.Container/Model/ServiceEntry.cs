@@ -6,6 +6,7 @@ namespace Machine.Container.Model
   public class ServiceEntry
   {
     #region Member Data
+    private readonly string _key;
     private Type _serviceType;
     private Type _implementationType;
     private LifestyleType _lifestyleType;
@@ -15,6 +16,11 @@ namespace Machine.Container.Model
     #endregion
 
     #region Properties
+    public string Key
+    {
+      get { return _key; }
+    }
+
     public LifestyleType LifestyleType
     {
       get { return _lifestyleType; }
@@ -80,11 +86,17 @@ namespace Machine.Container.Model
 
     #region ServiceEntry()
     public ServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType)
+      : this(serviceType, implementationType, lifestyleType, String.Empty)
+    {
+    }
+
+    public ServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType, string key)
     {
       AssertValidTypes(serviceType, implementationType);
       _serviceType = serviceType;
       _implementationType = implementationType;
       _lifestyleType = lifestyleType;
+      _key = key;
     }
     #endregion
 

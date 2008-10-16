@@ -70,10 +70,12 @@ namespace Machine.Container.Activators
       ResolvedServiceEntry resolvedServiceEntry = new ResolvedServiceEntry(entry, Get<IActivator>(), Get<IObjectInstances>());
       Activation parameterActivation = new Activation(entry, _parameter1);
       Activation activation = new Activation(_entry, _instance);
+      ResolvableType resolvableType = new ResolvableType(Get<IServiceGraph>(), Get<IServiceEntryFactory>(), typeof(IService1));
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
-        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IResolutionServices>(), typeof(IService1))).Return(resolvedServiceEntry);
+        Expect.Call(Get<IResolutionServices>().CreateResolvableType(_candidate.Candidate.Dependencies[0])).Return(resolvableType);
+        Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IResolutionServices>(), resolvableType)).Return(resolvedServiceEntry);
         Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(parameterActivation);
         Expect.Call(Get<IObjectFactory>().CreateObject(_candidate.Candidate, new object[] { _parameter1 })).Return(_instance);
       }

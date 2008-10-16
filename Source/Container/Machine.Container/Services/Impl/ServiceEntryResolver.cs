@@ -49,14 +49,9 @@ namespace Machine.Container.Services.Impl
       return _serviceGraph.Lookup(type);
     }
 
-    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, Type type)
+    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, ResolvableType resolvableType)
     {
-      _log.Info("ResolveEntry: " + type);
-      ServiceEntry entry = _serviceGraph.Lookup(type, services.Flags);
-      if (entry == null)
-      {
-        entry = _serviceEntryFactory.CreateServiceEntry(type, type, LifestyleType.Override);
-      }
+      ServiceEntry entry = resolvableType.ToServiceEntry(services);
       using (entry.Lock.AcquireReaderLock())
       {
         /* Never want to auto create activator for the entry we created above. */

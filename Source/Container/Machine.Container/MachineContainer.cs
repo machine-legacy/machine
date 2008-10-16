@@ -89,6 +89,11 @@ namespace Machine.Container
       return (T)ResolveWithOverrides(typeof(T), overrides);
     }
 
+    public T ResolveWithParameters<T>(System.Collections.IDictionary parameters)
+    {
+      return Resolve.ObjectWithParameters<T>(parameters);
+    }
+    
     public object ResolveWithOverrides(Type type, params object[] overrides)
     {
       return Resolve.Object(type, overrides);

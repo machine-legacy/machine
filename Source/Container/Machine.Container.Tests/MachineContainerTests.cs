@@ -202,6 +202,18 @@ namespace Machine.Container
     }
 
     [Test]
+    public void Resolve_With_Parameters()
+    {
+      _machineContainer.Add<ConfiguredService>(LifestyleType.Transient);
+      Dictionary<string, object> arguments = new Dictionary<string, object>();
+      arguments["first"] = "Jacob";
+      arguments["last"] = "Lewallen";
+      ConfiguredService configured = _machineContainer.ResolveWithParameters<ConfiguredService>(arguments);
+      Assert.AreEqual("Jacob", configured.First);
+      Assert.AreEqual("Lewallen", configured.Last);
+    }
+
+    [Test]
     [ExpectedException(typeof(ServiceContainerException))]
     public void Deactivate_Not_Created_By_Container_Throws()
     {
@@ -377,6 +389,17 @@ namespace Machine.Container
     bool IsDisposed
     {
       get;
+    }
+  }
+  public class ConfiguredService
+  {
+    public string First { get; set; }
+    public string Last { get; set; }
+
+    public ConfiguredService(string first, string last)
+    {
+      First = first;
+      Last = last;
     }
   }
   public class DisposableService : IDisposableService, IDisposable

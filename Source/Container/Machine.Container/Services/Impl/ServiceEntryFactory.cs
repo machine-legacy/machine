@@ -18,6 +18,13 @@ namespace Machine.Container.Services.Impl
       _log.Info("Creating: " + entry);
       return entry;
     }
+
+    public ServiceEntry CreateServiceEntry(ServiceDependency dependency)
+    {
+      ServiceEntry entry = new ServiceEntry(dependency.DependencyType, dependency.DependencyType, LifestyleType.Override, dependency.Key);
+      _log.Info("Creating: " + entry);
+      return entry;
+    }
     #endregion
   }
 }

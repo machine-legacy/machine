@@ -8,5 +8,6 @@ namespace Machine.Container.Services
   public interface IServiceEntryFactory
   {
     ServiceEntry CreateServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType);
+    ServiceEntry CreateServiceEntry(ServiceDependency dependency);
   }
 }

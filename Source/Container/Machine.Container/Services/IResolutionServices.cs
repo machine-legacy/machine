@@ -1,5 +1,7 @@
 using System;
 
+using Machine.Container.Model;
+
 namespace Machine.Container.Services
 {
   public interface IResolutionServices : IInternalServices
@@ -18,5 +20,8 @@ namespace Machine.Container.Services
     {
       get;
     }
+
+    ResolvableType CreateResolvableType(Type type);
+    ResolvableType CreateResolvableType(ServiceDependency dependency);
   }
 }

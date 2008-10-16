@@ -45,7 +45,7 @@ namespace Machine.Container.Services.Impl
         ConstructorCandidate candidate = new ConstructorCandidate(ctor);
         foreach (ParameterInfo parameter in ctor.GetParameters())
         {
-          candidate.AddParameterDependency(new ServiceDependency(parameter.ParameterType, DependencyType.Constructor));
+          candidate.AddParameterDependency(new ServiceDependency(parameter.ParameterType, DependencyType.Constructor, parameter.Name));
         }
         candidates.Add(candidate);
       }

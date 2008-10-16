@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
@@ -84,6 +85,16 @@ namespace Machine.Container.Services.Impl
     public LookupFlags Flags
     {
       get { return _flags; }
+    }
+
+    public ResolvableType CreateResolvableType(Type type)
+    {
+      return new ResolvableType(_containerServices.ServiceGraph, _containerServices.ServiceEntryFactory, type);
+    }
+
+    public ResolvableType CreateResolvableType(ServiceDependency dependency)
+    {
+      return new ResolvableParameterType(_containerServices.ServiceGraph, _containerServices.ServiceEntryFactory, dependency);
     }
   }
 }
