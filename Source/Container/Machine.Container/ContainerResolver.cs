@@ -43,17 +43,27 @@ namespace Machine.Container
       return Object<T>(overrides);
     }
 
-    public IList<T> All<T>()
+    public IList<object> All(Type type)
     {
-      List<T> found = new List<T>();
+      List<object> found = new List<object>();
       foreach (ServiceRegistration registration in _containerServices.ServiceGraph.RegisteredServices)
       {
-        if (typeof(T).IsAssignableFrom(registration.ImplementationType))
+        if (type.IsAssignableFrom(registration.ImplementationType))
         {
-          found.Add((T)Object(registration.ImplementationType));
+          found.Add(Object(registration.ImplementationType));
         }
       }
       return found;
+    }
+
+    public IList<T> All<T>()
+    {
+      List<T> typedAs = new List<T>();
+      foreach (object obj in All(typeof(T)))
+      {
+        typedAs.Add((T)obj);
+      }
+      return typedAs;
     }
 
     protected virtual object Resolve(Type type, params object[] overrides)
