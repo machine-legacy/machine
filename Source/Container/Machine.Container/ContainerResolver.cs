@@ -40,7 +40,7 @@ namespace Machine.Container
 
     public T ObjectWithParameters<T>(System.Collections.IDictionary parameters)
     {
-      return (T)ResolveWithParameters(typeof (T), parameters);
+      return (T)ResolveWithParameters(typeof(T), parameters);
     }
 
     public T New<T>(params object[] overrides)
