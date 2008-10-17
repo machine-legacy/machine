@@ -6,6 +6,7 @@ using Machine.Container.Plugins;
 
 using MassTransit.ServiceBus.Internal;
 using MassTransit.ServiceBus.Subscriptions;
+using MassTransit.ServiceBus.Subscriptions.ServerHandlers;
 
 namespace Machine.MassTransitExtensions
 {
@@ -23,6 +24,18 @@ namespace Machine.MassTransitExtensions
       register.Type<MachineObjectBuilder>();
       register.Type<ServiceBusFactory>();
       register.Type<ServiceBusHubFactory>();
+    }
+    #endregion
+  }
+  public class SubscriptionManagerServices : IServiceCollection
+  {
+    #region IServiceCollection Members
+    public void RegisterServices(ContainerRegisterer register)
+    {
+      register.Type<AddSubscriptionHandler>();
+      register.Type<RemoveSubscriptionHandler>();
+      register.Type<CancelUpdatesHandler>();
+      register.Type<CacheUpdateRequestHandler>();
     }
     #endregion
   }
