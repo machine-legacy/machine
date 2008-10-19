@@ -19,6 +19,11 @@ namespace Machine.MassTransitExtensions
       _configurationProvider = configurationProvider;
     }
 
+    public Uri CreateUri(EndpointName name)
+    {
+      return _factories[_configurationProvider.Configuration.TransportType].CreateUri(name);
+    }
+
     public Uri CreateUri(string name)
     {
       return _factories[_configurationProvider.Configuration.TransportType].CreateUri(name);
@@ -36,6 +41,11 @@ namespace Machine.MassTransitExtensions
 
     class NmsFactory : IMassTransitUriFactory
     {
+      public Uri CreateUri(EndpointName name)
+      {
+        return CreateUri(name.Address, name.Name);
+      }
+
       public Uri CreateUri(string name)
       {
         return CreateUri("127.0.0.1", name);
@@ -54,6 +64,11 @@ namespace Machine.MassTransitExtensions
 
     class MsMqFactory : IMassTransitUriFactory
     {
+      public Uri CreateUri(EndpointName name)
+      {
+        return CreateUri(name.Address, name.Name);
+      }
+
       public Uri CreateUri(string name)
       {
         return CreateUri("localhost", name);
