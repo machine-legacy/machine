@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace Machine.MassTransitExtensions
 {
+  [Serializable]
   public class EndpointName
   {
     private readonly string _address;
