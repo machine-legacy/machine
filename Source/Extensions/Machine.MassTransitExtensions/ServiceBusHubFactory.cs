@@ -24,10 +24,10 @@ namespace Machine.MassTransitExtensions
     }
 
     #region IServiceBusHubFactory Members
-    public IServiceBusHub CreateServerHub(Uri uri)
+    public IServiceBusHub CreateServerHub(EndpointName endpointName)
     {
       ISubscriptionCache subscriptionCache = new LocalSubscriptionCache();
-      IEndpoint endpoint = _endpointResolver.Resolve(_uriFactory.CreateUri(uri));
+      IEndpoint endpoint = _endpointResolver.Resolve(_uriFactory.CreateUri(endpointName));
       IServiceBus bus = new ServiceBus(endpoint, _objectBuilder, subscriptionCache, _endpointResolver);
       ISubscriptionService subscriptionService = new ServerSubscriptionService(bus, subscriptionCache, this.SubscriptionManagerEndpoint);
       return new ServiceBusHub(bus, subscriptionCache, subscriptionService);

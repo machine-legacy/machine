@@ -7,6 +7,6 @@ namespace Machine.MassTransitExtensions
 {
   public interface IServiceBusFactory
   {
-    IServiceBus CreateServiceBus(Uri uri);
+    IServiceBus CreateServiceBus(EndpointName endpointName);
   }
 }

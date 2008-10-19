@@ -23,9 +23,9 @@ namespace Machine.MassTransitExtensions
     }
 
     #region IServiceBusFactory Members
-    public IServiceBus CreateServiceBus(Uri uri)
+    public IServiceBus CreateServiceBus(EndpointName endpointName)
     {
-      Uri transformedUri = _uriFactory.CreateUri(uri);
+      Uri transformedUri = _uriFactory.CreateUri(endpointName);
       return new ServiceBus(_endpointResolver.Resolve(transformedUri), _objectBuilder, _subscriptionCache, _endpointResolver);
     }
     #endregion
