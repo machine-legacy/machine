@@ -47,6 +47,11 @@ namespace Machine.MassTransitExtensions
       return _address.GetHashCode() ^ _name.GetHashCode();
     }
 
+    public override string ToString()
+    {
+      return "Endpoint<" + _address + "." + _name + ">";
+    }
+
     public static readonly EndpointName Null = new EndpointName();
 
     public static EndpointName ForRemoteQueue(string address, string queue)
