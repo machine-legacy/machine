@@ -14,7 +14,13 @@ namespace Machine.MassTransitExtensions
       List<EndpointName> destinations = new List<EndpointName>(_catchAlls);
       if (_map.ContainsKey(messageType))
       {
-        destinations.AddRange(_map[messageType]);
+        foreach (EndpointName endpointName in destinations)
+        {
+          if (!destinations.Contains(endpointName))
+          {
+            destinations.Add(endpointName);
+          }
+        }
       }
       if (destinations.Count == 0)
       {
@@ -29,7 +35,10 @@ namespace Machine.MassTransitExtensions
       {
         _map[messageType] = new List<EndpointName>();
       }
-      _map[messageType].Add(destination);
+      if (!_map[messageType].Contains(destination))
+      {
+        _map[messageType].Add(destination);
+      }
     }
 
     public void SendMessageTypeTo<T>(EndpointName destination)
@@ -50,7 +59,10 @@ namespace Machine.MassTransitExtensions
     
     public void SendAllTo(EndpointName destination)
     {
-      _catchAlls.Add(destination);
+      if (!_catchAlls.Contains(destination))
+      {
+        _catchAlls.Add(destination);
+      }
     }
   }
 }
