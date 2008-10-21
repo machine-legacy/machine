@@ -51,6 +51,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\MassTransit\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=1.3.2.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Libraries\MassTransit\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="NHibernate, Version=2.0.0.1001, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\MassTransit\NHibernate.dll</HintPath>
@@ -65,11 +69,13 @@
     <Compile Include="IMassTransit.cs" />
     <Compile Include="IMassTransitConfigurationProvider.cs" />
     <Compile Include="IMassTransitUriFactory.cs" />
+    <Compile Include="IMessage.cs" />
     <Compile Include="IMessageEndpointLookup.cs" />
     <Compile Include="IServiceBusFactory.cs" />
     <Compile Include="IServiceBusHub.cs" />
     <Compile Include="IServiceBusHubFactory.cs" />
     <Compile Include="ISubscriptionService.cs" />
+    <Compile Include="ITransportMessageBodyFormatter.cs" />
     <Compile Include="MachineObjectBuilder.cs" />
     <Compile Include="MassTransitUriFactory.cs" />
     <Compile Include="MassTransitConfiguration.cs" />
@@ -82,6 +88,7 @@
     <Compile Include="ServiceBusHub.cs" />
     <Compile Include="ServiceBusHubFactory.cs" />
     <Compile Include="SubscriptionManagerService.cs" />
+    <Compile Include="TransportMessage.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Container\Machine.Container\Machine.Container.csproj">
