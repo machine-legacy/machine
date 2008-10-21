@@ -49,17 +49,32 @@ namespace Machine.Container
       return Object<T>(overrides);
     }
 
-    public IList<object> All(Type type)
+    public IList<object> All(Predicate<Type> predicate)
     {
       List<object> found = new List<object>();
       foreach (ServiceRegistration registration in _containerServices.ServiceGraph.RegisteredServices)
       {
-        if (type.IsAssignableFrom(registration.ImplementationType))
+        if (predicate(registration.ImplementationType))
         {
           found.Add(Object(registration.ImplementationType));
         }
       }
       return found;
+    }
+
+    public IList<T> All<T>(Predicate<Type> predicate)
+    {
+      List<T> typedAs = new List<T>();
+      foreach (object obj in All(predicate))
+      {
+        typedAs.Add((T)obj);
+      }
+      return typedAs;
+    }
+
+    public IList<object> All(Type type)
+    {
+      return All(x => type.IsAssignableFrom(x));
     }
 
     public IList<T> All<T>()
