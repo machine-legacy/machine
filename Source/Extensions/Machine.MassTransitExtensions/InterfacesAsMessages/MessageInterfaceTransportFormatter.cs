@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Reflection;
 using Newtonsoft.Json;
 
 namespace Machine.MassTransitExtensions.InterfacesAsMessages
@@ -83,7 +83,7 @@ namespace Machine.MassTransitExtensions.InterfacesAsMessages
       System.Diagnostics.Debug.Assert(reader.Value.Equals(MessageBodyPropertyName));
      
       // Allow interfaces and non-interfaces...
-      Type deserializeAs = Type.GetType(messageTypeName);
+      Type deserializeAs = FindTypeNamed(messageTypeName);
       if (deserializeAs.IsInterface)
       {
         deserializeAs = _messageInterfaceImplementor.GetClassFor(deserializeAs);
@@ -93,6 +93,24 @@ namespace Machine.MassTransitExtensions.InterfacesAsMessages
       object value = serializer.Deserialize(reader, deserializeAs);
       reader.Read();
       return value;
+    }
+
+    private static Type FindTypeNamed(string name)
+    {
+      Type deserializeAs = Type.GetType(name);
+      if (deserializeAs != null)
+      {
+        return deserializeAs;
+      }
+      foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+      {
+        deserializeAs = assembly.GetType(name);
+        if (deserializeAs != null && typeof(IMessage).IsAssignableFrom(deserializeAs))
+        {
+          return deserializeAs;
+        }
+      }
+      throw new InvalidOperationException("Unable to find " + name);
     }
 
     public override void WriteJson(JsonWriter writer, object value)
