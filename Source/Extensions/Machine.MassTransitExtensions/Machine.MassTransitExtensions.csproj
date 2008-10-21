@@ -71,6 +71,18 @@
     <Compile Include="IMassTransitUriFactory.cs" />
     <Compile Include="IMessage.cs" />
     <Compile Include="IMessageEndpointLookup.cs" />
+    <Compile Include="InterfacesAsMessages\IMessageFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfacesAsMessages\MessageFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfacesAsMessages\MessageInterfaceImplementations.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="InterfacesAsMessages\MessageInterfaceTransportFormatter.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="IServiceBusFactory.cs" />
     <Compile Include="IServiceBusHub.cs" />
     <Compile Include="IServiceBusHubFactory.cs" />
