@@ -113,4 +113,19 @@ namespace Machine.Container.Model
       throw new ServiceContainerException("Attempt to deactivate instance NOT created by the container OR by another thread: " + instance);
     }
   }
+
+  public class DoNotTrackInstances : IInstanceTrackingPolicy
+  {
+    #region IInstanceTrackingPolicy Members
+    public TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation)
+    {
+      return TrackingStatus.Old;
+    }
+
+    public RemberedActivation RetrieveAndForget(object instance)
+    {
+      return null;
+    }
+    #endregion
+  }
 }

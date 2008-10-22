@@ -34,8 +34,11 @@ namespace Machine.Container.Services.Impl
     {
       Deactivation deactivation = new Deactivation(instance);
       RemberedActivation rememberedActivation = _trackingPolicy.RetrieveAndForget(instance);
-      _listenerInvoker.OnDeactivation(rememberedActivation.ResolvedEntry, deactivation);
-      rememberedActivation.Deactivate(services);
+      if (rememberedActivation != null)
+      {
+        _listenerInvoker.OnDeactivation(rememberedActivation.ResolvedEntry, deactivation);
+        rememberedActivation.Deactivate(services);
+      }
     }
   }
 }
