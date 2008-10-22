@@ -8,7 +8,7 @@ namespace Machine.Container.Model
   public interface IInstanceTrackingPolicy
   {
     TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation);
-    RemberedActivation RetrieveAndForget(object instance);
+    RememberedActivation RetrieveAndForget(object instance);
   }
 
   public enum TrackingStatus
@@ -22,7 +22,7 @@ namespace Machine.Container.Model
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(GlobalActivationScope));
 
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ObjectInstances");
-    private readonly Dictionary<object, RemberedActivation> _map = new Dictionary<object, RemberedActivation>();
+    private readonly Dictionary<object, RememberedActivation> _map = new Dictionary<object, RememberedActivation>();
 
     public TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation)
     {
@@ -46,14 +46,14 @@ namespace Machine.Container.Model
              * multiple times and increment more than we should. */
             return TrackingStatus.Old;
           }
-          _map[instance] = new RemberedActivation(entry, activation);
+          _map[instance] = new RememberedActivation(entry, activation);
           return TrackingStatus.New;
         }
       }
       return TrackingStatus.Old;
     }
 
-    public RemberedActivation RetrieveAndForget(object instance)
+    public RememberedActivation RetrieveAndForget(object instance)
     {
       using (RWLock.AsWriter(_lock))
       {
@@ -62,7 +62,7 @@ namespace Machine.Container.Model
         {
           throw new ServiceContainerException("Attempt to deactivate instance NOT created by the container: " + instance);
         }
-        RemberedActivation entry = _map[instance];
+        RememberedActivation entry = _map[instance];
         _map.Remove(instance);
         return entry;
       }
@@ -74,14 +74,14 @@ namespace Machine.Container.Model
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(PerThreadActivationScope));
 
     [ThreadStatic]
-    private static Dictionary<object, RemberedActivation> _map;
+    private static Dictionary<object, RememberedActivation> _map;
 
     public TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation)
     {
       object instance = activation.Instance;
       if (_map == null)
       {
-        _map = new Dictionary<object, RemberedActivation>();
+        _map = new Dictionary<object, RememberedActivation>();
       }
       if (_map.ContainsKey(instance))
       {
@@ -92,13 +92,13 @@ namespace Machine.Container.Model
       }
       else
       {
-        _map[instance] = new RemberedActivation(entry, activation);
+        _map[instance] = new RememberedActivation(entry, activation);
         return TrackingStatus.New;
       }
       return TrackingStatus.Old;
     }
 
-    public RemberedActivation RetrieveAndForget(object instance)
+    public RememberedActivation RetrieveAndForget(object instance)
     {
       if (_map == null)
       {
@@ -106,7 +106,7 @@ namespace Machine.Container.Model
       }
       if (_map.ContainsKey(instance))
       {
-        RemberedActivation entry = _map[instance];
+        RememberedActivation entry = _map[instance];
         _map.Remove(instance);
         return entry;
       }
@@ -122,7 +122,7 @@ namespace Machine.Container.Model
       return TrackingStatus.Old;
     }
 
-    public RemberedActivation RetrieveAndForget(object instance)
+    public RememberedActivation RetrieveAndForget(object instance)
     {
       return null;
     }

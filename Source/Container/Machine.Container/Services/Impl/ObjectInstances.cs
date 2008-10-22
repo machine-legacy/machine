@@ -33,7 +33,7 @@ namespace Machine.Container.Services.Impl
     public void Deactivate(IResolutionServices services, object instance)
     {
       Deactivation deactivation = new Deactivation(instance);
-      RemberedActivation rememberedActivation = _trackingPolicy.RetrieveAndForget(instance);
+      RememberedActivation rememberedActivation = _trackingPolicy.RetrieveAndForget(instance);
       if (rememberedActivation != null)
       {
         _listenerInvoker.OnDeactivation(rememberedActivation.ResolvedEntry, deactivation);

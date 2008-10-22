@@ -5,7 +5,7 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Model
 {
-  public class RemberedActivation
+  public class RememberedActivation
   {
     public ResolvedServiceEntry ResolvedEntry
     {
@@ -17,7 +17,7 @@ namespace Machine.Container.Model
       get; private set;
     }
 
-    public RemberedActivation(ResolvedServiceEntry resolvedEntry, Activation activation)
+    public RememberedActivation(ResolvedServiceEntry resolvedEntry, Activation activation)
     {
       this.ResolvedEntry = resolvedEntry;
       this.Activation = activation;
@@ -30,7 +30,7 @@ namespace Machine.Container.Model
 
     public override bool Equals(object obj)
     {
-      RemberedActivation other = obj as RemberedActivation;
+      RememberedActivation other = obj as RememberedActivation;
       if (other != null)
       {
         return other.ResolvedEntry.Equals(this.ResolvedEntry) && other.Activation.Equals(this.Activation);

@@ -80,7 +80,7 @@
     <Compile Include="Model\InterceptorApplication.cs" />
     <Compile Include="Model\LifestyleType.cs" />
     <Compile Include="Model\Deactivation.cs" />
-    <Compile Include="Model\RemberedActivation.cs" />
+    <Compile Include="Model\RememberedActivation.cs" />
     <Compile Include="Model\ResolvedConstructorCandidate.cs" />
     <Compile Include="Model\ResolvedServiceEntry.cs" />
     <Compile Include="Model\ServiceDependency.cs" />
