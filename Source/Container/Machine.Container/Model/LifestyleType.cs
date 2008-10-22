@@ -7,6 +7,7 @@ namespace Machine.Container.Model
   {
     Singleton,
     Transient,
+    PerWebRequest,
     Override
   }
 
@@ -30,6 +31,15 @@ namespace Machine.Container.Model
     public override LifestyleType Lifestyle
     {
       get { return LifestyleType.Transient; }
+    }
+  }
+  
+  [AttributeUsage(AttributeTargets.Class, AllowMultiple=false, Inherited=true)]
+  public class PerWebRequestAttribute : LifestyleAttribute
+  {
+    public override LifestyleType Lifestyle
+    {
+      get { return LifestyleType.PerWebRequest; }
     }
   }
 }

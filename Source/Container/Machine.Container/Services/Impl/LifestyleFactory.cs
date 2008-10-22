@@ -28,6 +28,8 @@ namespace Machine.Container.Services.Impl
           return CreateSingletonLifestyle(entry);
         case LifestyleType.Transient:
           return CreateTransientLifestyle(entry);
+        case LifestyleType.PerWebRequest:
+          return CreateWebRequestLifestyle(entry);
       }
       throw new ArgumentException("entry");
     }
@@ -43,6 +45,13 @@ namespace Machine.Container.Services.Impl
     public ILifestyle CreateTransientLifestyle(ServiceEntry entry)
     {
       ILifestyle lifestyle = new TransientLifestyle(_activatorFactory, entry);
+      lifestyle.Initialize();
+      return lifestyle;
+    }
+
+    public ILifestyle CreateWebRequestLifestyle(ServiceEntry entry)
+    {
+      ILifestyle lifestyle = new WebRequestLifestyle(_activatorFactory, entry);
       lifestyle.Initialize();
       return lifestyle;
     }
