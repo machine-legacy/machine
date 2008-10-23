@@ -1,6 +1,6 @@
 using System;
 
-namespace Machine.MassTransitExtensions
+namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 {
   [Serializable]
   public class TransportMessage
