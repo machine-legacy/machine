@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Machine.Container;
 using Machine.Container.Plugins;
+using Machine.MassTransitExtensions.InterfacesAsMessages;
+using Machine.MassTransitExtensions.LowerLevelMessageBus;
 
 using MassTransit.ServiceBus.Internal;
 using MassTransit.ServiceBus.Subscriptions;
@@ -36,6 +38,21 @@ namespace Machine.MassTransitExtensions
       register.Type<RemoveSubscriptionHandler>();
       register.Type<CancelUpdatesHandler>();
       register.Type<CacheUpdateRequestHandler>();
+    }
+    #endregion
+  }
+  public class LowerLevelMessageBusServices : IServiceCollection
+  {
+    #region IServiceCollection Members
+    public void RegisterServices(ContainerRegisterer register)
+    {
+      register.Type<MessageEndpointLookup>();
+      register.Type<MessageInterfaceTransportFormatter>();
+      register.Type<TransportMessageSerializer>();
+      register.Type<MessageInterfaceImplementations>();
+      register.Type<MessageFactory>();
+      register.Type<MessageDispatcher>();
+      register.Type<MessageBusFactory>();
     }
     #endregion
   }

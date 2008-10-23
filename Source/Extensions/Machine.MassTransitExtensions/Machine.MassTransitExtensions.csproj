@@ -94,6 +94,7 @@
     <Compile Include="IServiceBusHubFactory.cs" />
     <Compile Include="ISubscriptionService.cs" />
     <Compile Include="ITransportMessageBodyFormatter.cs" />
+    <Compile Include="LowerLevelMessageBus\IMessageBusFactory.cs" />
     <Compile Include="LowerLevelMessageBus\Invoker.cs" />
     <Compile Include="LowerLevelMessageBus\MessageDispatcher.cs" />
     <Compile Include="MachineObjectBuilder.cs" />
