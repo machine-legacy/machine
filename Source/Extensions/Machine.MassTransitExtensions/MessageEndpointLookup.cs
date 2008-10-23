@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
+
+using Machine.Core.Utility;
 
 namespace Machine.MassTransitExtensions
 {
@@ -8,36 +11,43 @@ namespace Machine.MassTransitExtensions
   {
     private readonly Dictionary<Type, List<EndpointName>> _map = new Dictionary<Type, List<EndpointName>>();
     private readonly List<EndpointName> _catchAlls = new List<EndpointName>();
+    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
 
     public ICollection<EndpointName> LookupEndpointFor(Type messageType)
     {
-      List<EndpointName> destinations = new List<EndpointName>(_catchAlls);
-      if (_map.ContainsKey(messageType))
+      using (RWLock.AsReader(_lock))
       {
-        foreach (EndpointName endpointName in destinations)
+        List<EndpointName> destinations = new List<EndpointName>(_catchAlls);
+        if (_map.ContainsKey(messageType))
         {
-          if (!destinations.Contains(endpointName))
+          foreach (EndpointName endpointName in destinations)
           {
-            destinations.Add(endpointName);
+            if (!destinations.Contains(endpointName))
+            {
+              destinations.Add(endpointName);
+            }
           }
         }
+        if (destinations.Count == 0)
+        {
+          throw new InvalidOperationException("No endpoints for: " + messageType);
+        }
+        return destinations;
       }
-      if (destinations.Count == 0)
-      {
-        throw new InvalidOperationException("No endpoints for: " + messageType);
-      }
-      return destinations;
     }
 
     public void SendMessageTypeTo(Type messageType, EndpointName destination)
     {
-      if (!_map.ContainsKey(messageType))
+      using (RWLock.AsWriter(_lock))
       {
-        _map[messageType] = new List<EndpointName>();
-      }
-      if (!_map[messageType].Contains(destination))
-      {
-        _map[messageType].Add(destination);
+        if (!_map.ContainsKey(messageType))
+        {
+          _map[messageType] = new List<EndpointName>();
+        }
+        if (!_map[messageType].Contains(destination))
+        {
+          _map[messageType].Add(destination);
+        }
       }
     }
 
@@ -59,9 +69,12 @@ namespace Machine.MassTransitExtensions
     
     public void SendAllTo(EndpointName destination)
     {
-      if (!_catchAlls.Contains(destination))
+      using (RWLock.AsWriter(_lock))
       {
-        _catchAlls.Add(destination);
+        if (!_catchAlls.Contains(destination))
+        {
+          _catchAlls.Add(destination);
+        }
       }
     }
   }
