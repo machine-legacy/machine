@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using Machine.Container.Services;
 
+using MassTransit.ServiceBus;
+
 namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 {
   public class MessageDispatcher
@@ -29,7 +31,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     private static Type MakeHandlerType(Type messageType)
     {
-      return typeof(IMessageHandler<>).MakeGenericType(messageType);
+      return typeof(Consumes<>.All).MakeGenericType(messageType);
     }
 
     private static IEnumerable<Type> EnumerateHandlerImplementationsOf(Type type)

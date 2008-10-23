@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 
+using MassTransit.ServiceBus;
+
 namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 {
   public class Invoker<T> : IInvoker where T : class, IMessage
@@ -8,7 +10,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     #region IInvoker Members
     public void Dispatch(IMessage message, object handler)
     {
-      IMessageHandler<T> genericHandler = (IMessageHandler<T>)handler;
+      Consumes<T>.All genericHandler = (Consumes<T>.All)handler;
       genericHandler.Consume((T)message);
     }
     #endregion
