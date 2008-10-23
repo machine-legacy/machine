@@ -18,12 +18,14 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     public void Dispatch(IMessage message)
     {
-      IList<object> handlers = _container.Resolve.All(IsAcceptableHandler);
+      IList<object> handlers = _container.Resolve.All(delegate(Type handlerType) {
+        return IsAcceptableHandler(handlerType, message.GetType());
+      });
       foreach (object handler in handlers)
       {
-        foreach (Type handlerType in EnumerateHandlerImplementationsOf(handler.GetType()))
+        foreach (Type interfaceType in EnumerateHandlerImplementationsOf(handler.GetType(), message.GetType()))
         {
-          IInvoker invoker = Invokers.CreateFor(handlerType.GetGenericArguments()[0]);
+          IInvoker invoker = Invokers.CreateFor(interfaceType.GetGenericArguments()[0]);
           invoker.Dispatch(message, handler);
         }
       }
@@ -34,16 +36,16 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       return typeof(Consumes<>.All).MakeGenericType(messageType);
     }
 
-    private static IEnumerable<Type> EnumerateHandlerImplementationsOf(Type type)
+    private static IEnumerable<Type> EnumerateHandlerImplementationsOf(Type handlerType, Type messageType)
     {
-      foreach (Type interfaceType in type.GetInterfaces())
+      foreach (Type interfaceType in handlerType.GetInterfaces())
       {
         if (interfaceType.GetGenericArguments().Length != 1)
         {
           continue;
         }
         Type wouldBeMessageType = interfaceType.GetGenericArguments()[0];
-        if (!typeof(IMessage).IsAssignableFrom(wouldBeMessageType))
+        if (!wouldBeMessageType.IsAssignableFrom(messageType))
         {
           continue;
         }
@@ -54,9 +56,9 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       }
     }
 
-    private static bool IsAcceptableHandler(Type type)
+    private static bool IsAcceptableHandler(Type handlerType, Type messageType)
     {
-      foreach (Type handlerType in EnumerateHandlerImplementationsOf(type))
+      foreach (Type interfaceType in EnumerateHandlerImplementationsOf(handlerType, messageType))
       {
         return true;
       }
