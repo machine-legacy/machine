@@ -6,6 +6,6 @@ namespace Machine.MassTransitExtensions.InterfacesAsMessages
   public interface IMessageFactory
   {
     IMessage Create(Type type);
-    T Create<T>() where T : IMessage;
+    T Create<T>() where T : class, IMessage;
   }
 }

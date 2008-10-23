@@ -41,7 +41,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     {
     }
 
-    public void Send<T>(params T[] messages) where T : IMessage
+    public void Send<T>(params T[] messages) where T : class, IMessage
     {
       foreach (EndpointName destination in _messageEndpointLookup.LookupEndpointFor(typeof(T)))
       {
@@ -49,7 +49,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       }
     }
 
-    public void Send<T>(EndpointName destination, params T[] messages) where T : IMessage
+    public void Send<T>(EndpointName destination, params T[] messages) where T : class, IMessage
     {
       Uri uri = _uriFactory.CreateUri(destination);
       IEndpoint endpoint = _endpointResolver.Resolve(uri);

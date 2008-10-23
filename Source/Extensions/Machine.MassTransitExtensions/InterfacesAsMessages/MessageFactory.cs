@@ -23,7 +23,7 @@ namespace Machine.MassTransitExtensions.InterfacesAsMessages
       return (IMessage)Activator.CreateInstance(implementation);
     }
 
-    public T Create<T>() where T : IMessage
+    public T Create<T>() where T : class, IMessage
     {
       return (T)Create(typeof(T));
     }

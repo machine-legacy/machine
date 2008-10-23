@@ -7,8 +7,8 @@ namespace Machine.MassTransitExtensions
   {
     EndpointName Address { get; }
     void Start();
-    void Send<T>(params T[] messages) where T : IMessage;
-    void Send<T>(EndpointName destination, params T[] messages) where T : IMessage;
+    void Send<T>(params T[] messages) where T : class, IMessage;
+    void Send<T>(EndpointName destination, params T[] messages) where T : class, IMessage;
     void Stop();
   }
 }

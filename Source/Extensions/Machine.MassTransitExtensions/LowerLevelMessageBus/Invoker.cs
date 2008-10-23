@@ -3,13 +3,13 @@ using System.Collections.Generic;
 
 namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 {
-  public class Invoker<T> : IInvoker where T : IMessage
+  public class Invoker<T> : IInvoker where T : class, IMessage
   {
     #region IInvoker Members
     public void Dispatch(IMessage message, object handler)
     {
       IMessageHandler<T> genericHandler = (IMessageHandler<T>)handler;
-      genericHandler.Handle((T)message);
+      genericHandler.Consume((T)message);
     }
     #endregion
   }
