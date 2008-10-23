@@ -29,7 +29,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     #region IMessageBusFactory Members
     public IMessageBus CreateMessageBus(EndpointName endpointName)
     {
-      return new MessageBus(_endpointResolver, _uriFactory, _messageEndpointLookup, _transportMessageSerializer, endpointName, _messageDispatcher);
+      return new MessageBus(_endpointResolver, _uriFactory, _messageEndpointLookup, _transportMessageSerializer, _messageDispatcher, endpointName);
     }
     #endregion
   }

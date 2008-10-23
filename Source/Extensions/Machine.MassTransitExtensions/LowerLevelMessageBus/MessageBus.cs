@@ -19,7 +19,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     private readonly TransportMessageSerializer _transportMessageSerializer;
     private readonly MessageDispatcher _dispatcher;
 
-    public MessageBus(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageSerializer transportMessageSerializer, EndpointName endpointName, MessageDispatcher dispatcher)
+    public MessageBus(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageSerializer transportMessageSerializer, MessageDispatcher dispatcher, EndpointName endpointName)
     {
       _endpointResolver = endpointResolver;
       _dispatcher = dispatcher;
