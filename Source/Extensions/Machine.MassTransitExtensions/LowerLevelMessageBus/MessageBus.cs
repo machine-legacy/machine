@@ -53,7 +53,8 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     {
       Uri uri = _uriFactory.CreateUri(destination);
       IEndpoint endpoint = _endpointResolver.Resolve(uri);
-      endpoint.Send(_transportMessageSerializer.Serialize(this, messages));
+      byte[] body = _transportMessageSerializer.Serialize(messages);
+      endpoint.Send(new TransportMessage(this.Address, Guid.Empty, body));
     }
 
     public void Stop()
@@ -95,7 +96,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
         TransportMessage transportMessage = (TransportMessage)obj;
         using (CurrentMessageContext currentMessageContext = CurrentMessageContext.Open(transportMessage))
         {
-          ICollection<IMessage> messages = _transportMessageSerializer.Deserialize(transportMessage);
+          ICollection<IMessage> messages = _transportMessageSerializer.Deserialize(transportMessage.Body);
           foreach (IMessage message in messages)
           {
             currentMessageContext.CurrentApplicationMessage = message;

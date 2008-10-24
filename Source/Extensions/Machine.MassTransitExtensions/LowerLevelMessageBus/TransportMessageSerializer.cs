@@ -13,20 +13,20 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       _transportMessageBodyFormatter = transportMessageBodyFormatter;
     }
 
-    public TransportMessage Serialize<T>(IMessageBus bus, params T[] messages) where T : IMessage
+    public byte[] Serialize<T>(params T[] messages) where T : IMessage
     {
       using (MemoryStream stream = new MemoryStream())
       {
         IMessage[] nonGeneric = new IMessage[messages.Length];
         Array.Copy(messages, nonGeneric, nonGeneric.Length);
         _transportMessageBodyFormatter.Serialize(nonGeneric, stream);
-        return new TransportMessage(bus.Address, stream.ToArray());
+        return stream.ToArray();
       }
     }
 
-    public ICollection<IMessage> Deserialize(TransportMessage transportMessage)
+    public ICollection<IMessage> Deserialize(byte[] body)
     {
-      using (MemoryStream stream = new MemoryStream(transportMessage.Body))
+      using (MemoryStream stream = new MemoryStream(body))
       {
         List<IMessage> messages = new List<IMessage>();
         messages.AddRange(_transportMessageBodyFormatter.Deserialize(stream));
