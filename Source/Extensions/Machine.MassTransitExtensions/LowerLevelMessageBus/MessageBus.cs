@@ -169,6 +169,11 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     {
       _asyncCallbackMap.Add(_request.Id, callback, state);
     }
+
+    public void OnReply(AsyncCallback callback)
+    {
+      OnReply(callback, null);
+    }
     #endregion
   }
 

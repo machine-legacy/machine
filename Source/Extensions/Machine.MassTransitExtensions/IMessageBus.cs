@@ -16,5 +16,6 @@ namespace Machine.MassTransitExtensions
   public interface IRequestReplyBuilder
   {
     void OnReply(AsyncCallback callback, object state);
+    void OnReply(AsyncCallback callback);
   }
 }
