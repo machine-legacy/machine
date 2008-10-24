@@ -121,14 +121,13 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
         TransportMessage transportMessage = (TransportMessage)obj;
         using (CurrentMessageContext currentMessageContext = CurrentMessageContext.Open(transportMessage))
         {
+          ICollection<IMessage> messages = _transportMessageBodySerializer.Deserialize(transportMessage.Body);
           if (transportMessage.CorrelationId != Guid.Empty)
           {
             _asyncCallbackMap.InvokeAndRemove(transportMessage.CorrelationId);
           }
-          ICollection<IMessage> messages = _transportMessageBodySerializer.Deserialize(transportMessage.Body);
           foreach (IMessage message in messages)
           {
-            currentMessageContext.CurrentApplicationMessage = message;
             _dispatcher.Dispatch(message);
           }
         }

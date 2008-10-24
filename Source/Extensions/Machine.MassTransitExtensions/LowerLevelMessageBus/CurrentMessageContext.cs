@@ -8,7 +8,6 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     [ThreadStatic]
     static CurrentMessageContext _current;
     readonly TransportMessage _transportMessage;
-    IMessage _applicationMessage;
 
     public static CurrentMessageContext Current
     {
@@ -18,12 +17,6 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     public TransportMessage TransportMessage
     {
       get { return _transportMessage; }
-    }
-
-    public IMessage CurrentApplicationMessage
-    {
-      get { return _applicationMessage; }
-      set { _applicationMessage = value; }
     }
 
     public CurrentMessageContext(TransportMessage transportMessage)
