@@ -6,10 +6,11 @@ using Machine.MassTransitExtensions.LowerLevelMessageBus;
 
 namespace Machine.MassTransitExtensions
 {
-  public class MessageBusManager : IMessageBusManager
+  public class MessageBusManager : IMessageBusManager, IDisposable
   {
     private readonly IMachineContainer _container;
     private readonly IMessageBusFactory _messageBusFactory;
+    private IMessageBus _bus;
 
     public MessageBusManager(IMessageBusFactory messageBusFactory, IMachineContainer container)
     {
@@ -20,8 +21,18 @@ namespace Machine.MassTransitExtensions
     #region IMessageBusManager Members
     public void UseSingleBus(EndpointName local)
     {
-      IMessageBus bus = _messageBusFactory.CreateMessageBus(local);
-      _container.Register.Type<IMessageBus>().Is(bus);
+      _bus = _messageBusFactory.CreateMessageBus(local);
+      _container.Register.Type<IMessageBus>().Is(_bus);
+    }
+    #endregion
+
+    #region IDisposable Members
+    public void Dispose()
+    {
+      if (_bus != null)
+      {
+        _bus.Dispose();
+      }
     }
     #endregion
   }
