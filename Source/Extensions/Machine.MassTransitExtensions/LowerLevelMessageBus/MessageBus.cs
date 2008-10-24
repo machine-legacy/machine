@@ -121,6 +121,10 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
         TransportMessage transportMessage = (TransportMessage)obj;
         using (CurrentMessageContext currentMessageContext = CurrentMessageContext.Open(transportMessage))
         {
+          if (transportMessage.CorrelationId != Guid.Empty)
+          {
+            _asyncCallbackMap.InvokeAndRemove(transportMessage.CorrelationId);
+          }
           ICollection<IMessage> messages = _transportMessageBodySerializer.Deserialize(transportMessage.Body);
           foreach (IMessage message in messages)
           {
@@ -227,14 +231,16 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     public void InvokeAndRemove(Guid id)
     {
+      MessageBusAsyncResult ar;
       lock (_map)
       {
-        MessageBusAsyncResult ar;
-        if (_map.TryGetValue(id, out ar))
+        if (!_map.TryGetValue(id, out ar))
         {
-          ar.Complete();
+          return;
         }
+        _map.Remove(id);
       }
+      ar.Complete();
     }
   }
 }
