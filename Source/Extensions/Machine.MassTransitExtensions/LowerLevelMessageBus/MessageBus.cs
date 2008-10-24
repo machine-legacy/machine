@@ -109,5 +109,11 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
         throw;
       }
     }
+
+    public void Reply<T>(params T[] messages) where T : class, IMessage
+    {
+      EndpointName returnAddress = CurrentMessageContext.Current.TransportMessage.ReturnAddress;
+      Send(returnAddress, messages);
+    }
   }
 }
