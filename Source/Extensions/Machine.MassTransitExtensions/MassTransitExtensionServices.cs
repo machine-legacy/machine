@@ -44,7 +44,7 @@ namespace Machine.MassTransitExtensions
   public class LowerLevelMessageBusServices : IServiceCollection
   {
     #region IServiceCollection Members
-    public void RegisterServices(ContainerRegisterer register)
+    public virtual void RegisterServices(ContainerRegisterer register)
     {
       register.Type<MessageEndpointLookup>();
       register.Type<MessageInterfaceTransportFormatter>();
@@ -53,6 +53,7 @@ namespace Machine.MassTransitExtensions
       register.Type<MessageFactory>();
       register.Type<MessageDispatcher>();
       register.Type<MessageBusFactory>();
+      register.Type<MessageBusManager>();
     }
     #endregion
   }

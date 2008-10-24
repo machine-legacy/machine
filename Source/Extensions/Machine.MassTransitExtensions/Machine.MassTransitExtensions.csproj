@@ -93,6 +93,7 @@
     <Compile Include="IServiceBusHubFactory.cs" />
     <Compile Include="ISubscriptionService.cs" />
     <Compile Include="LowerLevelMessageBus\CurrentMessageContext.cs" />
+    <Compile Include="IMessageBusManager.cs" />
     <Compile Include="LowerLevelMessageBus\ITransportMessageBodyFormatter.cs" />
     <Compile Include="LowerLevelMessageBus\IMessageBusFactory.cs" />
     <Compile Include="LowerLevelMessageBus\Invoker.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="MassTransitController.cs" />
     <Compile Include="MassTransitExtensionServices.cs" />
     <Compile Include="LowerLevelMessageBus\MessageBus.cs" />
+    <Compile Include="MessageBusManager.cs" />
     <Compile Include="MessageEndpointLookup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerSubscriptionService.cs" />
