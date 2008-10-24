@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+
 using Newtonsoft.Json;
+
+using Machine.MassTransitExtensions.LowerLevelMessageBus;
 
 namespace Machine.MassTransitExtensions.InterfacesAsMessages
 {

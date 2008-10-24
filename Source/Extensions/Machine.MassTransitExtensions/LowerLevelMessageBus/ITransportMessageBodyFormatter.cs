@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace Machine.MassTransitExtensions
+namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 {
   public interface ITransportMessageBodyFormatter
   {
