@@ -6,7 +6,19 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
   public class TransportMessage
   {
     private readonly EndpointName _returnAddress;
+    private readonly Guid _id;
+    private readonly Guid _correlationId;
     private readonly byte[] _body;
+
+    public Guid Id
+    {
+      get { return _id; }
+    }
+
+    public Guid CorrelationId
+    {
+      get { return _correlationId; }
+    }
 
     public EndpointName ReturnAddress
     {
@@ -22,8 +34,10 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     {
     }
 
-    public TransportMessage(EndpointName returnAddress, byte[] body)
+    public TransportMessage(EndpointName returnAddress, Guid correlationId, byte[] body)
     {
+      _id = Guid.NewGuid();
+      _correlationId = correlationId;
       _returnAddress = returnAddress;
       _body = body;
     }

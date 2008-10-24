@@ -51,10 +51,15 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     public void Send<T>(EndpointName destination, params T[] messages) where T : class, IMessage
     {
+      Send(destination, Guid.Empty, messages);
+    }
+
+    private void Send<T>(EndpointName destination, Guid correlationBy, params T[] messages) where T : class, IMessage
+    {
       Uri uri = _uriFactory.CreateUri(destination);
       IEndpoint endpoint = _endpointResolver.Resolve(uri);
       byte[] body = _transportMessageSerializer.Serialize(messages);
-      endpoint.Send(new TransportMessage(this.Address, Guid.Empty, body));
+      endpoint.Send(new TransportMessage(this.Address, correlationBy, body));
     }
 
     public void Stop()
@@ -113,8 +118,9 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     public void Reply<T>(params T[] messages) where T : class, IMessage
     {
-      EndpointName returnAddress = CurrentMessageContext.Current.TransportMessage.ReturnAddress;
-      Send(returnAddress, messages);
+      CurrentMessageContext cmc = CurrentMessageContext.Current;
+      EndpointName returnAddress = cmc.TransportMessage.ReturnAddress;
+      Send(returnAddress, cmc.TransportMessage.Id, messages);
     }
   }
 }
