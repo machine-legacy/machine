@@ -93,10 +93,14 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       try
       {
         TransportMessage transportMessage = (TransportMessage)obj;
-        ICollection<IMessage> messages = _transportMessageSerializer.Deserialize(transportMessage);
-        foreach (IMessage message in messages)
+        using (CurrentMessageContext currentMessageContext = CurrentMessageContext.Open(transportMessage))
         {
-          _dispatcher.Dispatch(message);
+          ICollection<IMessage> messages = _transportMessageSerializer.Deserialize(transportMessage);
+          foreach (IMessage message in messages)
+          {
+            currentMessageContext.CurrentApplicationMessage = message;
+            _dispatcher.Dispatch(message);
+          }
         }
       }
       catch (Exception error)
