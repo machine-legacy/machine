@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-
+using System.Threading;
 using MassTransit.ServiceBus;
 using MassTransit.ServiceBus.Internal;
 using MassTransit.ServiceBus.Threading;
@@ -18,6 +18,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     private readonly ResourceThreadPool<IEndpoint, object> _threads;
     private readonly TransportMessageBodySerializer _transportMessageBodySerializer;
     private readonly MessageDispatcher _dispatcher;
+    private readonly AsyncCallbackMap _asyncCallbackMap;
 
     public MessageBus(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageBodySerializer transportMessageBodySerializer, MessageDispatcher dispatcher, EndpointName endpointName)
     {
@@ -30,6 +31,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       _messageEndpointLookup = messageEndpointLookup;
       _endpointName = endpointName;
       _threads = new ResourceThreadPool<IEndpoint, object>(_endpoint, EndpointReader, EndpointDispatcher, 10, 1, 1);
+      _asyncCallbackMap = new AsyncCallbackMap();
     }
 
     public EndpointName Address
@@ -136,7 +138,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     public IRequestReplyBuilder Request<T>(params T[] messages) where T : class, IMessage
     {
-      return new RequestReplyBuilder(CreateAndSend(Guid.Empty, messages));
+      return new RequestReplyBuilder(CreateAndSend(Guid.Empty, messages), _asyncCallbackMap);
     }
 
     public void Reply<T>(params T[] messages) where T : class, IMessage
@@ -146,19 +148,93 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       CreateAndSend(new[] { returnAddress }, cmc.TransportMessage.Id, messages);
     }
   }
+  
   public class RequestReplyBuilder : IRequestReplyBuilder
   {
-    private TransportMessage _request;
+    private readonly TransportMessage _request;
+    private readonly AsyncCallbackMap _asyncCallbackMap;
 
-    public RequestReplyBuilder(TransportMessage request)
+    public RequestReplyBuilder(TransportMessage request, AsyncCallbackMap asyncCallbackMap)
     {
       _request = request;
+      _asyncCallbackMap = asyncCallbackMap;
     }
 
     #region IRequestReplyBuilder Members
     public void OnReply(AsyncCallback callback, object state)
     {
+      _asyncCallbackMap.Add(_request.Id, callback, state);
     }
     #endregion
+  }
+
+  public class MessageBusAsyncResult : IAsyncResult
+  {
+    private readonly AsyncCallback _callback;
+    private readonly object _state;
+    private readonly ManualResetEvent _waitHandle;
+    private volatile bool _completed;
+
+    public object AsyncState
+    {
+      get { return _state; }
+    }
+
+    public WaitHandle AsyncWaitHandle
+    {
+      get { return _waitHandle; }
+    }
+
+    public bool CompletedSynchronously
+    {
+      get { return false; }
+    }
+
+    public bool IsCompleted
+    {
+      get { return _completed; }
+    }
+
+    public MessageBusAsyncResult(AsyncCallback callback, object state)
+    {
+      _callback = callback;
+      _state = state;
+      _waitHandle = new ManualResetEvent(false);
+    }
+
+    public void Complete()
+    {
+      _completed = true;
+      _waitHandle.Set();
+      if (_callback != null)
+      {
+        _callback(this);
+      }
+    }
+  }
+
+  public class AsyncCallbackMap
+  {
+    private readonly Dictionary<Guid, MessageBusAsyncResult> _map = new Dictionary<Guid, MessageBusAsyncResult>();
+
+    public void Add(Guid id, AsyncCallback callback, object state)
+    {
+      lock (_map)
+      {
+        _map[id] = new MessageBusAsyncResult(callback, state);
+      }
+    }
+
+    public void InvokeAndRemove(Guid id)
+    {
+      lock (_map)
+      {
+        MessageBusAsyncResult ar;
+        if (_map.TryGetValue(id, out ar))
+        {
+          ar.Complete();
+        }
+      }
+    }
   }
 }
