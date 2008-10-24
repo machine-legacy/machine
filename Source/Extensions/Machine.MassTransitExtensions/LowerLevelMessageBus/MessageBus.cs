@@ -43,23 +43,41 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 
     public void Send<T>(params T[] messages) where T : class, IMessage
     {
-      foreach (EndpointName destination in _messageEndpointLookup.LookupEndpointFor(typeof(T)))
-      {
-        Send(destination, messages);
-      }
+      CreateAndSend(Guid.Empty, messages);
     }
 
     public void Send<T>(EndpointName destination, params T[] messages) where T : class, IMessage
     {
-      Send(destination, Guid.Empty, messages);
+      CreateAndSend(new[] { destination }, Guid.Empty, messages);
     }
 
-    private void Send<T>(EndpointName destination, Guid correlationBy, params T[] messages) where T : class, IMessage
+    private void Send(EndpointName destination, TransportMessage transportMessage)
     {
       Uri uri = _uriFactory.CreateUri(destination);
       IEndpoint endpoint = _endpointResolver.Resolve(uri);
+      endpoint.Send(transportMessage);
+    }
+
+    private TransportMessage CreateTransportMessage<T>(Guid correlatedBy, params T[] messages) where T : class, IMessage
+    {
       byte[] body = _transportMessageBodySerializer.Serialize(messages);
-      endpoint.Send(new TransportMessage(this.Address, correlationBy, body));
+      TransportMessage transportMessage = new TransportMessage(this.Address, correlatedBy, body);
+      return transportMessage;
+    }
+
+    private TransportMessage CreateAndSend<T>(Guid correlatedBy, params T[] messages) where T : class, IMessage
+    {
+      return CreateAndSend(_messageEndpointLookup.LookupEndpointFor(typeof(T)), correlatedBy, messages);
+    }
+
+    private TransportMessage CreateAndSend<T>(IEnumerable<EndpointName> destinations, Guid correlatedBy, params T[] messages) where T : class, IMessage
+    {
+      TransportMessage transportMessage = CreateTransportMessage<T>(correlatedBy, messages);
+      foreach (EndpointName destination in destinations)
+      {
+        Send(destination, transportMessage);
+      }
+      return transportMessage;
     }
 
     public void Stop()
@@ -116,11 +134,31 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       }
     }
 
+    public IRequestReplyBuilder Request<T>(params T[] messages) where T : class, IMessage
+    {
+      return new RequestReplyBuilder(CreateAndSend(Guid.Empty, messages));
+    }
+
     public void Reply<T>(params T[] messages) where T : class, IMessage
     {
       CurrentMessageContext cmc = CurrentMessageContext.Current;
       EndpointName returnAddress = cmc.TransportMessage.ReturnAddress;
-      Send(returnAddress, cmc.TransportMessage.Id, messages);
+      CreateAndSend(new[] { returnAddress }, cmc.TransportMessage.Id, messages);
     }
+  }
+  public class RequestReplyBuilder : IRequestReplyBuilder
+  {
+    private TransportMessage _request;
+
+    public RequestReplyBuilder(TransportMessage request)
+    {
+      _request = request;
+    }
+
+    #region IRequestReplyBuilder Members
+    public void OnReply(AsyncCallback callback, object state)
+    {
+    }
+    #endregion
   }
 }
