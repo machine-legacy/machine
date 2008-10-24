@@ -14,22 +14,22 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     private readonly IEndpointResolver _endpointResolver;
     private readonly IMassTransitUriFactory _uriFactory;
     private readonly IMessageEndpointLookup _messageEndpointLookup;
-    private readonly TransportMessageSerializer _transportMessageSerializer;
+    private readonly TransportMessageBodySerializer _transportMessageBodySerializer;
     private readonly MessageDispatcher _messageDispatcher;
 
-    public MessageBusFactory(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageSerializer transportMessageSerializer, MessageDispatcher messageDispatcher)
+    public MessageBusFactory(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageBodySerializer transportMessageBodySerializer, MessageDispatcher messageDispatcher)
     {
       _endpointResolver = endpointResolver;
       _uriFactory = uriFactory;
       _messageEndpointLookup = messageEndpointLookup;
-      _transportMessageSerializer = transportMessageSerializer;
+      _transportMessageBodySerializer = transportMessageBodySerializer;
       _messageDispatcher = messageDispatcher;
     }
 
     #region IMessageBusFactory Members
     public IMessageBus CreateMessageBus(EndpointName endpointName)
     {
-      return new MessageBus(_endpointResolver, _uriFactory, _messageEndpointLookup, _transportMessageSerializer, _messageDispatcher, endpointName);
+      return new MessageBus(_endpointResolver, _uriFactory, _messageEndpointLookup, _transportMessageBodySerializer, _messageDispatcher, endpointName);
     }
     #endregion
   }

@@ -48,7 +48,7 @@ namespace Machine.MassTransitExtensions
     {
       register.Type<MessageEndpointLookup>();
       register.Type<MessageInterfaceTransportFormatter>();
-      register.Type<TransportMessageSerializer>();
+      register.Type<TransportMessageBodySerializer>();
       register.Type<MessageInterfaceImplementations>();
       register.Type<MessageFactory>();
       register.Type<MessageDispatcher>();

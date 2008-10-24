@@ -4,11 +4,11 @@ using System.IO;
 
 namespace Machine.MassTransitExtensions.LowerLevelMessageBus
 {
-  public class TransportMessageSerializer
+  public class TransportMessageBodySerializer
   {
     private readonly ITransportMessageBodyFormatter _transportMessageBodyFormatter;
 
-    public TransportMessageSerializer(ITransportMessageBodyFormatter transportMessageBodyFormatter)
+    public TransportMessageBodySerializer(ITransportMessageBodyFormatter transportMessageBodyFormatter)
     {
       _transportMessageBodyFormatter = transportMessageBodyFormatter;
     }

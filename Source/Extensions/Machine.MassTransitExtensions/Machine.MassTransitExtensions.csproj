@@ -111,7 +111,7 @@
     <Compile Include="ServiceBusHubFactory.cs" />
     <Compile Include="SubscriptionManagerService.cs" />
     <Compile Include="LowerLevelMessageBus\TransportMessage.cs" />
-    <Compile Include="LowerLevelMessageBus\TransportMessageSerializer.cs" />
+    <Compile Include="LowerLevelMessageBus\TransportMessageBodySerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Container\Machine.Container\Machine.Container.csproj">

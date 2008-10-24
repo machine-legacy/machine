@@ -16,14 +16,14 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     private readonly IEndpoint _endpoint;
     private readonly EndpointName _endpointName;
     private readonly ResourceThreadPool<IEndpoint, object> _threads;
-    private readonly TransportMessageSerializer _transportMessageSerializer;
+    private readonly TransportMessageBodySerializer _transportMessageBodySerializer;
     private readonly MessageDispatcher _dispatcher;
 
-    public MessageBus(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageSerializer transportMessageSerializer, MessageDispatcher dispatcher, EndpointName endpointName)
+    public MessageBus(IEndpointResolver endpointResolver, IMassTransitUriFactory uriFactory, IMessageEndpointLookup messageEndpointLookup, TransportMessageBodySerializer transportMessageBodySerializer, MessageDispatcher dispatcher, EndpointName endpointName)
     {
       _endpointResolver = endpointResolver;
       _dispatcher = dispatcher;
-      _transportMessageSerializer = transportMessageSerializer;
+      _transportMessageBodySerializer = transportMessageBodySerializer;
       _messageEndpointLookup = messageEndpointLookup;
       _uriFactory = uriFactory;
       _endpoint = _endpointResolver.Resolve(_uriFactory.CreateUri(endpointName));
@@ -58,7 +58,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
     {
       Uri uri = _uriFactory.CreateUri(destination);
       IEndpoint endpoint = _endpointResolver.Resolve(uri);
-      byte[] body = _transportMessageSerializer.Serialize(messages);
+      byte[] body = _transportMessageBodySerializer.Serialize(messages);
       endpoint.Send(new TransportMessage(this.Address, correlationBy, body));
     }
 
@@ -101,7 +101,7 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
         TransportMessage transportMessage = (TransportMessage)obj;
         using (CurrentMessageContext currentMessageContext = CurrentMessageContext.Open(transportMessage))
         {
-          ICollection<IMessage> messages = _transportMessageSerializer.Deserialize(transportMessage.Body);
+          ICollection<IMessage> messages = _transportMessageBodySerializer.Deserialize(transportMessage.Body);
           foreach (IMessage message in messages)
           {
             currentMessageContext.CurrentApplicationMessage = message;
