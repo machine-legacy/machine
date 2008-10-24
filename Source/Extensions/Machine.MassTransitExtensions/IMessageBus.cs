@@ -12,6 +12,7 @@ namespace Machine.MassTransitExtensions
     void Stop();
     IRequestReplyBuilder Request<T>(params T[] messages) where T : class, IMessage;
     void Reply<T>(params T[] messages) where T : class, IMessage;
+    void Publish<T>(params T[] messages) where T : class, IMessage;
   }
   public interface IRequestReplyBuilder
   {

@@ -150,6 +150,12 @@ namespace Machine.MassTransitExtensions.LowerLevelMessageBus
       EndpointName returnAddress = cmc.TransportMessage.ReturnAddress;
       CreateAndSend(new[] { returnAddress }, cmc.TransportMessage.Id, messages);
     }
+
+    public void Publish<T>(params T[] messages) where T : class, IMessage
+    {
+      // Yes, this isn't really doing a Publish... See the commit message.
+      CreateAndSend(Guid.Empty, messages);
+    }
   }
   
   public class RequestReplyBuilder : IRequestReplyBuilder
