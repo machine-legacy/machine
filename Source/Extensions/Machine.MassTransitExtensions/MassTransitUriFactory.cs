@@ -38,51 +38,49 @@ namespace Machine.MassTransitExtensions
     {
       return _factories[_configurationProvider.Configuration.TransportType].CreateUri(uri);
     }
-
-    class NmsFactory : IMassTransitUriFactory
+  }
+  public class NmsFactory : IMassTransitUriFactory
+  {
+    public Uri CreateUri(EndpointName name)
     {
-      public Uri CreateUri(EndpointName name)
-      {
-        return CreateUri(name.Address, name.Name);
-      }
-
-      public Uri CreateUri(string name)
-      {
-        return CreateUri("127.0.0.1", name);
-      }
-
-      public Uri CreateUri(Uri uri)
-      {
-        return new Uri("activemq://" + uri.Host + ":61616" + uri.AbsolutePath);
-      }
-
-      public Uri CreateUri(string address, string name)
-      {
-        return new Uri("activemq://" + address + ":61616/" + name);
-      }
+      return CreateUri(name.Address, name.Name);
     }
 
-    class MsMqFactory : IMassTransitUriFactory
+    public Uri CreateUri(string name)
     {
-      public Uri CreateUri(EndpointName name)
-      {
-        return CreateUri(name.Address, name.Name);
-      }
+      return CreateUri("127.0.0.1", name);
+    }
 
-      public Uri CreateUri(string name)
-      {
-        return CreateUri("localhost", name);
-      }
+    public Uri CreateUri(Uri uri)
+    {
+      return new Uri("activemq://" + uri.Host + ":61616" + uri.AbsolutePath);
+    }
 
-      public Uri CreateUri(Uri uri)
-      {
-        return new Uri("msmq://" + uri.Host + uri.AbsolutePath);
-      }
+    public Uri CreateUri(string address, string name)
+    {
+      return new Uri("activemq://" + address + ":61616/" + name);
+    }
+  }
+  public class MsMqFactory : IMassTransitUriFactory
+  {
+    public Uri CreateUri(EndpointName name)
+    {
+      return CreateUri(name.Address, name.Name);
+    }
 
-      public Uri CreateUri(string address, string name)
-      {
-        return new Uri("msmq://" + address + "/" + name);
-      }
+    public Uri CreateUri(string name)
+    {
+      return CreateUri("localhost", name);
+    }
+
+    public Uri CreateUri(Uri uri)
+    {
+      return new Uri("msmq://" + uri.Host + uri.AbsolutePath);
+    }
+
+    public Uri CreateUri(string address, string name)
+    {
+      return new Uri("msmq://" + address + "/" + name);
     }
   }
 }
