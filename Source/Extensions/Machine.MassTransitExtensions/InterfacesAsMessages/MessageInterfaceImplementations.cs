@@ -32,7 +32,6 @@ namespace Machine.MassTransitExtensions.InterfacesAsMessages
         }
         GenerateStub(type);
       }
-      _assemblyBuilder.Save("Messages.dll");
     }
 
     private void GenerateStub(Type type)
