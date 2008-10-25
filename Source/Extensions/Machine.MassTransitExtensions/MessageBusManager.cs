@@ -19,10 +19,11 @@ namespace Machine.MassTransitExtensions
     }
 
     #region IMessageBusManager Members
-    public void UseSingleBus(EndpointName local)
+    public IMessageBus UseSingleBus(EndpointName local)
     {
       _bus = _messageBusFactory.CreateMessageBus(local);
       _container.Register.Type<IMessageBus>().Is(_bus);
+      return _bus;
     }
     #endregion
 

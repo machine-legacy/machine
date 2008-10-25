@@ -5,6 +5,6 @@ namespace Machine.MassTransitExtensions
 {
   public interface IMessageBusManager
   {
-    void UseSingleBus(EndpointName local);
+    IMessageBus UseSingleBus(EndpointName local);
   }
 }
