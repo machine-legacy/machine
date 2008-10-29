@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{DF69AA8C-54B3-4EE3-AAC1-F1210B0A257C}</ProjectGuid>
+    <ProjectGuid>{C4EA9683-F45E-4585-B6B9-30BE8C9CB299}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Machine.MsMvc</RootNamespace>
-    <AssemblyName>Machine.MsMvc</AssemblyName>
+    <RootNamespace>Machine.MsMvc.Specs</RootNamespace>
+    <AssemblyName>Machine.MsMvc.Specs</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -17,27 +17,27 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\..\Build\Debug\Extensions\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>169</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\..\Build\Release\Extensions\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <NoWarn>169</NoWarn>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Moq, Version=2.6.1014.1, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\Moq\Moq.dll</HintPath>
-    </Reference>
-    <Reference Include="MvcContrib, Version=0.0.1.101, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Libraries\MsMvcContrib\MvcContrib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -47,42 +47,38 @@
     <Reference Include="System.Web.Abstractions, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\MsMvc\System.Web.Abstractions.dll</HintPath>
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="System.Web.Mvc, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\MsMvc\System.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.Routing, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Libraries\MsMvc\System.Web.Routing.dll</HintPath>
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AsyncActionInvoker.cs" />
-    <Compile Include="AsyncController.cs" />
-    <Compile Include="AsynchronousAsyncResult.cs" />
-    <Compile Include="AsyncMvcRouteHandler.cs" />
-    <Compile Include="AsyncResult.cs" />
-    <Compile Include="MsMvcServices.cs" />
-    <Compile Include="PartialRequest.cs" />
-    <Compile Include="ReflectiveControllerTypeMap.cs" />
-    <Compile Include="IControllerTypeMap.cs" />
-    <Compile Include="IControllerPreparer.cs" />
-    <Compile Include="MachineControllerFactory.cs" />
-    <Compile Include="NullControllerPreparer.cs" />
+    <Compile Include="AsyncControllerSpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SynchronousAsyncResult.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Container\Machine.Container\Machine.Container.csproj">
-      <Project>{311CA93B-3D01-448F-8408-BF6398F0F5FC}</Project>
-      <Name>Machine.Container</Name>
+    <ProjectReference Include="..\..\Specifications\Machine.Specifications\Machine.Specifications.csproj">
+      <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
+      <Name>Machine.Specifications</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Machine.Core\Machine.Core\Machine.Core.csproj">
-      <Project>{CC4332BD-DC7F-4B89-8C38-F8B51CADC991}</Project>
-      <Name>Machine.Core</Name>
+    <ProjectReference Include="..\Machine.MsMvc\Machine.MsMvc.csproj">
+      <Project>{DF69AA8C-54B3-4EE3-AAC1-F1210B0A257C}</Project>
+      <Name>Machine.MsMvc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
