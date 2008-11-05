@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C4EA9683-F45E-4585-B6B9-30BE8C9CB299}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -72,6 +72,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Specifications\Machine.Specifications.NUnit\Machine.Specifications.NUnit.csproj">
+      <Project>{E96E4ECF-E3EF-4E1F-9FFE-0998FE4C5D84}</Project>
+      <Name>Machine.Specifications.NUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Specifications\Machine.Specifications\Machine.Specifications.csproj">
       <Project>{CCD02629-1262-4F78-9E9F-AC97B942D0E7}</Project>
       <Name>Machine.Specifications</Name>

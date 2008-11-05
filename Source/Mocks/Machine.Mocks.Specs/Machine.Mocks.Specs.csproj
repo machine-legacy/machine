@@ -55,6 +55,10 @@
     <Compile Include="TestSubjects.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Specifications\Machine.Specifications.NUnit\Machine.Specifications.NUnit.csproj">
+      <Project>{E96E4ECF-E3EF-4E1F-9FFE-0998FE4C5D84}</Project>
+      <Name>Machine.Specifications.NUnit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Machine.Mocks\Machine.Mocks.csproj">
       <Project>{370FD4D5-3FBA-4242-9C5F-39BB8A6D138B}</Project>
       <Name>Machine.Mocks</Name>
