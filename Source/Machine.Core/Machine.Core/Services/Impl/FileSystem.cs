@@ -61,6 +61,11 @@ namespace Machine.Core.Services.Impl
     {
       return File.OpenText(path);
     }
+    
+    public string ReadAllText(string path)
+    {
+      return File.ReadAllText(path);
+    }
 
     public Stream CreateFile(string path)
     {

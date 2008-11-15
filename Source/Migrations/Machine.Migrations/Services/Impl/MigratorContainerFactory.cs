@@ -34,6 +34,7 @@ namespace Machine.Migrations.Services.Impl
       container.Add<IConfiguration>(configuration);
       container.Add<CSharpMigrationFactory>();
       container.Add<BooMigrationFactory>();
+      container.Add<SqlScriptMigrationFactory>();
       container.Start();
       return container;
     }

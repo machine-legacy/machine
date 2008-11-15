@@ -13,6 +13,7 @@ namespace Machine.Migrations.Services.Impl
   {
     CSharpMigrationFactory _cSharpMigrationFactory;
     BooMigrationFactory _booMigrationFactory;
+    SqlScriptMigrationFactory _sqlScriptMigrationFactory;
     IConfiguration _configuration;
     IWorkingDirectoryManager _workingDirectoryManager;
     IFileSystem _fileSystem;
@@ -32,8 +33,15 @@ namespace Machine.Migrations.Services.Impl
     }
 
     [Test]
+    public void ChooseFactory_IsSqlScript_ReturnsFactory()
+    {
+      Assert.AreEqual(_sqlScriptMigrationFactory,
+        _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.sql")));
+    }
+
+    [Test]
     [ExpectedException(typeof(ArgumentException))]
-    public void ChooseFactory_IsNotCSharpOrBoo_Throws()
+    public void ChooseFactory_IsNotCSharpOrBooOrSql_Throws()
     {
       _target.ChooseFactory(new MigrationReference(1, "Migration", "001_migration.vb"));
     }
@@ -45,7 +53,8 @@ namespace Machine.Migrations.Services.Impl
       _workingDirectoryManager = _mocks.DynamicMock<IWorkingDirectoryManager>();
       _cSharpMigrationFactory = new CSharpMigrationFactory(_configuration, _workingDirectoryManager);
       _booMigrationFactory = new BooMigrationFactory(_configuration, _workingDirectoryManager);
-      return new MigrationFactoryChooser(_cSharpMigrationFactory, _booMigrationFactory);
+      _sqlScriptMigrationFactory = new SqlScriptMigrationFactory(_fileSystem);
+      return new MigrationFactoryChooser(_cSharpMigrationFactory, _booMigrationFactory, _sqlScriptMigrationFactory);
     }
   }
 }

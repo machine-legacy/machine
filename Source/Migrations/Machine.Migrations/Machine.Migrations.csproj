@@ -92,6 +92,7 @@
     <Compile Include="Services\Impl\ActivatorBasedMigrationFactoryChooser.cs" />
     <Compile Include="Services\Impl\AssemblyMigrationFinder.cs" />
     <Compile Include="Services\Impl\MigratorContainerFactory.cs" />
+    <Compile Include="Services\Impl\SqlScriptMigrationFactory.cs" />
     <Compile Include="Services\Impl\StaticMigratorConfiguration.cs" />
     <Compile Include="Services\ITransactionProvider.cs" />
     <Compile Include="Services\IMigrator.cs" />
@@ -118,6 +119,7 @@
     <Compile Include="SimpleMigration.cs" />
     <Compile Include="Model\TableInfo.cs" />
     <Compile Include="Core\VersionState.cs" />
+    <Compile Include="SqlScriptMigration.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Container\Machine.Container\Machine.Container.csproj">

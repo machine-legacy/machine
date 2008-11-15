@@ -17,6 +17,7 @@ namespace Machine.Core.Services
     FileProperties GetFileProperties(string path);
     Stream OpenFile(string path);
     StreamReader OpenText(string path);
+    string ReadAllText(string path);
     Stream CreateFile(string path);
     StreamWriter CreateText(string path);
     void CopyFile(string source, string destination, bool overwrite);
