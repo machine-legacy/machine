@@ -23,11 +23,9 @@ namespace Machine.Utility.ThreadPool
       _value = value;
     }
 
-    #region IRunnable Members
     public void Run()
     {
       _consumer.Consume(_value);
     }
-    #endregion
   }
 }

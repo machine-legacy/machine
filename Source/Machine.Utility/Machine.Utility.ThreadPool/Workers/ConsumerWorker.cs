@@ -52,19 +52,23 @@ namespace Machine.Utility.ThreadPool.Workers
       {
         try
         {
-          IRunnable runnable = _queue.Dequeue();
-          if (runnable != null)
+          using (IScope scope = _queue.CreateScope())
           {
-            using (new PerformanceWatcher(_log, "Processed"))
+            IRunnable runnable = scope.Dequeue();
+            if (runnable != null)
             {
-              MarkAsBusy();
-              try
+              using (new PerformanceWatcher(_log, "Processed"))
               {
-                runnable.Run();
-              }
-              finally
-              {
-                MarkAsFree();
+                MarkAsBusy();
+                try
+                {
+                  runnable.Run();
+                  scope.Complete();
+                }
+                finally
+                {
+                  MarkAsFree();
+                }
               }
             }
           }

@@ -55,22 +55,16 @@ namespace Machine.Core.Services.Impl
 
   public class MyRunnable : IRunnable
   {
-    #region Member Data
     readonly ManualResetEvent _event;
-    #endregion
 
-    #region MyRunnable()
     public MyRunnable(ManualResetEvent @event)
     {
       _event = @event;
     }
-    #endregion
 
-    #region IRunnable Members
     public void Run()
     {
       _event.Set();
     }
-    #endregion
   }
 }

@@ -8,7 +8,12 @@ namespace Machine.Utility.ThreadPool
   public interface IQueue
   {
     void Enqueue(IRunnable runnable);
-    IRunnable Dequeue();
+    IScope CreateScope();
     void Drainstop();
+  }
+  public interface IScope : IDisposable
+  {
+    IRunnable Dequeue();
+    void Complete();
   }
 }
