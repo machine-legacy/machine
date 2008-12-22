@@ -74,10 +74,6 @@ namespace Machine.Utility.ThreadPool.Workers
           _log.Error(error);
         }
       }
-      if (_queue.NumberOfItems > 0)
-      {
-        throw new InvalidOperationException();
-      }
     }
     #endregion
 
