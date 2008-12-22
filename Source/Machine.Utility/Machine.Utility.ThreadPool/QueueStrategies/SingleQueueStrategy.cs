@@ -8,7 +8,17 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
 {
   public class SingleQueueStrategy : QueueStrategy
   {
-    private readonly QueueOfRunnables _queue = new QueueOfRunnables();
+    private readonly IQueue _queue;
+
+    public SingleQueueStrategy()
+      : this(new QueueOfRunnables())
+    {
+    }
+
+    public SingleQueueStrategy(IQueue queue)
+    {
+      _queue = queue;
+    }
 
     public override IQueue CreateQueueForWorker(Worker worker)
     {
