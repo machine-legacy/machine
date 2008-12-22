@@ -14,11 +14,11 @@ namespace Machine.Utility.ThreadPool
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ThreadPool));
     private readonly IThreadManager _threadManager;
-    private readonly ThreadPoolConfiguration _configuration;
     private readonly List<Worker> _workers = new List<Worker>();
     private readonly QueueStrategy _queueStrategy;
     private readonly BusyWatcher _busyWatcher;
     private readonly object _lock = new object();
+    private ThreadPoolConfiguration _configuration;
     private bool _started;
     private bool _stopped;
 
@@ -33,6 +33,14 @@ namespace Machine.Utility.ThreadPool
     public ThreadPool(ThreadPoolConfiguration configuration)
      : this(configuration, new SingleQueueStrategy())
     {
+    }
+
+    public void ChangeConfiguration(ThreadPoolConfiguration configuration)
+    {
+      lock (_lock)
+      {
+        _configuration = configuration;
+      }
     }
 
     public void Start()

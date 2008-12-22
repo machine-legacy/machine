@@ -6,6 +6,7 @@ namespace Machine.Utility.ThreadPool
   {
     public static ThreadPoolConfiguration FiveAndTwenty = new ThreadPoolConfiguration(5, 20);
     public static ThreadPoolConfiguration OneAndTwo = new ThreadPoolConfiguration(1, 2);
+    public static ThreadPoolConfiguration OneAndOne = new ThreadPoolConfiguration(1, 1);
     public static ThreadPoolConfiguration FiveAndTen = new ThreadPoolConfiguration(5, 10);
 
     private int _minimumNumberOfThreads = 5;
