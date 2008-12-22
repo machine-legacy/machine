@@ -10,7 +10,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
   {
     private readonly QueueOfRunnables _queue = new QueueOfRunnables();
 
-    public override QueueOfRunnables CreateQueueForWorker(Worker worker)
+    public override IQueue CreateQueueForWorker(Worker worker)
     {
       return _queue;
     }
@@ -20,7 +20,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
       _queue.Enqueue(runnable);
     }
 
-    public override void RetireQueue(QueueOfRunnables queue)
+    public override void RetireQueue(IQueue queue)
     {
     }
 

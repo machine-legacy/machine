@@ -14,7 +14,7 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
     private readonly ReaderWriterLock _lock = new ReaderWriterLock();
     private int _index;
 
-    public override QueueOfRunnables CreateQueueForWorker(Worker worker)
+    public override IQueue CreateQueueForWorker(Worker worker)
     {
       using (RWLock.AsWriter(_lock))
       {
@@ -24,14 +24,15 @@ namespace Machine.Utility.ThreadPool.QueueStrategies
       }
     }
 
-    public override void RetireQueue(QueueOfRunnables queue)
+    public override void RetireQueue(IQueue queue)
     {
+      QueueOfRunnables queueOfRunnables = (QueueOfRunnables)queue;
       using (RWLock.AsWriter(_lock))
       {
-        _queues.Remove(queue);
-        RetireQueueUnderLock(queue);
+        _queues.Remove(queueOfRunnables);
+        RetireQueueUnderLock(queueOfRunnables);
       }
-      queue.Drainstop();
+      queueOfRunnables.Drainstop();
     }
 
     public override void DrainstopAllQueues()

@@ -10,7 +10,7 @@ namespace Machine.Utility.ThreadPool.Workers
   public class ConsumerWorker : Worker
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ConsumerWorker));
-    private readonly QueueOfRunnables _queue;
+    private readonly IQueue _queue;
     private readonly QueueStrategy _queueStrategy;
     private readonly BusyWatcher _busyWatcher;
     private DateTime _lastUsedAt = DateTime.Now;

@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BusyWatcher.cs" />
+    <Compile Include="IQueue.cs" />
     <Compile Include="QueueStrategies\QueueAffinityStrategy.cs" />
     <Compile Include="Workers\Worker.cs" />
     <Compile Include="Workers\ConsumerWorker.cs" />
