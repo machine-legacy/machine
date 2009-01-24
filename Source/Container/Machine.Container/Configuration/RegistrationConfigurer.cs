@@ -27,6 +27,11 @@ namespace Machine.Container.Configuration
       return WithLifestyle(LifestyleType.Transient);
     }
 
+    public RegistrationConfigurer AsPerWebRequest()
+    {
+      return WithLifestyle(LifestyleType.PerWebRequest);
+    }
+
     public RegistrationConfigurer WithLifestyle(LifestyleType type)
     {
       _entry.LifestyleType = type;
