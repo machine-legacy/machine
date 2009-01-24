@@ -56,6 +56,7 @@
     <Compile Include="ContainerResolver.cs" />
     <Compile Include="Lifestyles\WebRequestLifestyle.cs" />
     <Compile Include="Model\IPropertySettings.cs" />
+    <Compile Include="Model\IResolvableType.cs" />
     <Compile Include="Model\ResolvableParameterType.cs" />
     <Compile Include="Model\ResolvableType.cs" />
     <Compile Include="Plugins\IServiceCollection.cs" />

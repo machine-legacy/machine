@@ -71,7 +71,7 @@ namespace Machine.Container.Activators
       ConstructorCandidate candidate = _serviceDependencyInspector.SelectConstructor(_entry.ConcreteType);
       foreach (ServiceDependency dependency in candidate.Dependencies)
       {
-        ResolvableType resolvableType = services.CreateResolvableType(dependency);
+        IResolvableType resolvableType = services.CreateResolvableType(dependency);
         ResolvedServiceEntry dependencyEntry = _serviceEntryResolver.ResolveEntry(services, resolvableType);
         if (dependencyEntry == null)
         {

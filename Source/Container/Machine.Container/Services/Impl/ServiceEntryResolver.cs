@@ -49,7 +49,7 @@ namespace Machine.Container.Services.Impl
       return _serviceGraph.Lookup(type);
     }
 
-    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, ResolvableType resolvableType)
+    public ResolvedServiceEntry ResolveEntry(IResolutionServices services, IResolvableType resolvableType)
     {
       ServiceEntry entry = resolvableType.ToServiceEntry(services);
       using (entry.Lock.AcquireReaderLock())

@@ -5,7 +5,7 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Model
 {
-  public class ResolvableType
+  public class ResolvableType : IResolvableType
   {
     protected readonly IServiceGraph _serviceGraph;
     protected readonly IServiceEntryFactory _serviceEntryFactory;
