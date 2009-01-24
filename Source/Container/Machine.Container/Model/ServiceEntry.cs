@@ -7,6 +7,7 @@ namespace Machine.Container.Model
   {
     #region Member Data
     private readonly string _key;
+    private string _name;
     private Type _serviceType;
     private Type _implementationType;
     private LifestyleType _lifestyleType;
@@ -19,6 +20,16 @@ namespace Machine.Container.Model
     public string Key
     {
       get { return _key; }
+    }
+
+    public string Name
+    {
+      get { return _name; }
+      set
+      {
+        AssertHasNoActiveInstances();
+        _name = value;
+      }
     }
 
     public LifestyleType LifestyleType

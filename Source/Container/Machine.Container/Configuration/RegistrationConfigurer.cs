@@ -17,6 +17,12 @@ namespace Machine.Container.Configuration
       _entry = entry;
     }
 
+    public RegistrationConfigurer Named(string name)
+    {
+      _entry.Name = name;
+      return this;
+    }
+
     public RegistrationConfigurer AsSingleton()
     {
       return WithLifestyle(LifestyleType.Singleton);
