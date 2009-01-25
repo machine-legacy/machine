@@ -15,6 +15,7 @@ namespace Machine.Container.Services.Impl
     private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ServiceGraph");
     private readonly List<Type> _registrationOrder = new List<Type>();
+    private readonly Dictionary<string, ServiceEntry> _nameLookupCache = new Dictionary<string, ServiceEntry>();
 
     public ServiceGraph(IListenerInvoker listenerInvoker)
     {
@@ -36,14 +37,18 @@ namespace Machine.Container.Services.Impl
       List<ServiceEntry> matches = new List<ServiceEntry>();
       using (RWLock.AsReader(_lock))
       {
-        foreach (KeyValuePair<Type, ServiceEntry> pair in _map)
+        if (RWLock.UpgradeToWriterIf(_lock, delegate() { return !_nameLookupCache.ContainsKey(name); }))
         {
-          if (pair.Value.IsNamed(name))
+          foreach (KeyValuePair<Type, ServiceEntry> pair in _map)
           {
-            matches.Add(pair.Value);
+            if (pair.Value.IsNamed(name))
+            {
+              matches.Add(pair.Value);
+            }
           }
+          _nameLookupCache[name] = Select(matches, LookupFlags.Default, name);
         }
-        return Select(matches, LookupFlags.Default, name);
+        return _nameLookupCache[name];
       }
     }
 
