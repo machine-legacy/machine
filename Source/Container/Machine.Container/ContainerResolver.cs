@@ -23,19 +23,9 @@ namespace Machine.Container
       return ResolveWithStaticOverrides(name, overrides);
     }
 
-    public object Object(Type type)
-    {
-      return ResolveWithStaticOverrides(type);
-    }
-
     public object Object(Type type, params object[] overrides)
     {
       return ResolveWithStaticOverrides(type, overrides);
-    }
-
-    public T Object<T>()
-    {
-      return (T)Object(typeof(T));
     }
 
     public T Named<T>(string name, params object[] overrides)
