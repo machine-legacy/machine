@@ -9,13 +9,13 @@ namespace Machine.Container.Lifestyles
   public class HybridLifestyle : ILifestyle
   {
     private readonly AspDotNet _aspDotNet;
-    private readonly WebRequestLifestyle _perWebRequestLifestyle;
+    private readonly PerWebRequestLifestyle _perPerWebRequestLifestyle;
     private readonly PerThreadLifestyle _perThreadLifestyle;
 
     public HybridLifestyle(IActivatorFactory activatorFactory, ServiceEntry entry)
     {
       _aspDotNet = new AspDotNet();
-      _perWebRequestLifestyle = new WebRequestLifestyle(activatorFactory, entry);
+      _perPerWebRequestLifestyle = new PerWebRequestLifestyle(activatorFactory, entry);
       _perThreadLifestyle = new PerThreadLifestyle(activatorFactory, entry);
     }
 
@@ -36,7 +36,7 @@ namespace Machine.Container.Lifestyles
 
     public void Initialize()
     {
-      _perWebRequestLifestyle.Initialize();
+      _perPerWebRequestLifestyle.Initialize();
       _perThreadLifestyle.Initialize();
     }
 
@@ -44,7 +44,7 @@ namespace Machine.Container.Lifestyles
     {
       if (_aspDotNet.IsAvailable)
       {
-        return _perWebRequestLifestyle;
+        return _perPerWebRequestLifestyle;
       }
       return _perThreadLifestyle;
     }

@@ -49,7 +49,7 @@ namespace Machine.Container.Services.Impl
 
     public ILifestyle CreateWebRequestLifestyle(ServiceEntry entry)
     {
-      ILifestyle lifestyle = new WebRequestLifestyle(_activatorFactory, entry);
+      ILifestyle lifestyle = new PerWebRequestLifestyle(_activatorFactory, entry);
       lifestyle.Initialize();
       return lifestyle;
     }

@@ -7,11 +7,11 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Lifestyles
 {
-  public class WebRequestLifestyle : TransientLifestyle
+  public class PerWebRequestLifestyle : TransientLifestyle
   {
     private readonly AspDotNet _aspDotNet;
 
-    public WebRequestLifestyle(IActivatorFactory activatorFactory, ServiceEntry serviceEntry)
+    public PerWebRequestLifestyle(IActivatorFactory activatorFactory, ServiceEntry serviceEntry)
       : base(activatorFactory, serviceEntry)
     {
       _aspDotNet = new AspDotNet();

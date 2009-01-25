@@ -56,7 +56,7 @@
     <Compile Include="ContainerResolver.cs" />
     <Compile Include="Lifestyles\HybridLifestyle.cs" />
     <Compile Include="Lifestyles\PerThreadLifestyle.cs" />
-    <Compile Include="Lifestyles\WebRequestLifestyle.cs" />
+    <Compile Include="Lifestyles\PerWebRequestLifestyle.cs" />
     <Compile Include="Model\IPropertySettings.cs" />
     <Compile Include="Model\IResolvableType.cs" />
     <Compile Include="Model\NamedResolvableType.cs" />
