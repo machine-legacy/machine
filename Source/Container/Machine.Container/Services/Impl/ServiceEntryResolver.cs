@@ -7,26 +7,19 @@ namespace Machine.Container.Services.Impl
 {
   public class ServiceEntryResolver : IServiceEntryResolver
   {
-    #region Logging
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
-    #endregion
 
-    #region Member Data
     private readonly IServiceGraph _serviceGraph;
     private readonly IServiceEntryFactory _serviceEntryFactory;
     private readonly IActivatorResolver _activatorResolver;
-    #endregion
 
-    #region ServiceEntryResolver()
     public ServiceEntryResolver(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, IActivatorResolver activatorResolver)
     {
       _serviceGraph = serviceGraph;
       _activatorResolver = activatorResolver;
       _serviceEntryFactory = serviceEntryFactory;
     }
-    #endregion
 
-    #region Methods
     public ServiceEntry CreateEntryIfMissing(Type type)
     {
       return CreateEntryIfMissing(type, type);
@@ -67,7 +60,6 @@ namespace Machine.Container.Services.Impl
       }
       return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
     }
-    #endregion
 
     private static void CreateActivatorForEntryIfNecessary(IResolutionServices services, ServiceEntry entry)
     {

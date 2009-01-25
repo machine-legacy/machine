@@ -5,7 +5,6 @@ namespace Machine.Container.Model
 {
   public class ServiceEntry
   {
-    #region Member Data
     private readonly string _key;
     private string _name;
     private Type _serviceType;
@@ -14,9 +13,7 @@ namespace Machine.Container.Model
     private long _numberOfActiveInstances;
     private readonly List<InterceptorApplication> _interceptors = new List<InterceptorApplication>();
     private IPropertySettings _propertySettings;
-    #endregion
 
-    #region Properties
     public string Key
     {
       get { return _key; }
@@ -93,9 +90,7 @@ namespace Machine.Container.Model
         _propertySettings = value;
       }
     }
-    #endregion
 
-    #region ServiceEntry()
     public ServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType)
       : this(serviceType, implementationType, lifestyleType, String.Empty)
     {
@@ -109,14 +104,11 @@ namespace Machine.Container.Model
       _lifestyleType = lifestyleType;
       _key = key;
     }
-    #endregion
 
-    #region Methods
     public override string ToString()
     {
       return String.Format("Entry<{0}, {1}, {2}>", this.ServiceType, this.ImplementationType, _numberOfActiveInstances);
     }
-    #endregion
 
     public bool IsNamed(string name)
     {

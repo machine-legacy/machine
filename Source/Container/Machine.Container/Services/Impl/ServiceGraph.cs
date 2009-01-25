@@ -9,23 +9,18 @@ namespace Machine.Container.Services.Impl
 {
   public class ServiceGraph : IServiceGraph
   {
-    #region Logging
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
-    #endregion
 
-    #region Member Data
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ServiceGraph");
     private readonly List<Type> _registrationOrder = new List<Type>();
-    #endregion
 
     public ServiceGraph(IListenerInvoker listenerInvoker)
     {
       _listenerInvoker = listenerInvoker;
     }
 
-    #region IServiceGraph Members
     public ServiceEntry Lookup(Type type, LookupFlags flags)
     {
       return LookupLazily(type, flags);
@@ -79,7 +74,6 @@ namespace Machine.Container.Services.Impl
         }
       }
     }
-    #endregion
 
     protected virtual ServiceEntry LookupLazily(Type type, LookupFlags flags)
     {
