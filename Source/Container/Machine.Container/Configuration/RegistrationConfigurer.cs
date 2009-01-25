@@ -38,6 +38,11 @@ namespace Machine.Container.Configuration
       return WithLifestyle(LifestyleType.PerWebRequest);
     }
 
+    public RegistrationConfigurer AsPerThread()
+    {
+      return WithLifestyle(LifestyleType.PerThread);
+    }
+
     public RegistrationConfigurer WithLifestyle(LifestyleType type)
     {
       _entry.LifestyleType = type;

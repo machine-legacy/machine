@@ -8,6 +8,7 @@ namespace Machine.Container.Model
     Singleton,
     Transient,
     PerWebRequest,
+    PerThread,
     Override
   }
 
