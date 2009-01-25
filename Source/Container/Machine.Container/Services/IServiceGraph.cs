@@ -5,6 +5,7 @@ using Machine.Container.Model;
 
 namespace Machine.Container.Services
 {
+  [Flags]
   public enum LookupFlags 
   {
     None = 0,
