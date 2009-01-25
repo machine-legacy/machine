@@ -55,6 +55,11 @@ namespace Machine.Container.Lifestyles
         return current;
       }
     }
+
+    public bool IsAvailable
+    {
+      get { return HttpContext.Current != null; }
+    }
     
     public T Get<T>(string key)
     {

@@ -27,6 +27,8 @@ namespace Machine.Container.Services.Impl
           return CreateWebRequestLifestyle(entry);
         case LifestyleType.PerThread:
           return CreatePerThreadLifestyle(entry);
+        case LifestyleType.PerWebRequestAndPerThreadHybrid:
+          return CreatePerWebRequestAndPerThreadHybridLifestyle(entry);
       }
       throw new ArgumentException("entry");
     }
@@ -55,6 +57,13 @@ namespace Machine.Container.Services.Impl
     public ILifestyle CreatePerThreadLifestyle(ServiceEntry entry)
     {
       ILifestyle lifestyle = new PerThreadLifestyle(_activatorFactory, entry);
+      lifestyle.Initialize();
+      return lifestyle;
+    }
+
+    public ILifestyle CreatePerWebRequestAndPerThreadHybridLifestyle(ServiceEntry entry)
+    {
+      ILifestyle lifestyle = new HybridLifestyle(_activatorFactory, entry);
       lifestyle.Initialize();
       return lifestyle;
     }

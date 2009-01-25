@@ -9,6 +9,7 @@ namespace Machine.Container.Model
     Transient,
     PerWebRequest,
     PerThread,
+    PerWebRequestAndPerThreadHybrid,
     Override
   }
 
