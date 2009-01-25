@@ -36,6 +36,22 @@ namespace Machine.Container.Services.Impl
       return LookupLazily(type, LookupFlags.Default);
     }
 
+    public ServiceEntry Lookup(string name)
+    {
+      List<ServiceEntry> matches = new List<ServiceEntry>();
+      using (RWLock.AsReader(_lock))
+      {
+        foreach (KeyValuePair<Type, ServiceEntry> pair in _map)
+        {
+          if (pair.Value.IsNamed(name))
+          {
+            matches.Add(pair.Value);
+          }
+        }
+        return Select(matches, LookupFlags.Default, name);
+      }
+    }
+
     public void Add(ServiceEntry entry)
     {
       using (RWLock.AsWriter(_lock))
@@ -78,16 +94,21 @@ namespace Machine.Container.Services.Impl
             matches.Add(entry);
           }
         }
-        if (matches.Count == 1)
-        {
-          return matches[0];
-        }
-        else if (matches.Count > 1 && (flags & LookupFlags.ThrowIfAmbiguous) == LookupFlags.ThrowIfAmbiguous)
-        {
-          throw new AmbiguousServicesException(type.ToString());
-        }
-        return null;
+        return Select(matches, flags, type.ToString());
       }
+    }
+
+    private static ServiceEntry Select(IList<ServiceEntry> matches, LookupFlags flags, string beingLookedUp)
+    {
+      if (matches.Count == 1)
+      {
+        return matches[0];
+      }
+      if (matches.Count > 1 && (flags & LookupFlags.ThrowIfAmbiguous) == LookupFlags.ThrowIfAmbiguous)
+      {
+        throw new AmbiguousServicesException(beingLookedUp);
+      }
+      return null;
     }
   }
 }

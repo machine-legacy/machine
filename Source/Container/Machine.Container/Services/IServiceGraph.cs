@@ -16,6 +16,7 @@ namespace Machine.Container.Services
   {
     ServiceEntry Lookup(Type type, LookupFlags flags);
     ServiceEntry Lookup(Type type);
+    ServiceEntry Lookup(string name);
     void Add(ServiceEntry entry);
     IEnumerable<ServiceRegistration> RegisteredServices { get; }
   }

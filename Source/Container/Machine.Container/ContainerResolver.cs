@@ -18,6 +18,11 @@ namespace Machine.Container
       _containerRegisterer = containerRegisterer;
     }
 
+    public object Named(string name, params object[] overrides)
+    {
+      return ResolveWithStaticOverrides(name, overrides);
+    }
+
     public object Object(Type type)
     {
       return ResolveWithStaticOverrides(type);
@@ -31,6 +36,11 @@ namespace Machine.Container
     public T Object<T>()
     {
       return (T)Object(typeof(T));
+    }
+
+    public T Named<T>(string name, params object[] overrides)
+    {
+      return (T)Named(name, overrides);
     }
 
     public T Object<T>(params object[] overrides)
@@ -87,6 +97,11 @@ namespace Machine.Container
       return typedAs;
     }
 
+    protected object ResolveWithStaticOverrides(string name, params object[] overrides)
+    {
+      return Resolve(name, new StaticOverrideLookup(overrides));
+    }
+
     protected object ResolveWithStaticOverrides(Type type, params object[] overrides)
     {
       return Resolve(type, new StaticOverrideLookup(overrides));
@@ -96,11 +111,22 @@ namespace Machine.Container
     {
       return Resolve(type, new ParameterOverrideLookup(parameters));
     }
-    
-    protected virtual object Resolve(Type type, IOverrideLookup overrides)
+
+    protected object Resolve(string name, IOverrideLookup overrides)
     {
       IResolutionServices services = _containerServices.CreateResolutionServices(overrides, LookupFlags.Default);
-      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, services.CreateResolvableType(type));
+      return Resolve(services.CreateResolvableType(name), services);
+    }
+
+    protected object Resolve(Type type, IOverrideLookup overrides)
+    {
+      IResolutionServices services = _containerServices.CreateResolutionServices(overrides, LookupFlags.Default);
+      return Resolve(services.CreateResolvableType(type), services);
+    }
+
+    protected virtual object Resolve(IResolvableType resolvableType, IResolutionServices services)
+    {
+      ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, resolvableType);
       Activation activation = entry.Activate(services);
       activation.AssertIsFullyActivated();
       return activation.Instance;

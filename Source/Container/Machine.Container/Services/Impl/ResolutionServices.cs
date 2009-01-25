@@ -87,6 +87,11 @@ namespace Machine.Container.Services.Impl
       get { return _flags; }
     }
 
+    public IResolvableType CreateResolvableType(string name)
+    {
+      return new NamedResolvableType(_containerServices.ServiceGraph, name);
+    }
+
     public IResolvableType CreateResolvableType(Type type)
     {
       return new ResolvableType(_containerServices.ServiceGraph, _containerServices.ServiceEntryFactory, type);

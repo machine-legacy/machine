@@ -118,6 +118,15 @@ namespace Machine.Container.Model
     }
     #endregion
 
+    public bool IsNamed(string name)
+    {
+      if (String.IsNullOrEmpty(_name))
+      {
+        return false;
+      }
+      return _name.Equals(name);
+    }
+
     public void IncrementActiveInstances()
     {
       _numberOfActiveInstances++;

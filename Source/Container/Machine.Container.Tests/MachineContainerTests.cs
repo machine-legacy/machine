@@ -75,6 +75,31 @@ namespace Machine.Container
     }
 
     [Test]
+    [ExpectedException(typeof(MissingServiceException))]
+    public void Resolve_Named_Instance_That_Is_Not_In_Container_Should_Throw()
+    {
+      _machineContainer.Resolve.Named("Favorite");
+    }
+
+    [Test]
+    public void Resolve_Named_Instance_That_Is_In_Container()
+    {
+      string name = "Favorite";
+      _machineContainer.Register.Type<SimpleService1>().Named(name);
+      Assert.IsNotNull(_machineContainer.Resolve.Named(name));
+    }
+
+    [Test]
+    [ExpectedException(typeof(AmbiguousServicesException))]
+    public void Resolve_Named_Instance_That_Has_Multiple_Entries_Throws()
+    {
+      string name = "Favorite";
+      _machineContainer.Register.Type<SimpleService1>().Named(name);
+      _machineContainer.Register.Type<SimpleService2>().Named(name);
+      _machineContainer.Resolve.Named(name);
+    }
+
+    [Test]
     public void Resolve_Single_Dependency_There_Resolves_Instance()
     {
       _machineContainer.Add<IService2, Service2DependsOn1>();
