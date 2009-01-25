@@ -9,19 +9,14 @@ namespace Machine.Container.Lifestyles
 {
   public class SingletonLifestyle : TransientLifestyle
   {
-    #region Member Data
     private Activation _firstActivation;
     private Activation _cachedActivation;
-    #endregion
 
-    #region SingletonLifestyle()
     public SingletonLifestyle(IActivatorFactory activatorFactory, ServiceEntry entry)
      : base(activatorFactory, entry)
     {
     }
-    #endregion
 
-    #region ILifestyle Members
     public override bool CanActivate(IResolutionServices services)
     {
       if (_firstActivation == null)
@@ -57,7 +52,7 @@ namespace Machine.Container.Lifestyles
       }
       _firstActivation = null;
       _cachedActivation = null;
+      base.Deactivate(services, instance);
     }
-    #endregion
   }
 }

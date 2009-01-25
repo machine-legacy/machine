@@ -8,26 +8,21 @@ namespace Machine.Container.Lifestyles
 {
   public class TransientLifestyle : ILifestyle
   {
-    #region Member Data
     private readonly IActivatorFactory _activatorFactory;
     private readonly ServiceEntry _entry;
     private IActivator _defaultActivator;
-    #endregion
 
     protected ServiceEntry Entry
     {
       get { return _entry; }
     }
 
-    #region TransientLifestyle()
     public TransientLifestyle(IActivatorFactory activatorFactory, ServiceEntry serviceEntry)
     {
       _activatorFactory = activatorFactory;
       _entry = serviceEntry;
     }
-    #endregion
 
-    #region ILifestyle Members
     public virtual void Initialize()
     {
       _defaultActivator = _activatorFactory.CreateDefaultActivator(_entry);
@@ -47,6 +42,5 @@ namespace Machine.Container.Lifestyles
     {
       _defaultActivator.Deactivate(services, instance);
     }
-    #endregion
   }
 }
