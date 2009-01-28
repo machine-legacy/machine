@@ -46,8 +46,7 @@ namespace Machine.Migrations.Services.Impl
       }
       compiler.Parameters.OutputType = CompilerOutputType.Library;
       compiler.Parameters.GenerateInMemory = true;
-      compiler.Parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory,
-        Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
+      compiler.Parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       compiler.Parameters.Ducky = true;
       compiler.Parameters.Pipeline = new CompileToFile();
       CompilerContext cc = compiler.Run();
@@ -59,17 +58,26 @@ namespace Machine.Migrations.Services.Impl
         }
         throw new InvalidOperationException();
       }
-      Assembly assembly = cc.GeneratedAssembly;
-      if (assembly == null)
+      if (cc.GeneratedAssembly == null)
       {
         throw new InvalidOperationException();
       }
-      Type type = cc.GeneratedAssembly.GetType(migrationReference.Name);
-      if (type == null)
+      return MigrationHelpers.LookupMigration(cc.GeneratedAssembly, migrationReference);
+    }
+  }
+  public static class MigrationHelpers
+  {
+    public static Type LookupMigration(Assembly assembly, MigrationReference migrationReference)
+    {
+      foreach (string alias in migrationReference.Aliases)
       {
-        throw new ArgumentException("Unable to locate Migration: " + migrationReference.Path);
+        Type migrationType = assembly.GetType(alias);
+        if (migrationType != null)
+        {
+          return migrationType;
+        }
       }
-      return type;
+      throw new ArgumentException("Unable to locate Migration: " + migrationReference.Path);
     }
   }
 }

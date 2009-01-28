@@ -46,8 +46,7 @@ namespace Machine.Migrations.Services.Impl
       CodeDomProvider provider = new CSharpCodeProvider(providerOptions);
       CompilerParameters parameters = new CompilerParameters();
       parameters.GenerateExecutable = false;
-      parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory,
-        Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
+      parameters.OutputAssembly = Path.Combine(_workingDirectoryManager.WorkingDirectory, Path.GetFileNameWithoutExtension(migrationReference.Path) + ".dll");
       parameters.ReferencedAssemblies.Add(typeof(IDatabaseMigration).Assembly.Location);
       parameters.ReferencedAssemblies.Add(typeof(SqlMoney).Assembly.Location);
       parameters.IncludeDebugInformation = true;
@@ -65,13 +64,11 @@ namespace Machine.Migrations.Services.Impl
         }
         throw new InvalidOperationException();
       }
-      Assembly assembly = cr.CompiledAssembly;
-      Type type = assembly.GetType(migrationReference.Name);
-      if (type == null)
+      if (cr.CompiledAssembly == null)
       {
-        throw new ArgumentException("Unable to locate Migration: " + migrationReference.Name);
+        throw new InvalidOperationException();
       }
-      return type;
+      return MigrationHelpers.LookupMigration(cr.CompiledAssembly, migrationReference);
     }
   }
 }

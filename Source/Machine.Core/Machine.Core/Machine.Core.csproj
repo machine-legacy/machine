@@ -86,6 +86,7 @@
     <Compile Include="Utility\RWLock.cs" />
     <Compile Include="Utility\ReflectionHelper.cs" />
     <Compile Include="Utility\StackPopper.cs" />
+    <Compile Include="Utility\StringHelpers.cs" />
     <Compile Include="Utility\TimeSpanHelper.cs" />
     <Compile Include="Utility\XmlSerializationHelper.cs" />
     <Compile Include="ValueTypes\AbstractValueTypeInspector.cs" />

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Machine.Core.Utility;
 
 namespace Machine.Migrations
 {
@@ -19,6 +21,15 @@ namespace Machine.Migrations
     {
       get { return _name; }
       set { _name = value; }
+    }
+
+    public IEnumerable<string> Aliases
+    {
+      get
+      {
+        yield return _name;
+        yield return StringHelpers.ToUnderscoreDelimited(_name);
+      }
     }
 
     public string Path

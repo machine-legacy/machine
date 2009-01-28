@@ -35,12 +35,10 @@ namespace Machine.Migrations.Services.Impl
         Match m = _regex.Match(Path.GetFileName(file));
         if (m.Success)
         {
-          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), _namer.ToCamelCase(m.Groups[2].Value),
-            file));
+          migrations.Add(new MigrationReference(Int16.Parse(m.Groups[1].Value), _namer.ToCamelCase(m.Groups[2].Value), file));
         }
       }
-      migrations.Sort(
-        delegate(MigrationReference mr1, MigrationReference mr2) { return mr1.Version.CompareTo(mr2.Version); });
+      migrations.Sort((mr1, mr2) => mr1.Version.CompareTo(mr2.Version));
       if (migrations.Count == 0)
       {
         _log.InfoFormat("Found {0} migrations in '{1}'!", migrations.Count, _configuration.MigrationsDirectory);

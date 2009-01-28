@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+using Machine.Core.Utility;
+
 namespace Machine.Core.Services.Impl
 {
   public class Namer : INamer
@@ -33,28 +35,17 @@ namespace Machine.Core.Services.Impl
 
     public string ToUnderscoreDelimited(string source)
     {
-      return ToDelimited(source, '_');
+      return StringHelpers.ToUnderscoreDelimited(source);
     }
 
     public string ToDashDelimited(string source)
     {
-      return ToDelimited(source, '-');
+      return StringHelpers.ToDelimited(source, '-');
     }
 
     public string ToDelimited(string source, char delimiter)
     {
-      StringBuilder sb = new StringBuilder();
-      bool previousWasDelimiter = true;
-      foreach (char c in source)
-      {
-        if (Char.IsUpper(c) && !previousWasDelimiter)
-        {
-          sb.Append(delimiter);
-        }
-        sb.Append(c);
-        previousWasDelimiter = (c == delimiter);
-      }
-      return sb.ToString().ToLower();
+      return StringHelpers.ToDelimited(source, delimiter);
     }
 
     public string MakeRandomName()
