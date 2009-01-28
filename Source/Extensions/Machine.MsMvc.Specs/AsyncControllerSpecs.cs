@@ -235,12 +235,14 @@ namespace Machine.MsMvc.Specs
       var sessionState = new Mock<HttpSessionStateBase>();
       var writer = new StringWriter();
       var controllerFactory = new Mock<IControllerFactory>();
+      var request = new Mock<HttpRequestBase>();
 
       var routeData = new RouteData();
       routeData.Values["controller"] = controller;
       routeData.Values["action"] = action;
 
       httpContextBase.ExpectGet(x => x.Session).Returns(sessionState);
+      httpContextBase.ExpectGet(x => x.Request).Returns(request);
 
       controllerFactory.Expect(x => x.CreateController(Arg.IsAny<RequestContext>(), controller)).Returns(new TestController());
 

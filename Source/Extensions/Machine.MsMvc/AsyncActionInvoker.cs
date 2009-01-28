@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Web.Mvc;
 
 namespace Machine.MsMvc
@@ -8,33 +9,16 @@ namespace Machine.MsMvc
   public class AsyncActionInvoker : ControllerActionInvoker
   {
     FilterInfo _filterInfo;
+    ControllerContext _controllerContext;
+    ActionDescriptor _actionDescriptor;
 
-    protected override FilterInfo GetFiltersForActionMethod(System.Reflection.MethodInfo methodInfo)
+    protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
     {
-      _filterInfo = base.GetFiltersForActionMethod(methodInfo);
-      return _filterInfo;
-    }
-
-    protected override ActionExecutedContext InvokeActionMethodWithFilters(System.Reflection.MethodInfo methodInfo, IDictionary<string, object> parameters, IList<IActionFilter> filters)
-    {
-      if (methodInfo == null)
-      {
-        throw new ArgumentNullException("methodInfo");
-      }
-      if (parameters == null)
-      {
-        throw new ArgumentNullException("parameters");
-      }
-      if (filters == null)
-      {
-        throw new ArgumentNullException("filters");
-      }
-
-      ActionExecutingContext preContext = new ActionExecutingContext(ControllerContext, parameters);
+      ActionExecutingContext preContext = new ActionExecutingContext(controllerContext, actionDescriptor, parameters);
       Func<ActionExecutedContext> continuation = () =>
-        new ActionExecutedContext(ControllerContext, false /* canceled */, null /* exception */)
+        new ActionExecutedContext(controllerContext, actionDescriptor, false /* canceled */, null /* exception */)
         {
-          Result = InvokeActionMethod(methodInfo, parameters)
+          Result = InvokeActionMethod(controllerContext, actionDescriptor, parameters)
         };
 
       // need to reverse the filter list because the continuations are built up backward
@@ -43,14 +27,23 @@ namespace Machine.MsMvc
       return thunk();
     }
 
-    protected override ResultExecutedContext InvokeActionResultWithFilters(ActionResult actionResult, IList<IResultFilter> filters)
+    protected override FilterInfo GetFilters(ControllerContext controllerContext, ActionDescriptor actionDescriptor)
+    {
+      // XXX: this is a terribl place to set these, but whatever
+      _controllerContext = controllerContext;
+      _actionDescriptor = actionDescriptor;
+      _filterInfo = base.GetFilters(controllerContext, actionDescriptor);
+      return _filterInfo;
+    } 
+
+    protected override ResultExecutedContext InvokeActionResultWithFilters(ControllerContext controllerContext, IList<IResultFilter> filters, ActionResult actionResult)
     {
       if (actionResult is AsyncResult)
       {
-        actionResult.ExecuteResult(ControllerContext);
+        actionResult.ExecuteResult(controllerContext);
         return null;
       }
-      return base.InvokeActionResultWithFilters(actionResult, filters);
+      return base.InvokeActionResultWithFilters(controllerContext, filters, actionResult);
     }
 
     static ActionExecutedContext InvokeActionMethodFilter(IActionFilter filter, ActionExecutingContext preContext, Func<ActionExecutedContext> continuation)
@@ -58,7 +51,7 @@ namespace Machine.MsMvc
       filter.OnActionExecuting(preContext);
       if (preContext.Result != null)
       {
-        return new ActionExecutedContext(preContext, true /* canceled */, null /* exception */)
+        return new ActionExecutedContext(preContext, preContext.ActionDescriptor, true /* canceled */, null /* exception */)
         {
           Result = preContext.Result
         };
@@ -73,7 +66,7 @@ namespace Machine.MsMvc
       catch (Exception ex)
       {
         wasError = true;
-        postContext = new ActionExecutedContext(preContext, false /* canceled */, ex);
+        postContext = new ActionExecutedContext(preContext, preContext.ActionDescriptor, false /* canceled */, ex);
         filter.OnActionExecuted(postContext);
         if (!postContext.ExceptionHandled)
         {
@@ -93,7 +86,7 @@ namespace Machine.MsMvc
     public void InvokeActionEnd(Func<ActionResult> invoke)
     {
       bool wasError = false;
-      ActionExecutedContext postContext = new ActionExecutedContext(ControllerContext, false, null);
+      ActionExecutedContext postContext = new ActionExecutedContext(_controllerContext, _actionDescriptor, false, null);
       try
       {
         postContext.Result = invoke();
@@ -101,7 +94,7 @@ namespace Machine.MsMvc
       catch (Exception ex)
       {
         wasError = true;
-        postContext = new ActionExecutedContext(ControllerContext, false, ex);
+        postContext = new ActionExecutedContext(_controllerContext, _actionDescriptor, false, ex);
       }
 
       foreach (var filter in _filterInfo.ActionFilters)
@@ -112,7 +105,7 @@ namespace Machine.MsMvc
         }
         catch (Exception ex)
         {
-          postContext = new ActionExecutedContext(postContext, false, ex);
+          postContext = new ActionExecutedContext(_controllerContext, _actionDescriptor, false, ex);
         }
       }
 
@@ -121,7 +114,7 @@ namespace Machine.MsMvc
         throw postContext.Exception;
       }
 
-      InvokeActionResultWithFilters(postContext.Result, _filterInfo.ResultFilters);
+      InvokeActionResultWithFilters(_controllerContext, _filterInfo.ResultFilters, postContext.Result);
     }
   }
 }
