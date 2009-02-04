@@ -4,6 +4,7 @@ using System.Reflection;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
+using Machine.Container.Plugins.Disposition;
 using Machine.Container.Services;
 using Machine.Core.Services.Impl;
 using Machine.Core.Utility;
@@ -12,7 +13,12 @@ namespace Machine.Container
 {
   public class ContainerRegistrationHelper
   {
-    private readonly IMachineContainer _container;
+    readonly IMachineContainer _container;
+
+    public ContainerRegisterer Register
+    {
+      get { return _container.Register; }
+    }
 
     public ContainerRegistrationHelper(IMachineContainer container)
     {
@@ -52,10 +58,41 @@ namespace Machine.Container
       _container.Register.Type<DotNetEnvironment>();
     }
 
+    public virtual void AddPlugins(IEnumerable<IServiceContainerPlugin> plugins)
+    {
+      foreach (IServiceContainerPlugin plugin in plugins)
+      {
+        _container.AddPlugin(plugin);
+      }
+    }
+
+    public virtual void PrepareForServices()
+    {
+      _container.PrepareForServices();
+    }
+
+    public virtual void AddStandardPlugins(IEnumerable<IServiceContainerPlugin> plugins)
+    {
+      AddPlugins(new[] { new DisposablePlugin() });
+      AddPlugins(plugins);
+    }
+
     public virtual void AddServiceCollection<T>() where T : IServiceCollection
     {
       _container.Register.Type(typeof(T));
       AddServiceCollection((IServiceCollection)_container.Resolve.Object(typeof(T)));
+    }
+
+    public virtual void StartContainer()
+    {
+      _container.Start();
+    }
+
+    public virtual void Start<T>() where T : IStartable
+    {
+      _container.Register.Type(typeof(T));
+      IStartable startable = (IStartable)_container.Resolve.Object(typeof(T));
+      startable.Start();
     }
 
     public virtual void AddServiceCollectionsFrom(Assembly assembly)
