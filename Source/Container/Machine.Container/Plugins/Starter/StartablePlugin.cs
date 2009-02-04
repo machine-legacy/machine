@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using Machine.Container.Model;
-using Machine.Container.Services;
 
 namespace Machine.Container.Plugins.Starter
 {
@@ -39,9 +38,5 @@ namespace Machine.Container.Plugins.Starter
         startable.Start();
       }
     }
-  }
-  public interface IStartable
-  {
-    void Start();
   }
 }

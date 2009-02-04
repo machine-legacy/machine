@@ -54,6 +54,7 @@
     <Compile Include="ContainerRegisterer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
+    <Compile Include="IStartable.cs" />
     <Compile Include="Lifestyles\HybridLifestyle.cs" />
     <Compile Include="Lifestyles\PerThreadLifestyle.cs" />
     <Compile Include="Lifestyles\PerWebRequestLifestyle.cs" />
