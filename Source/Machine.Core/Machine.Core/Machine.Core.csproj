@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Machine.Core</RootNamespace>
     <AssemblyName>Machine.Core</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\..\Machine.snk</AssemblyOriginatorKeyFile>
@@ -46,6 +46,9 @@
       <HintPath>..\..\..\Libraries\Logging\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
@@ -55,6 +58,7 @@
     <Compile Include="Aspects\SynchronizeInvokeIgnoreAttribute.cs" />
     <Compile Include="Aspects\SynchronizeInvokeInterceptor.cs" />
     <Compile Include="Aspects\ViewProxyGenerator.cs" />
+    <Compile Include="CommonExtensionMethods.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="LoggingUtilities\Log4NetNdc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
