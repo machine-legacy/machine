@@ -26,6 +26,10 @@ namespace Machine.Core.ValueTypes
       foreach (FieldInfo field in AllFields(type))
       {
         MethodInfo getHashCode = field.FieldType.GetMethod("GetHashCode", new Type[0]);
+        if (getHashCode == null)
+        {
+          getHashCode = typeof(Object).GetMethod("GetHashCode", new Type[0]);
+        }
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Castclass, type);
         if (field.FieldType.IsValueType)
