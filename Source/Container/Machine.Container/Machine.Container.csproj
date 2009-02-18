@@ -63,6 +63,7 @@
     <Compile Include="Model\NamedResolvableType.cs" />
     <Compile Include="Model\ResolvableParameterType.cs" />
     <Compile Include="Model\ResolvableType.cs" />
+    <Compile Include="Plugins\AssemblyServiceCollectionFinder.cs" />
     <Compile Include="Plugins\IServiceCollection.cs" />
     <Compile Include="Plugins\ObjectFactories\FactoriesActivator.cs" />
     <Compile Include="Plugins\ObjectFactories\FactoriesActivatorResolver.cs" />
