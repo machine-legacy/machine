@@ -89,6 +89,7 @@ namespace Machine.Container
     #endregion
 
     [Test]
+    [Ignore]
     public void Multiple_Threads_Resolving()
     {
       ReaderWriterLockStatistics statistics = new ReaderWriterLockStatistics();
