@@ -8,7 +8,8 @@ namespace Machine.Container.Services.Impl
 {
   public class ServiceDependencyInspector : IServiceDependencyInspector
   {
-    #region IServiceDependencyInspector
+    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceDependencyInspector));
+
     public ConstructorCandidate SelectConstructor(Type type)
     {
       if (type.IsAbstract)
@@ -17,7 +18,7 @@ namespace Machine.Container.Services.Impl
       }
       List<ConstructorCandidate> candidates = DetermineCandidates(type);
       ConstructorCandidate selected = null;
-      foreach (ConstructorCandidate candidate in candidates)
+      foreach (ConstructorCandidate candidate in RemoveCandidatesWithPrimitiveParameters(candidates))
       {
         if (selected == null)
         {
@@ -35,7 +36,6 @@ namespace Machine.Container.Services.Impl
       }
       return selected;
     }
-    #endregion
 
     private static List<ConstructorCandidate> DetermineCandidates(Type type)
     {
@@ -63,6 +63,27 @@ namespace Machine.Container.Services.Impl
     private static ConstructorCandidate ChooseOneWithMoreArguments(ConstructorCandidate first, ConstructorCandidate second)
     {
       return first.Dependencies.Count > second.Dependencies.Count ? first : second;
+    }
+
+    private static IEnumerable<ConstructorCandidate> RemoveCandidatesWithPrimitiveParameters(IEnumerable<ConstructorCandidate> candidates)
+    {
+      foreach (ConstructorCandidate candidate in candidates)
+      {
+        bool include = true;
+        foreach (ServiceDependency dependency in candidate.Dependencies)
+        {
+          if (dependency.DependencyType.IsPrimitive || dependency.DependencyType == typeof(Type))
+          {
+            include = false;
+            _log.Info("Ignoring " + candidate.RuntimeInfo + " because of " + dependency.DependencyType);
+            break;
+          }
+        }
+        if (include)
+        {
+          yield return candidate;
+        }
+      }
     }
   }
 }
