@@ -56,7 +56,19 @@ namespace Machine.Utility.ThreadPool
 
     public void Stop()
     {
-      if (_stopped) throw new InvalidOperationException("Already been stopped");
+      Stop(false);
+    }
+
+    private void Stop(bool dispose)
+    {
+      if (_stopped)
+      {
+        if (dispose)
+        {
+          return;
+        }
+        throw new InvalidOperationException("Already been stopped");
+      }
       _stopped = true;
       lock (_lock)
       {
@@ -92,12 +104,10 @@ namespace Machine.Utility.ThreadPool
       ShrinkOfPossible();
     }
 
-    #region IDisposable Members
     public void Dispose()
     {
-      this.Stop();
+      Stop(true);
     }
-    #endregion
 
     private void AddAndStartWorker(Worker worker, bool ignoreIfMaximumReached)
     {
