@@ -6,5 +6,6 @@ namespace Machine.Container.Services
   {
     void Remember(ResolvedServiceEntry entry, Activation activation);
     void Deactivate(IResolutionServices services, object instance);
+    void DeactivateAll(IResolutionServices services);
   }
 }

@@ -28,6 +28,11 @@ namespace Machine.Container.Model
       this.Activation.Deactivate(services);
     }
 
+    public Deactivation ToDeactivation()
+    {
+      return new Deactivation(this.Activation.Instance);
+    }
+
     public override bool Equals(object obj)
     {
       RememberedActivation other = obj as RememberedActivation;

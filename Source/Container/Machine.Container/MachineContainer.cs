@@ -154,6 +154,11 @@ namespace Machine.Container
       _container.Deactivate(instance);
     }
 
+    public void Reset()
+    {
+      _container.Reset();
+    }
+
     public bool CanResolve<T>()
     {
       return CanResolve(typeof(T));

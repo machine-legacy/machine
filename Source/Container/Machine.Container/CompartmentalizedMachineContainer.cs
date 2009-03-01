@@ -61,6 +61,13 @@ namespace Machine.Container
       _objectInstances.Deactivate(services, instance);
     }
 
+    public void Reset()
+    {
+      _state.AssertCanDeactivate();
+      IResolutionServices services = _containerServices.CreateResolutionServices(new StaticOverrideLookup(new object[0]), LookupFlags.Default);
+      _objectInstances.DeactivateAll(services);
+    }
+
     // Miscellaneous
     public bool CanResolve<T>()
     {

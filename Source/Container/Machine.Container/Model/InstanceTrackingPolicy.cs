@@ -9,6 +9,7 @@ namespace Machine.Container.Model
   {
     TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation);
     RememberedActivation RetrieveAndForget(object instance);
+    IEnumerable<RememberedActivation> RetrieveAndForgetAll();
   }
 
   public enum TrackingStatus
@@ -67,6 +68,16 @@ namespace Machine.Container.Model
         return entry;
       }
     }
+
+    public IEnumerable<RememberedActivation> RetrieveAndForgetAll()
+    {
+      using (RWLock.AsWriter(_lock))
+      {
+        List<RememberedActivation> activations = new List<RememberedActivation>(_map.Values);
+        _map.Clear();
+        return activations;
+      }
+    }
   }
 
   public class PerThreadActivationScope : IInstanceTrackingPolicy
@@ -112,6 +123,13 @@ namespace Machine.Container.Model
       }
       throw new ServiceContainerException("Attempt to deactivate instance NOT created by the container OR by another thread: " + instance);
     }
+
+    public IEnumerable<RememberedActivation> RetrieveAndForgetAll()
+    {
+      List<RememberedActivation> activations = new List<RememberedActivation>(_map.Values);
+      _map.Clear();
+      return activations;
+    }
   }
 
   public class DoNotTrackInstances : IInstanceTrackingPolicy
@@ -125,6 +143,11 @@ namespace Machine.Container.Model
     public RememberedActivation RetrieveAndForget(object instance)
     {
       return null;
+    }
+
+    public IEnumerable<RememberedActivation> RetrieveAndForgetAll()
+    {
+      return new RememberedActivation[0];
     }
     #endregion
   }

@@ -67,6 +67,7 @@
     <Compile Include="Model\ServiceEntryTests.cs" />
     <Compile Include="MultithreadedMachineContainerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResetTests.cs" />
     <Compile Include="ScaffoldTests.cs" />
     <Compile Include="ServiceEntryHelper.cs" />
     <Compile Include="Services\Impl\DefaultLifestyleAwareActivatorResolverTests.cs" />

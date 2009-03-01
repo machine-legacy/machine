@@ -40,5 +40,15 @@ namespace Machine.Container.Services.Impl
         rememberedActivation.Deactivate(services);
       }
     }
+
+    public void DeactivateAll(IResolutionServices services)
+    {
+      foreach (RememberedActivation rememberedActivation in _trackingPolicy.RetrieveAndForgetAll())
+      {
+        Deactivation deactivation = rememberedActivation.ToDeactivation();
+        _listenerInvoker.OnDeactivation(rememberedActivation.ResolvedEntry, deactivation);
+        rememberedActivation.Deactivate(services);
+      }
+    }
   }
 }
