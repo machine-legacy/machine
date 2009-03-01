@@ -24,6 +24,7 @@ namespace Machine.Container.Services
     bool CanResolve<T>();
     bool CanResolve(Type type);
   }
+
   public interface IHighLevelContainer : IMachineContainer
   {
     void Add(Type serviceType, LifestyleType lifestyleType);

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using Machine.Container.Configuration;
 using Machine.Container.Model;
 using Machine.Container.Plugins;
 using Machine.Container.Services;

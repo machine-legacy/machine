@@ -10,7 +10,6 @@ namespace Machine.Container
 {
   public class CompartmentalizedMachineContainer : IMachineContainer
   {
-    #region Member Data
     private readonly ContainerStatePolicy _state = new ContainerStatePolicy();
     private readonly IPluginManager _pluginManager;
     private readonly IListenerInvoker _listenerInvoker;
@@ -27,7 +26,6 @@ namespace Machine.Container
     private ContainerRegisterer _containerRegisterer;
     private ContainerResolver _containerResolver;
     private PluginServices _pluginServices;
-    #endregion
 
     public CompartmentalizedMachineContainer(IContainerInfrastructureFactory containerInfrastructureFactory)
     {
