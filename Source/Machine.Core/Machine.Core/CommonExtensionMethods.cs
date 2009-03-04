@@ -29,5 +29,20 @@ namespace Machine.Core
 
       return true;
     }
+
+    public static bool IsNullOrEmpty(this string str)
+    {
+      return string.IsNullOrEmpty(str);
+    }
+
+    public static bool IsNull(this object obj)
+    {
+      return obj == null;
+    }
+
+    public static bool IsNotNull(this object obj)
+    {
+      return obj != null;
+    }
   }
 }
