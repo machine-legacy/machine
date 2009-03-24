@@ -9,15 +9,14 @@ namespace Machine.Utility.ThreadPool
   public class Watchdog : IWorkerRunnable
   {
     private readonly IThreadManager _threadManager;
-    private readonly ThreadPool _pool;
+    private readonly AbstractThreadPool _pool;
 
-    public Watchdog(IThreadManager threadManager, ThreadPool pool)
+    public Watchdog(IThreadManager threadManager, AbstractThreadPool pool)
     {
       _threadManager = threadManager;
       _pool = pool;
     }
 
-    #region IRunnable Members
     public void Run(Worker worker)
     {
       while (worker.IsAlive)
@@ -26,6 +25,5 @@ namespace Machine.Utility.ThreadPool
         _threadManager.Sleep(TimeSpan.FromSeconds(1.0));
       }
     }
-    #endregion
   }
 }

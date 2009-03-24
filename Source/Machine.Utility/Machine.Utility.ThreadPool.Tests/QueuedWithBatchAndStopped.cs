@@ -14,7 +14,7 @@ namespace Machine.Utility.ThreadPool
     public void Queued_One_Item()
     {
       Message message = new Message("Jacob");
-      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.OneAndTwo);
+      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.OneAndTwo, new SingleQueueStrategy());
       pool.Start();
       pool.Queue(new MessageConsumer(), message);
       pool.Stop();
@@ -25,7 +25,7 @@ namespace Machine.Utility.ThreadPool
     public void Queued_Twenty_Items()
     {
       List<Message> messages = MessageBuilder.TwentyMessages();
-      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.FiveAndTen);
+      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.FiveAndTen, new SingleQueueStrategy());
       pool.Start();
       foreach (Message message in messages)
       {

@@ -14,7 +14,7 @@ namespace Machine.Utility.ThreadPool
     public void Queued_And_Then_Left_Over_A_Period_Of_Time()
     {
       MessageConsumer consumer = new MessageConsumer();
-      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.FiveAndTen);
+      ThreadPool pool = new ThreadPool(ThreadPoolConfiguration.FiveAndTen, new SingleQueueStrategy());
       pool.Start();
       foreach (Message message in MessageBuilder.MakeMessages(40))
       {

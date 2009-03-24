@@ -45,7 +45,6 @@ namespace Machine.Utility.ThreadPool.Workers
       _busyWatcher.MarkAsUnavailable(this);
     }
 
-    #region IRunnable Members
     public override void Run()
     {
       while (this.IsAlive)
@@ -79,7 +78,6 @@ namespace Machine.Utility.ThreadPool.Workers
         }
       }
     }
-    #endregion
 
     protected void MarkAsBusy()
     {

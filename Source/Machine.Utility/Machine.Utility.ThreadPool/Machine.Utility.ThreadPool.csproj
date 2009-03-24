@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractThreadPool.cs" />
     <Compile Include="BusyWatcher.cs" />
     <Compile Include="IQueue.cs" />
     <Compile Include="QueueStrategies\QueueAffinityStrategy.cs" />
