@@ -7,42 +7,88 @@ using Machine.Utility.ThreadPool.QueueStrategies;
 
 namespace Machine.Utility.ThreadPool.Workers
 {
-  public class ConsumerWorker : Worker
+  public interface IWorkerMonitor
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ConsumerWorker));
-    private readonly IQueue _queue;
-    private readonly QueueStrategy _queueStrategy;
-    private readonly BusyWatcher _busyWatcher;
+    bool CanBeShrunk { get; }
+    void Unavailable();
+    void Available();
+    void Busy();
+    void Free();
+  }
+
+  public class WorkerMonitor : IWorkerMonitor
+  {
+    readonly BusyWatcher _busyWatcher;
+    readonly Worker _worker;
     private DateTime _lastUsedAt = DateTime.Now;
 
-    public ConsumerWorker(QueueStrategy queueStrategy, BusyWatcher busyWatcher)
+    public WorkerMonitor(BusyWatcher busyWatcher, Worker worker)
     {
-      _queueStrategy = queueStrategy;
+      _worker = worker;
       _busyWatcher = busyWatcher;
-      _queue = _queueStrategy.CreateQueueForWorker(this);
+    }
+    
+    public bool CanBeShrunk
+    {
+      get { return DateTime.Now - _lastUsedAt > TimeSpan.FromSeconds(5.0); }
+    }
+
+    public void Unavailable()
+    {
+      _busyWatcher.MarkAsUnavailable(_worker);
+    }
+
+    public void Available()
+    {
+      _busyWatcher.MarkAsAvailable(_worker);
+    }
+
+    public void Busy()
+    {
+      _busyWatcher.MarkAsBusy(_worker);
+    }
+
+    public void Free()
+    {
+      _busyWatcher.MarkAsFree(_worker);
+      _lastUsedAt = DateTime.Now;
+    }
+  }
+
+  public abstract class AbstractWorker : Worker
+  {
+    private readonly IWorkerMonitor _workerMonitor;
+
+    protected AbstractWorker(BusyWatcher busyWatcher)
+    {
+      _workerMonitor = new WorkerMonitor(busyWatcher, this);
     }
 
     public override bool CanBeShrunk
     {
-      get { return DateTime.Now - _lastUsedAt > TimeSpan.FromSeconds(5.0); }
+      get { return _workerMonitor.CanBeShrunk; }
     }
 
     public override void Start()
     {
       base.Start();
-      _busyWatcher.MarkAsAvailable(this);
-    }
-
-    public override void Stop()
-    {
-      _queueStrategy.RetireQueue(_queue);
-      base.Stop();
+      _workerMonitor.Available();
     }
 
     public override void Join()
     {
       base.Join();
-      _busyWatcher.MarkAsUnavailable(this);
+      _workerMonitor.Unavailable();
+    }
+
+    public virtual void Free()
+    {
+      _workerMonitor.Free();
+    }
+
+    public virtual void Busy()
+    {
+      _workerMonitor.Free();
     }
 
     public override void Run()
@@ -51,43 +97,70 @@ namespace Machine.Utility.ThreadPool.Workers
       {
         try
         {
-          using (IScope scope = _queue.CreateScope())
-          {
-            IRunnable runnable = scope.Dequeue();
-            if (runnable != null)
-            {
-              using (new PerformanceWatcher(_log, "Processed"))
-              {
-                MarkAsBusy();
-                try
-                {
-                  runnable.Run();
-                  scope.Complete();
-                }
-                finally
-                {
-                  MarkAsFree();
-                }
-              }
-            }
-          }
+          WhileAlive();
         }
         catch (Exception error)
         {
-          _log.Error(error);
+          Error(error);
         }
       }
     }
 
-    protected void MarkAsBusy()
+    public virtual void Error(Exception error)
     {
-      _busyWatcher.MarkAsBusy(this);
     }
 
-    protected void MarkAsFree()
+    public virtual void WhileAlive()
     {
-      _busyWatcher.MarkAsFree(this);
-      _lastUsedAt = DateTime.Now;
+    }
+  }
+
+  public class ConsumerWorker : AbstractWorker
+  {
+    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ConsumerWorker));
+    private readonly IQueue _queue;
+    private readonly QueueStrategy _queueStrategy;
+
+    public ConsumerWorker(QueueStrategy queueStrategy, BusyWatcher busyWatcher)
+      : base(busyWatcher)
+    {
+      _queueStrategy = queueStrategy;
+      _queue = _queueStrategy.CreateQueueForWorker(this);
+    }
+
+    public override void Stop()
+    {
+      _queueStrategy.RetireQueue(_queue);
+      base.Stop();
+    }
+
+    public override void WhileAlive()
+    {
+      using (IScope scope = _queue.CreateScope())
+      {
+        IRunnable runnable = scope.Dequeue();
+        if (runnable != null)
+        {
+          using (new PerformanceWatcher(_log, "Processed"))
+          {
+            Busy();
+            try
+            {
+              runnable.Run();
+              scope.Complete();
+            }
+            finally
+            {
+              Free();
+            }
+          }
+        }
+      }
+    }
+
+    public override void Error(Exception error)
+    {
+      _log.Error(error);
     }
   }
 }
