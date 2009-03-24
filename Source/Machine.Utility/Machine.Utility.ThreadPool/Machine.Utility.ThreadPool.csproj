@@ -47,6 +47,7 @@
     <Compile Include="BusyWatcher.cs" />
     <Compile Include="IQueue.cs" />
     <Compile Include="QueueStrategies\QueueAffinityStrategy.cs" />
+    <Compile Include="WorkerFactoryThreadPool.cs" />
     <Compile Include="Workers\Worker.cs" />
     <Compile Include="Workers\ConsumerWorker.cs" />
     <Compile Include="ConsumingRunnable.cs" />
