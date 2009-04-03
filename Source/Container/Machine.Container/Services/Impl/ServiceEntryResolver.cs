@@ -25,7 +25,7 @@ namespace Machine.Container.Services.Impl
       return CreateEntryIfMissing(type, type);
     }
 
-    public ServiceEntry CreateEntryIfMissing(Type serviceType, Type implementationType)
+    private ServiceEntry CreateEntryIfMissing(Type serviceType, Type implementationType)
     {
       ServiceEntry entry = _serviceGraph.Lookup(serviceType);
       if (entry == null)
@@ -35,11 +35,6 @@ namespace Machine.Container.Services.Impl
         _serviceGraph.Add(entry);
       }
       return entry;
-    }
-
-    public ServiceEntry LookupEntry(Type type)
-    {
-      return _serviceGraph.Lookup(type);
     }
 
     public ResolvedServiceEntry ResolveEntry(IResolutionServices services, IResolvableType resolvableType)
