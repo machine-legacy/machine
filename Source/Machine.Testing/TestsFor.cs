@@ -148,7 +148,7 @@ namespace Machine.Testing
     void CreateTargetIfNeedBe()
     {
       if (_target != null) return;
-      _target = _container.New<TType>(new List<object>(_overrides.Values).ToArray());
+      _target = _container.Resolve.New<TType>(new List<object>(_overrides.Values).ToArray());
     }
 
     public virtual void SetupContainer()

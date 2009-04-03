@@ -24,17 +24,4 @@ namespace Machine.Container.Services
     bool CanResolve<T>();
     bool CanResolve(Type type);
   }
-
-  public interface IHighLevelContainer : IMachineContainer
-  {
-    void Add(Type serviceType, LifestyleType lifestyleType);
-    void Add<TImpl>();
-    void Add<TImpl>(LifestyleType lifestyleType);
-    void Add<TImpl>(object instance);
-    void Add(Type serviceType, object instance);
-    T ResolveObject<T>();
-    object ResolveObject(Type type);
-    T ResolveWithOverrides<T>(params object[] serviceOverrides);
-    T New<T>(params object[] serviceOverrides);
-  }
 }

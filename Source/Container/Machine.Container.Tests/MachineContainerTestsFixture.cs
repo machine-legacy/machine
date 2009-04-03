@@ -13,13 +13,10 @@ namespace Machine.Container
 {
   public class MachineContainerTestsFixture
   {
-    #region Member Data
     protected static bool _loggingInitialized;
     protected MockRepository _mocks;
     protected AutoMockingContainer _container;
-    #endregion
 
-    #region Test Setup and Teardown Methods
     [SetUp]
     public virtual void Setup()
     {
@@ -36,21 +33,17 @@ namespace Machine.Container
       _container.PrepareForServices();
       _container.Start();
     }
-    #endregion
 
-    #region Methods
     public T Create<T>()
     {
-      return _container.New<T>();
+      return _container.Resolve.New<T>();
     }
 
     public T Get<T>() where T : class
     {
       return _container.Get<T>();
     }
-    #endregion
 
-    #region Methods
     protected static ConstructorCandidate CreateCandidate(Type type, params Type[] parameterTypes)
     {
       ConstructorInfo ctor = type.GetConstructor(parameterTypes);
@@ -61,6 +54,5 @@ namespace Machine.Container
       }
       return constructorCandidate;
     }
-    #endregion
   }
 }

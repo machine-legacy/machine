@@ -21,7 +21,7 @@ namespace Machine.Container
     [Test]
     public void Container_GetAndSet_Works()
     {
-      IHighLevelContainer container = _mocks.DynamicMock<IHighLevelContainer>();
+      IMachineContainer container = _mocks.DynamicMock<IMachineContainer>();
       IoC.Container = container;
       Assert.AreEqual(container, IoC.Container);
     }

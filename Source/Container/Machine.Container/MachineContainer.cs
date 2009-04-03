@@ -7,7 +7,7 @@ using Machine.Container.Services;
 
 namespace Machine.Container
 {
-  public class MachineContainer : IHighLevelContainer
+  public class MachineContainer : IMachineContainer
   {
     private readonly CompartmentalizedMachineContainer _container;
 
@@ -21,64 +21,6 @@ namespace Machine.Container
     {
     }
 
-    // Adding Services / Registration
-    public void Add<TImpl>()
-    {
-      Add<TImpl>(LifestyleType.Singleton);
-    }
-
-    public void Add<TImpl>(LifestyleType lifestyleType)
-    {
-      Add(typeof(TImpl), lifestyleType);
-    }
-
-    public void Add(Type implementationType, LifestyleType lifestyleType)
-    {
-      Register.Type(implementationType).WithLifestyle(lifestyleType);
-    }
-
-    public void Add<TService>(object instance)
-    {
-      Add(typeof(TService), instance);
-    }
-
-    public void Add(Type serviceType, object instance)
-    {
-      Register.Type(serviceType).Is(instance);
-    }
-
-    // Resolving
-    public T ResolveObject<T>()
-    {
-      return (T)ResolveObject(typeof(T));
-    }
-
-    public object ResolveObject(Type type)
-    {
-      return ResolveWithOverrides(type);
-    }
-
-    public T New<T>(params object[] overrides)
-    {
-      return Resolve.New<T>(overrides);
-    }
-
-    public T ResolveWithOverrides<T>(params object[] overrides)
-    {
-      return (T)ResolveWithOverrides(typeof(T), overrides);
-    }
-
-    public T ResolveWithParameters<T>(System.Collections.IDictionary parameters)
-    {
-      return Resolve.ObjectWithParameters<T>(parameters);
-    }
-    
-    public object ResolveWithOverrides(Type type, params object[] overrides)
-    {
-      return Resolve.Object(type, overrides);
-    }
-
-    #region IMachineContainer Members
     public void AddPlugin(IServiceContainerPlugin plugin)
     {
       _container.AddPlugin(plugin);
@@ -148,13 +90,10 @@ namespace Machine.Container
     {
       return _container.CanResolve(type);
     }
-    #endregion
 
-    #region IDisposable Members
     public void Dispose()
     {
       _container.Dispose();
     }
-    #endregion
   }
 }

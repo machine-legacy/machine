@@ -29,7 +29,7 @@ namespace Machine.Container
     [Test]
     public void reset_after_creating_singleton_disposable_calls_dispose()
     {
-      _machineContainer.Add<DisposableService>();
+      _machineContainer.Register.Type<DisposableService>();
       DisposableService s1 = _machineContainer.Resolve.Object<DisposableService>();
       _machineContainer.Reset();
       Assert.IsTrue(s1.IsDisposed);
@@ -42,7 +42,7 @@ namespace Machine.Container
     [Test]
     public void reset_after_creating_singleton_disposable_calls_dispose()
     {
-      _machineContainer.Add<DisposableService>();
+      _machineContainer.Register.Type<DisposableService>();
       DisposableService s1 = _machineContainer.Resolve.Object<DisposableService>();
       _machineContainer.Reset();
       Assert.IsTrue(s1.IsDisposed);
