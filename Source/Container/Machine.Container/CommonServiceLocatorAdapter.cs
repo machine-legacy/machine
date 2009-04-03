@@ -1,28 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Machine.Container.Services;
 using Microsoft.Practices.ServiceLocation;
+
+using Machine.Container.Services;
 
 namespace Machine.Container
 {
   public class CommonServiceLocatorAdapter : ServiceLocatorImplBase
   {
-    readonly IHighLevelContainer _container;
+    readonly IMachineContainer _container;
 
-    public CommonServiceLocatorAdapter(IHighLevelContainer container)
+    public CommonServiceLocatorAdapter(IMachineContainer container)
     {
       _container = container;
     }
 
     protected override object DoGetInstance(Type serviceType, string key)
     {
-      if (!string.IsNullOrEmpty(key))
-      {
-        throw new NotImplementedException();
-      }
-
-      return _container.Resolve.Object(serviceType);
+      return _container.Resolve.Named(key);
     }
 
     protected override IEnumerable<object> DoGetAllInstances(Type serviceType)
