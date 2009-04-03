@@ -8,7 +8,7 @@ namespace Machine.Container.Services.Impl
   public class ServiceEntryResolver : IServiceEntryResolver
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
-
+    private readonly Memento<IResolvableType, ResolvedServiceEntry> _resolvedEntries = new Memento<IResolvableType, ResolvedServiceEntry>();
     private readonly IServiceGraph _serviceGraph;
     private readonly IServiceEntryFactory _serviceEntryFactory;
     private readonly IActivatorResolver _activatorResolver;
@@ -39,21 +39,23 @@ namespace Machine.Container.Services.Impl
 
     public ResolvedServiceEntry ResolveEntry(IResolutionServices services, IResolvableType resolvableType)
     {
-      ServiceEntry entry = resolvableType.ToServiceEntry(services);
-      using (entry.Lock.AcquireReaderLock())
-      {
-        /* Never want to auto create activator for the entry we created above. */
-        if (entry.CanHaveActivator)
+      return _resolvedEntries.Lookup(resolvableType, (key) => {
+        ServiceEntry entry = resolvableType.ToServiceEntry(services);
+        using (entry.Lock.AcquireReaderLock())
         {
-          CreateActivatorForEntryIfNecessary(services, entry);
+          /* Never want to auto create activator for the entry we created above. */
+          if (entry.CanHaveActivator)
+          {
+            CreateActivatorForEntryIfNecessary(services, entry);
+          }
         }
-      }
-      IActivator activator = _activatorResolver.ResolveActivator(services, entry);
-      if (activator == null)
-      {
-        return null;
-      }
-      return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
+        IActivator activator = _activatorResolver.ResolveActivator(services, entry);
+        if (activator == null)
+        {
+          return null;
+        }
+        return new ResolvedServiceEntry(entry, activator, services.ObjectInstances);
+      });
     }
 
     private static void CreateActivatorForEntryIfNecessary(IResolutionServices services, ServiceEntry entry)

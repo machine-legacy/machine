@@ -111,7 +111,7 @@ namespace Machine.Container.Services.Impl
 
     public IResolvableType FindResolvableType(Type type)
     {
-      return new ResolvableType(_serviceGraph, _serviceEntryFactory, type);
+      return _resolvableTypes.Lookup(type, (key) => new ResolvableType(_serviceGraph, _serviceEntryFactory, key));
     }
 
     public IResolvableType FindResolvableType(ServiceDependency dependency)

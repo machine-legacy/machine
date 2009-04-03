@@ -8,6 +8,24 @@ using Machine.Core.Utility;
 
 namespace Machine.Container.Services.Impl
 {
+  public class Memento<K, V>
+  {
+    readonly Dictionary<K, V> _map = new Dictionary<K, V>();
+    readonly ReaderWriterLock _lock = new ReaderWriterLock();
+
+    public V Lookup(K key, Func<K, V> factory)
+    {
+      using (RWLock.AsReader(_lock))
+      {
+        if (RWLock.UpgradeToWriterIf(_lock, () => !_map.ContainsKey(key)))
+        {
+          _map[key] = factory(key);
+        }
+        return _map[key];
+      }
+    }
+  }
+
   public class ServiceGraph : IServiceGraph
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
@@ -21,7 +39,6 @@ namespace Machine.Container.Services.Impl
     #endif
     private readonly List<Type> _registrationOrder = new List<Type>();
     private readonly Dictionary<string, ServiceEntry> _nameLookupCache = new Dictionary<string, ServiceEntry>();
-    private readonly Memento<Type, ServiceEntry> _lazyLookups = new Memento<Type, ServiceEntry>();
 
     public ServiceGraph(IListenerInvoker listenerInvoker)
     {
@@ -35,7 +52,7 @@ namespace Machine.Container.Services.Impl
 
     public ServiceEntry Lookup(Type type)
     {
-      return LookupLazily(type, LookupFlags.Default);
+      return Lookup(type, LookupFlags.Default);
     }
 
     public ServiceEntry Lookup(string name)

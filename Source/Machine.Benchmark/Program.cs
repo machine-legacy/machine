@@ -12,7 +12,6 @@ namespace Machine.Benchmark
   {
     public static void Main(string[] args)
     {
-      /*
       {
         PlainUseCase useCase = new PlainUseCase();
         useCase.Run(0);
@@ -24,7 +23,7 @@ namespace Machine.Benchmark
         MachineUseCase useCase = new MachineUseCase();
         Console.WriteLine("Machine:          {0}", Measure(useCase.Run, 10000));
         GC.Collect();
-      }*/
+      }
 
       {
         MachineUseCase useCase = new MachineUseCase();
@@ -32,6 +31,8 @@ namespace Machine.Benchmark
         Console.WriteLine("Machine (Primed): {0}", Measure(useCase.Run, 10000));
         GC.Collect();
       }
+
+      Console.ReadKey();
     }
 
     private static long Measure(Action<Int32> action, int iterations)
