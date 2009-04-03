@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
-using Machine.Container.Services;
 
 namespace Machine.Container
 {
@@ -34,21 +33,11 @@ namespace Machine.Container
     public void Initialize()
     {
       _container.Initialize();
-      ReadyForPlugins();
-    }
-
-    public virtual void ReadyForPlugins()
-    {
     }
 
     public void PrepareForServices()
     {
       _container.PrepareForServices();
-      ReadyForServices();
-    }
-
-    public virtual void ReadyForServices()
-    {
     }
 
     public void Start()

@@ -50,6 +50,7 @@
     <Compile Include="CommonServiceLocatorAdapter.cs" />
     <Compile Include="CompartmentalizedMachineContainer.cs" />
     <Compile Include="Configuration\RegistrationConfigurer.cs" />
+    <Compile Include="ContainerBuilder.cs" />
     <Compile Include="ContainerRegisterer.cs" />
     <Compile Include="ContainerRegistrationHelper.cs" />
     <Compile Include="ContainerResolver.cs" />
@@ -120,7 +121,7 @@
     <Compile Include="Services\Impl\ContainerServices.cs" />
     <Compile Include="Services\IResolutionServices.cs" />
     <Compile Include="Services\IActivatorResolver.cs" />
-    <Compile Include="Services\IHighLevelContainer.cs" />
+    <Compile Include="IMachineContainer.cs" />
     <Compile Include="Services\ILifestyle.cs" />
     <Compile Include="Services\ILifestyleFactory.cs" />
     <Compile Include="Services\Impl\ActivatorStoreActivatorResolver.cs" />

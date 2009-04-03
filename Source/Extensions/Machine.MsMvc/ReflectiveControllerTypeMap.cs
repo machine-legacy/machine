@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
+using Machine.Container;
 using Machine.Container.Model;
-using Machine.Container.Services;
 
 namespace Machine.MsMvc
 {

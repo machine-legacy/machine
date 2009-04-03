@@ -40,7 +40,6 @@ namespace Machine.Container
     {
     }
 
-    // Plugins / Listeners
     public void AddPlugin(IServiceContainerPlugin plugin)
     {
       _state.AssertCanAddPlugins();
@@ -53,7 +52,6 @@ namespace Machine.Container
       _pluginManager.AddListener(listener);
     }
 
-    // Deactivation
     public void Deactivate(object instance)
     {
       _state.AssertCanDeactivate();
@@ -68,7 +66,6 @@ namespace Machine.Container
       _objectInstances.DeactivateAll(services);
     }
 
-    // Miscellaneous
     public bool CanResolve<T>()
     {
       return CanResolve(typeof(T));

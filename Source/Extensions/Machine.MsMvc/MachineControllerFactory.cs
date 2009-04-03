@@ -2,7 +2,7 @@ using System;
 using System.Web.Mvc;
 using System.Web.Routing;
 
-using Machine.Container.Services;
+using Machine.Container;
 
 namespace Machine.MsMvc
 {
@@ -19,7 +19,6 @@ namespace Machine.MsMvc
       _controllerPreparer = controllerPreparer;
     }
 
-    #region IControllerFactory Members
     public IController CreateController(RequestContext context, string controllerName)
     {
       Type controllerType = _controllerTypeMap.LookupControllerType(controllerName);
@@ -34,6 +33,5 @@ namespace Machine.MsMvc
     public void ReleaseController(IController controller)
     {
     }
-    #endregion
   }
 }
