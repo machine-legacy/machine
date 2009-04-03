@@ -20,9 +20,5 @@ namespace Machine.Container.Services
     {
       get;
     }
-
-    IResolvableType CreateResolvableType(string name);
-    IResolvableType CreateResolvableType(Type type);
-    IResolvableType CreateResolvableType(ServiceDependency dependency);
   }
 }

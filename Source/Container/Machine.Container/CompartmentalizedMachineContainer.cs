@@ -23,6 +23,7 @@ namespace Machine.Container
     private ILifestyleFactory _lifestyleFactory;
     private IServiceGraph _serviceGraph;
     private IContainerServices _containerServices;
+    private IResolvableTypeMap _resolvableTypeMap;
     private ContainerRegisterer _containerRegisterer;
     private ContainerResolver _containerResolver;
     private PluginServices _pluginServices;
@@ -39,7 +40,6 @@ namespace Machine.Container
     {
     }
 
-    #region IHighLevelContainer Members
     // Plugins / Listeners
     public void AddPlugin(IServiceContainerPlugin plugin)
     {
@@ -78,7 +78,7 @@ namespace Machine.Container
     {
       _state.AssertIsInitialized();
       IResolutionServices services = _containerServices.CreateResolutionServices(new StaticOverrideLookup(new object[0]), LookupFlags.None);
-      ResolvedServiceEntry dependencyEntry = _containerServices.ServiceEntryResolver.ResolveEntry(services, services.CreateResolvableType(type));
+      ResolvedServiceEntry dependencyEntry = _containerServices.ServiceEntryResolver.ResolveEntry(services, services.ResolvableTypeMap.FindResolvableType(type));
       return dependencyEntry != null;
     }
 
@@ -90,15 +90,12 @@ namespace Machine.Container
         return _serviceGraph.RegisteredServices;
       }
     }
-    #endregion
 
-    #region IDisposable Members
     public void Dispose()
     {
       _listenerInvoker.Dispose();
       _pluginManager.Dispose();
     }
-    #endregion
 
     public virtual void Initialize()
     {
@@ -111,6 +108,7 @@ namespace Machine.Container
       _pluginServices = new PluginServices(_state, this, _rootActivatorResolver, _rootActivatorFactory);
       _objectInstances = new ObjectInstances(_listenerInvoker, _containerInfrastructureFactory.CreateInstanceTrackingPolicy());
       _lifestyleFactory = new LifestyleFactory(_rootActivatorFactory);
+      _resolvableTypeMap = new ResolvableTypeMap(_serviceGraph, _serviceEntryFactory);
       _containerServices = CreateContainerServices();
       _containerRegisterer = new ContainerRegisterer(_containerServices);
       _containerResolver = new ContainerResolver(_containerServices, _containerRegisterer);
@@ -153,7 +151,7 @@ namespace Machine.Container
 
     protected virtual IContainerServices CreateContainerServices()
     {
-      return new ContainerServices(_activatorStore, _rootActivatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _serviceEntryFactory, _resolver, _serviceGraph, _state);
+      return new ContainerServices(_activatorStore, _rootActivatorFactory, _lifestyleFactory, _listenerInvoker, _objectInstances, _serviceEntryFactory, _resolver, _serviceGraph, _state, _resolvableTypeMap);
     }
 
     protected virtual void RegisterContainerInContainer()

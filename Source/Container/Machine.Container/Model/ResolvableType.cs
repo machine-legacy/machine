@@ -7,9 +7,10 @@ namespace Machine.Container.Model
 {
   public class ResolvableType : IResolvableType
   {
-    protected readonly IServiceGraph _serviceGraph;
-    protected readonly IServiceEntryFactory _serviceEntryFactory;
-    protected readonly Type _type;
+    private readonly IServiceGraph _serviceGraph;
+    private readonly IServiceEntryFactory _serviceEntryFactory;
+    private readonly Type _type;
+    ServiceEntry _entry;
 
     public ResolvableType(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, Type type)
     {
@@ -18,14 +19,18 @@ namespace Machine.Container.Model
       _type = type;
     }
 
-    public virtual ServiceEntry ToServiceEntry(IResolutionServices services)
+    public ServiceEntry ToServiceEntry(IResolutionServices services)
     {
-      ServiceEntry entry = _serviceGraph.Lookup(_type, services.Flags);
-      if (entry != null)
+      if (_entry == null)
       {
-        return entry;
+        _entry = _serviceGraph.Lookup(_type, services.Flags);
+        if (_entry != null)
+        {
+          return _entry;
+        }
+        return _serviceEntryFactory.CreateServiceEntry(_type, _type, LifestyleType.Override);
       }
-      return _serviceEntryFactory.CreateServiceEntry(_type, _type, LifestyleType.Override);
+      return _entry;
     }
   }
 }

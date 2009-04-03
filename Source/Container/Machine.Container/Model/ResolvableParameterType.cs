@@ -4,17 +4,22 @@ using Machine.Container.Services;
 
 namespace Machine.Container.Model
 {
-  public class ResolvableParameterType : ResolvableType
+  public class ResolvableParameterType : IResolvableType
   {
+    private readonly IServiceGraph _serviceGraph;
+    private readonly IServiceEntryFactory _serviceEntryFactory;
+    private readonly Type _type;
     private readonly ServiceDependency _dependency;
 
     public ResolvableParameterType(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory, ServiceDependency dependency)
-      : base(serviceGraph, serviceEntryFactory, dependency.DependencyType)
     {
+      _serviceGraph = serviceGraph;
+      _serviceEntryFactory = serviceEntryFactory;
+      _type = dependency.DependencyType;
       _dependency = dependency;
     }
 
-    public override ServiceEntry ToServiceEntry(IResolutionServices services)
+    public ServiceEntry ToServiceEntry(IResolutionServices services)
     {
       ServiceEntry entry = _serviceGraph.Lookup(_type, services.Flags);
       if (entry != null)

@@ -74,7 +74,7 @@ namespace Machine.Container.Activators
       using (_mocks.Record())
       {
         SetupMocks(typeof(IService1));
-        Expect.Call(Get<IResolutionServices>().CreateResolvableType(_candidate.Candidate.Dependencies[0])).Return(resolvableType);
+        Expect.Call(Get<IResolvableTypeMap>().FindResolvableType(_candidate.Candidate.Dependencies[0])).Return(resolvableType);
         Expect.Call(Get<IServiceEntryResolver>().ResolveEntry(Get<IResolutionServices>(), resolvableType)).Return(resolvedServiceEntry);
         Expect.Call(Get<IActivator>().Activate(Get<IResolutionServices>())).Return(parameterActivation);
         Expect.Call(Get<IObjectFactory>().CreateObject(_candidate.Candidate, new object[] { _parameter1 })).Return(_instance);
@@ -93,6 +93,7 @@ namespace Machine.Container.Activators
       _candidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(Service1DependsOn2), dependencies), new List<ResolvedServiceEntry>());
       SetupResult.For(Get<IResolutionServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
       SetupResult.For(Get<IResolutionServices>().ActivatorStore).Return(Get<IActivatorStore>());
+      SetupResult.For(Get<IResolutionServices>().ResolvableTypeMap).Return(Get<IResolvableTypeMap>());
       SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(_candidate.Candidate);
     }
 

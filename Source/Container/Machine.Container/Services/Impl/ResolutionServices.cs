@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
@@ -82,24 +81,42 @@ namespace Machine.Container.Services.Impl
       get { return _containerServices.ServiceGraph; }
     }
 
+    public IResolvableTypeMap ResolvableTypeMap
+    {
+      get { return _containerServices.ResolvableTypeMap; }
+    }
+
     public LookupFlags Flags
     {
       get { return _flags; }
     }
+  }
 
-    public IResolvableType CreateResolvableType(string name)
+  public class ResolvableTypeMap : IResolvableTypeMap
+  {
+    readonly Memento<Type, IResolvableType> _resolvableTypes = new Memento<Type, IResolvableType>();
+    readonly IServiceGraph _serviceGraph;
+    readonly IServiceEntryFactory _serviceEntryFactory;
+
+    public ResolvableTypeMap(IServiceGraph serviceGraph, IServiceEntryFactory serviceEntryFactory)
     {
-      return new NamedResolvableType(_containerServices.ServiceGraph, name);
+      _serviceGraph = serviceGraph;
+      _serviceEntryFactory = serviceEntryFactory;
     }
 
-    public IResolvableType CreateResolvableType(Type type)
+    public IResolvableType FindResolvableType(string name)
     {
-      return new ResolvableType(_containerServices.ServiceGraph, _containerServices.ServiceEntryFactory, type);
+      return new NamedResolvableType(_serviceGraph, name);
     }
 
-    public IResolvableType CreateResolvableType(ServiceDependency dependency)
+    public IResolvableType FindResolvableType(Type type)
     {
-      return new ResolvableParameterType(_containerServices.ServiceGraph, _containerServices.ServiceEntryFactory, dependency);
+      return new ResolvableType(_serviceGraph, _serviceEntryFactory, type);
+    }
+
+    public IResolvableType FindResolvableType(ServiceDependency dependency)
+    {
+      return new ResolvableParameterType(_serviceGraph, _serviceEntryFactory, dependency);
     }
   }
 }

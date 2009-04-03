@@ -53,19 +53,6 @@ namespace Machine.Container.Services.Impl
       _mocks.VerifyAll();
     }
 
-    [Test]
-    [Ignore]
-    [ExpectedException(typeof(ServiceResolutionException))]
-    public void CreateEntryIfMissing_IsThereWithOtherImplementation_Throws()
-    {
-      ServiceEntry entry = new ServiceEntry(typeof(IService1), typeof(Service1), LifestyleType.Singleton);
-      using (_mocks.Record())
-      {
-        Expect.Call(_serviceGraph.Lookup(typeof(IService1))).Return(entry);
-      }
-      _target.CreateEntryIfMissing(typeof(IService1), typeof(Service1DependsOn2));
-      _mocks.VerifyAll();
-    }
     /*
     [Test]
     public void ResolveEntry_NotInGraph_Throws()

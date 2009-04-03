@@ -105,13 +105,13 @@ namespace Machine.Container
     protected object Resolve(string name, IOverrideLookup overrides)
     {
       IResolutionServices services = _containerServices.CreateResolutionServices(overrides, LookupFlags.Default);
-      return Resolve(services.CreateResolvableType(name), services);
+      return Resolve(services.ResolvableTypeMap.FindResolvableType(name), services);
     }
 
     protected object Resolve(Type type, IOverrideLookup overrides)
     {
       IResolutionServices services = _containerServices.CreateResolutionServices(overrides, LookupFlags.Default);
-      return Resolve(services.CreateResolvableType(type), services);
+      return Resolve(services.ResolvableTypeMap.FindResolvableType(type), services);
     }
 
     protected virtual object Resolve(IResolvableType resolvableType, IResolutionServices services)

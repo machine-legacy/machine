@@ -18,10 +18,12 @@ namespace Machine.Container.Services.Impl
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IObjectInstances _objectInstances;
     private readonly IServiceGraph _serviceGraph;
+    private readonly IResolvableTypeMap _resolvableTypeMap;
 
-    public ContainerServices(IActivatorStore activatorStore, IActivatorFactory activatorFactory, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryFactory serviceEntryFactory, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph, ContainerStatePolicy statePolicy)
+    public ContainerServices(IActivatorStore activatorStore, IActivatorFactory activatorFactory, ILifestyleFactory lifestyleFactory, IListenerInvoker listenerInvoker, IObjectInstances objectInstances, IServiceEntryFactory serviceEntryFactory, IServiceEntryResolver serviceEntryResolver, IServiceGraph serviceGraph, ContainerStatePolicy statePolicy, IResolvableTypeMap resolvableTypeMap)
     {
       _activatorStore = activatorStore;
+      _resolvableTypeMap = resolvableTypeMap;
       _serviceEntryFactory = serviceEntryFactory;
       _statePolicy = statePolicy;
       _serviceGraph = serviceGraph;
@@ -75,6 +77,11 @@ namespace Machine.Container.Services.Impl
     public IServiceGraph ServiceGraph
     {
       get { return _serviceGraph; }
+    }
+
+    public IResolvableTypeMap ResolvableTypeMap
+    {
+      get { return _resolvableTypeMap; }
     }
 
     public IResolutionServices CreateResolutionServices(IOverrideLookup overrides, LookupFlags flags)
