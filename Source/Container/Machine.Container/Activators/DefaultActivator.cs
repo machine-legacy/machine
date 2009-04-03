@@ -9,19 +9,12 @@ namespace Machine.Container.Activators
 {
   public class DefaultActivator : IActivator
   {
-    #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DefaultActivator));
-    #endregion
-
-    #region Member Data
     private readonly IObjectFactory _objectFactory;
     private readonly IServiceDependencyInspector _serviceDependencyInspector;
     private readonly IServiceEntryResolver _serviceEntryResolver;
     private readonly ServiceEntry _entry;
     private ResolvedConstructorCandidate _selectedCandidate;
-    #endregion
 
-    #region DefaultActivator()
     public DefaultActivator(IObjectFactory objectFactory, IServiceDependencyInspector serviceDependencyInspector, IServiceEntryResolver serviceEntryResolver, ServiceEntry entry)
     {
       _objectFactory = objectFactory;
@@ -29,9 +22,7 @@ namespace Machine.Container.Activators
       _serviceDependencyInspector = serviceDependencyInspector;
       _entry = entry;
     }
-    #endregion
 
-    #region IActivator Members
     public bool CanActivate(IResolutionServices services)
     {
       using (services.DependencyGraphTracker.Push(_entry))
@@ -63,7 +54,6 @@ namespace Machine.Container.Activators
     public void Deactivate(IResolutionServices services, object instance)
     {
     }
-    #endregion
 
     protected virtual ResolvedConstructorCandidate ResolveConstructorCandidate(IResolutionServices services)
     {
@@ -77,7 +67,6 @@ namespace Machine.Container.Activators
         {
           return null;
         }
-        _log.Info("Dependency: " + dependencyEntry);
         resolved.Add(dependencyEntry);
       }
       return new ResolvedConstructorCandidate(candidate, resolved);

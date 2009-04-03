@@ -21,8 +21,6 @@ namespace Machine.Container.Model
 
   public class GlobalActivationScope : IInstanceTrackingPolicy
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(GlobalActivationScope));
-
     #if DEBUGGING_LOCKS
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ObjectInstances");
     #else
@@ -63,7 +61,6 @@ namespace Machine.Container.Model
     {
       using (RWLock.AsWriter(_lock))
       {
-        _log.Info("Deactivating: " + instance + "(" + instance.GetHashCode() + ")");
         if (!_map.ContainsKey(instance))
         {
           throw new ServiceContainerException("Attempt to deactivate instance NOT created by the container: " + instance);
@@ -87,8 +84,6 @@ namespace Machine.Container.Model
 
   public class PerThreadActivationScope : IInstanceTrackingPolicy
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(PerThreadActivationScope));
-
     [ThreadStatic]
     private static Dictionary<object, RememberedActivation> _map;
 
@@ -139,7 +134,6 @@ namespace Machine.Container.Model
 
   public class DoNotTrackInstances : IInstanceTrackingPolicy
   {
-    #region IInstanceTrackingPolicy Members
     public TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation)
     {
       return TrackingStatus.Old;
@@ -154,6 +148,5 @@ namespace Machine.Container.Model
     {
       return new RememberedActivation[0];
     }
-    #endregion
   }
 }

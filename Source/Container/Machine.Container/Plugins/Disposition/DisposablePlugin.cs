@@ -10,11 +10,9 @@ namespace Machine.Container.Plugins.Disposition
 {
   public class DisposablePlugin : AbstractServiceContainerListener, IServiceContainerPlugin
   {
-    private readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(DisposablePlugin));
     private readonly List<IDisposable> _disposables = new List<IDisposable>();
     private readonly ReaderWriterLock _lock = new ReaderWriterLock();
 
-    #region IServiceContainerListener Members
     public virtual void Initialize(PluginServices services)
     {
       services.Container.AddListener(this);
@@ -53,9 +51,7 @@ namespace Machine.Container.Plugins.Disposition
         }
       }
     }
-    #endregion
 
-    #region IDisposable Members
     public override void Dispose()
     {
       using (RWLock.AsWriter(_lock))
@@ -67,11 +63,9 @@ namespace Machine.Container.Plugins.Disposition
         }
       }
     }
-    #endregion
 
     private void DisposeOf(IDisposable disposable)
     {
-      _log.Info("Disposing: " + disposable);
       disposable.Dispose();
       _disposables.Remove(disposable);
     }

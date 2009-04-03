@@ -51,7 +51,6 @@ namespace Machine.Container.Plugins
 
   public class ImportedAssemblyServices : IServiceCollection
   {
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ImportedAssemblyServices));
     readonly AssemblyServiceCollectionFinder _finder;
     readonly List<string> _assemblies = new List<string>();
 
@@ -80,7 +79,6 @@ namespace Machine.Container.Plugins
 
       foreach (IServiceCollection collection in _finder.Create<IServiceCollection>())
       {
-        _log.Info("Importing " + collection);
         collection.RegisterServices(register);
       }
     }

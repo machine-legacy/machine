@@ -7,7 +7,6 @@ namespace Machine.Container.Services.Impl
 {
   public class ServiceEntryResolver : IServiceEntryResolver
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceEntryResolver));
     private readonly Memento<IResolvableType, ResolvedServiceEntry> _resolvedEntries = new Memento<IResolvableType, ResolvedServiceEntry>();
     private readonly IServiceGraph _serviceGraph;
     private readonly IServiceEntryFactory _serviceEntryFactory;

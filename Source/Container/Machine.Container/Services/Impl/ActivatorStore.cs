@@ -9,8 +9,6 @@ namespace Machine.Container.Services.Impl
 {
   public class ActivatorStore : IActivatorStore
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStore));
-
     #if DEBUGGING_LOCKS
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ActivatorStore");
     #else
@@ -34,7 +32,6 @@ namespace Machine.Container.Services.Impl
         {
           throw new ServiceContainerException("Multiple activators for one entry!");
         }
-        _log.Info("Adding: " + entry + " " + activator);
         _cache[entry] = activator;
       }
     }

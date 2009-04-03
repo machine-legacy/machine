@@ -7,11 +7,6 @@ namespace Machine.Container.Services.Impl
 {
   public class ActivatorStoreActivatorResolver : IActivatorResolver
   {
-    #region Logging
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ActivatorStoreActivatorResolver));
-    #endregion
-
-    #region IActivatorResolver Members
     public virtual IActivator ResolveActivator(IResolutionServices services, ServiceEntry entry)
     {
       if (!services.ActivatorStore.HasActivator(entry))
@@ -25,6 +20,5 @@ namespace Machine.Container.Services.Impl
       }
       throw new ServiceResolutionException("Unable to activate: " + entry);
     }
-    #endregion
   }
 }

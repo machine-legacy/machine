@@ -8,8 +8,6 @@ namespace Machine.Container.Services.Impl
 {
   public class ObjectInstances : IObjectInstances
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ObjectInstances));
-
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IInstanceTrackingPolicy _trackingPolicy;
 
@@ -26,7 +24,6 @@ namespace Machine.Container.Services.Impl
       {
         _listenerInvoker.OnActivation(entry, activation);
         entry.IncrementActiveInstances();
-        _log.Info("Remembering: " + entry + " - " + activation);
       }
     }
 

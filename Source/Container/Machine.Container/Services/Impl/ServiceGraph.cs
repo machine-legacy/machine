@@ -28,8 +28,6 @@ namespace Machine.Container.Services.Impl
 
   public class ServiceGraph : IServiceGraph
   {
-    private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceGraph));
-
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
     #if DEBUGGING_LOCKS
@@ -79,7 +77,6 @@ namespace Machine.Container.Services.Impl
     {
       using (RWLock.AsWriter(_lock))
       {
-        _log.Info("Adding: " + entry);
         _map[entry.ServiceType] = entry;
         _registrationOrder.Add(entry.ServiceType);
         _listenerInvoker.OnRegistration(entry);

@@ -8,8 +8,6 @@ namespace Machine.Container.Services.Impl
 {
   public class ServiceDependencyInspector : IServiceDependencyInspector
   {
-    static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(ServiceDependencyInspector));
-
     public ConstructorCandidate SelectConstructor(Type type)
     {
       if (type.IsAbstract)
@@ -75,7 +73,6 @@ namespace Machine.Container.Services.Impl
           if (dependency.DependencyType.IsPrimitive || dependency.DependencyType == typeof(Type))
           {
             include = false;
-            _log.Info("Ignoring " + candidate.RuntimeInfo + " because of " + dependency.DependencyType);
             break;
           }
         }
