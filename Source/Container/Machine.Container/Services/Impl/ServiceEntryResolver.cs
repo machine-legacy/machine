@@ -20,18 +20,13 @@ namespace Machine.Container.Services.Impl
       _serviceEntryFactory = serviceEntryFactory;
     }
 
-    public ServiceEntry CreateEntryIfMissing(Type type)
+    public ServiceEntry CreateEntryIfMissing(Type implementationType)
     {
-      return CreateEntryIfMissing(type, type);
-    }
-
-    private ServiceEntry CreateEntryIfMissing(Type serviceType, Type implementationType)
-    {
-      ServiceEntry entry = _serviceGraph.Lookup(serviceType);
+      ServiceEntry entry = _serviceGraph.Lookup(implementationType);
       if (entry == null)
       {
         // TODO Possible race condition here? -jlewalle
-        entry = _serviceEntryFactory.CreateServiceEntry(serviceType, implementationType, LifestyleType.Singleton);
+        entry = _serviceEntryFactory.CreateServiceEntry(implementationType, LifestyleType.Singleton);
         _serviceGraph.Add(entry);
       }
       return entry;

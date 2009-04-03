@@ -28,7 +28,7 @@ namespace Machine.Container.Model
         {
           return _entry;
         }
-        return _serviceEntryFactory.CreateServiceEntry(_type, _type, LifestyleType.Override);
+        return _serviceEntryFactory.CreateServiceEntry(_type, LifestyleType.Override);
       }
       return _entry;
     }

@@ -20,7 +20,7 @@ namespace Machine.Container.Plugins.Starter
     public override void OnRegistration(ServiceEntry entry)
     {
       Type startable = typeof(IStartable);
-      if (startable.IsAssignableFrom(entry.ImplementationType))
+      if (startable.IsAssignableFrom(entry.ServiceType))
       {
         _startables.Add(entry);
       }
@@ -34,7 +34,7 @@ namespace Machine.Container.Plugins.Starter
     {
       foreach (ServiceEntry entry in _startables)
       {
-        IStartable startable = (IStartable)this.Container.Resolve.Object(entry.ImplementationType);
+        IStartable startable = (IStartable)this.Container.Resolve.Object(entry.ServiceType);
         startable.Start();
       }
     }

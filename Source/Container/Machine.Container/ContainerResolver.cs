@@ -54,9 +54,9 @@ namespace Machine.Container
       List<object> found = new List<object>();
       foreach (ServiceRegistration registration in _containerServices.ServiceGraph.RegisteredServices)
       {
-        if (predicate(registration.ImplementationType))
+        if (predicate(registration.ServiceType))
         {
-          found.Add(Object(registration.ImplementationType));
+          found.Add(Object(registration.ServiceType));
         }
       }
       return found;

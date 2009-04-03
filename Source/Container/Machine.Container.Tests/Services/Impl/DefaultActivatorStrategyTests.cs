@@ -11,15 +11,12 @@ namespace Machine.Container.Services.Impl
   [TestFixture]
   public class DefaultActivatorStrategyTests : MachineContainerTestsFixture
   {
-    #region Member Data
     private IObjectFactory _objectFactory;
     private IServiceDependencyInspector _serviceDependencyInspector;
     private IServiceEntryResolver _serviceEntryResolver;
     private DefaultActivatorFactory _activatorFactory;
     private ServiceEntry _entry;
-    #endregion
 
-    #region Test Setup and Teardown Methods
     public override void Setup()
     {
       base.Setup();
@@ -29,13 +26,11 @@ namespace Machine.Container.Services.Impl
       _serviceEntryResolver = _mocks.DynamicMock<IServiceEntryResolver>();
       _activatorFactory = new DefaultActivatorFactory(_objectFactory, _serviceDependencyInspector, _serviceEntryResolver);
     }
-    #endregion
 
-    #region Test Methods
     [Test]
     public void CreateActivatorInstance_ReturnsInstanceActivator_ReturnsSameOne()
     {
-      Assert.IsInstanceOfType(typeof(StaticActivator), _activatorFactory.CreateStaticActivator(_entry, new Service1()));
+      Assert.IsInstanceOfType(typeof(StaticActivator), _activatorFactory.CreateStaticActivator(_entry, new SimpleService1()));
     }
 
     [Test]
@@ -43,6 +38,5 @@ namespace Machine.Container.Services.Impl
     {
       Assert.IsInstanceOfType(typeof(PropertySettingActivator), _activatorFactory.CreateDefaultActivator(_entry));
     }
-    #endregion
   }
 }

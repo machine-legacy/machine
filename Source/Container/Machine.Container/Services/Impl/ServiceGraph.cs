@@ -96,7 +96,7 @@ namespace Machine.Container.Services.Impl
           foreach (Type serviceType in _registrationOrder)
           {
             ServiceEntry serviceEntry = _map[serviceType];
-            registrations.Add(new ServiceRegistration(serviceEntry.ServiceType, serviceEntry.ImplementationType));
+            registrations.Add(new ServiceRegistration(serviceEntry.ServiceType));
           }
           return registrations;
         }
@@ -111,7 +111,7 @@ namespace Machine.Container.Services.Impl
         foreach (Type key in _registrationOrder)
         {
           ServiceEntry entry = _map[key];
-          if (type.IsAssignableFrom(entry.ImplementationType))
+          if (type.IsAssignableFrom(entry.ServiceType))
           {
             matches.Add(entry);
           }

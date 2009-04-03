@@ -54,28 +54,6 @@ namespace Machine.Container.Configuration
       return this;
     }
 
-    public RegistrationConfigurer ImplementedBy(Type type)
-    {
-      _entry.ImplementationType = type;
-      return this;
-    }
-
-    public RegistrationConfigurer ImplementedBy<TType>()
-    {
-      return ImplementedBy(typeof(TType));
-    }
-
-    public RegistrationConfigurer Provides(Type type)
-    {
-      _entry.ServiceType = type;
-      return this;
-    }
-
-    public RegistrationConfigurer Provides<TType>()
-    {
-      return Provides(typeof(TType));
-    }
-
     public RegistrationConfigurer Using(IPropertySettings propertySettings)
     {
       _entry.PropertySettings = propertySettings;

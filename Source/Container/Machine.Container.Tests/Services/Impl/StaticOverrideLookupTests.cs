@@ -10,11 +10,8 @@ namespace Machine.Container.Services.Impl
   [TestFixture]
   public class StaticOverrideLookupTests : ScaffoldTests<StaticOverrideLookup>
   {
-    #region Member Data
-    private readonly ServiceEntry _serviceEntry = ServiceEntryHelper.NewEntry();
-    #endregion
+    private readonly ServiceEntry _serviceEntry = ServiceEntryHelper.NewEntry(typeof(IService1));
 
-    #region Test Methods
     [Test]
     public void LookupOverride_NoneGiven_ReturnsNull()
     {
@@ -36,7 +33,6 @@ namespace Machine.Container.Services.Impl
       _target = new StaticOverrideLookup(new object[] { "string", service1, 10 });
       Assert.AreEqual(service1, _target.LookupOverride(_serviceEntry));
     }
-    #endregion
 
     protected override StaticOverrideLookup Create()
     {

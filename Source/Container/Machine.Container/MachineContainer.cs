@@ -22,39 +22,19 @@ namespace Machine.Container
     }
 
     // Adding Services / Registration
-    public void Add<TService>()
+    public void Add<TImpl>()
     {
-      Add<TService>(LifestyleType.Singleton);
+      Add<TImpl>(LifestyleType.Singleton);
     }
 
-    public void Add<TService>(LifestyleType lifestyleType)
+    public void Add<TImpl>(LifestyleType lifestyleType)
     {
-      Add(typeof(TService), lifestyleType);
+      Add(typeof(TImpl), lifestyleType);
     }
 
-    public void Add(Type serviceType, LifestyleType lifestyleType)
+    public void Add(Type implementationType, LifestyleType lifestyleType)
     {
-      Register.Type(serviceType).WithLifestyle(lifestyleType);
-    }
-
-    public void Add<TService>(Type implementationType)
-    {
-      Add(typeof(TService), implementationType, LifestyleType.Singleton);
-    }
-
-    public void Add<TService, TImpl>()
-    {
-      Add<TService, TImpl>(LifestyleType.Singleton);
-    }
-
-    public void Add<TService, TImpl>(LifestyleType lifestyleType)
-    {
-      Add(typeof(TService), typeof(TImpl), lifestyleType);
-    }
-
-    public void Add(Type serviceType, Type implementationType, LifestyleType lifestyleType)
-    {
-      Register.Type(serviceType).ImplementedBy(implementationType).WithLifestyle(lifestyleType);
+      Register.Type(implementationType).WithLifestyle(lifestyleType);
     }
 
     public void Add<TService>(object instance)

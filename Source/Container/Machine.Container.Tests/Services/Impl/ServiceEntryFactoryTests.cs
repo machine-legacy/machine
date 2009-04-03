@@ -13,9 +13,8 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void CreateServiceEntry_Always_FillsInProperly()
     {
-      ServiceEntry entry = _target.CreateServiceEntry(typeof(IService1), typeof(Service1DependsOn2), LifestyleType.Singleton);
-      Assert.AreEqual(typeof(IService1), entry.ServiceType);
-      Assert.AreEqual(typeof(Service1DependsOn2), entry.ImplementationType);
+      ServiceEntry entry = _target.CreateServiceEntry(typeof(Service1DependsOn2), LifestyleType.Singleton);
+      Assert.AreEqual(typeof(Service1DependsOn2), entry.ServiceType);
       Assert.AreEqual(LifestyleType.Singleton, entry.LifestyleType);
     }
   }

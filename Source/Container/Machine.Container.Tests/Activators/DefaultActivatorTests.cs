@@ -16,14 +16,11 @@ namespace Machine.Container.Activators
   [TestFixture]
   public class DefaultActivatorTests : ScaffoldTests<DefaultActivator>
   {
-    #region Member Data
     private ServiceEntry _entry;
     private object _instance;
     private object _parameter1;
     private ResolvedConstructorCandidate _candidate;
-    #endregion
 
-    #region Test Setup and Teardown Methods
     public override void Setup()
     {
       _entry = ServiceEntryHelper.NewEntry();
@@ -31,9 +28,7 @@ namespace Machine.Container.Activators
       _parameter1 = new SimpleService1();
       base.Setup();
     }
-    #endregion
 
-    #region Test Methods
     [Test]
     [ExpectedException(typeof(YouFoundABugException))]
     public void Create_NotResolved_Throws()
@@ -85,22 +80,19 @@ namespace Machine.Container.Activators
         Assert.AreEqual(activation, _target.Activate(Get<IResolutionServices>()));
       }
     }
-    #endregion
 
-    #region Methods
     protected virtual void SetupMocks(params Type[] dependencies)
     {
-      _candidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(Service1DependsOn2), dependencies), new List<ResolvedServiceEntry>());
+      _candidate = new ResolvedConstructorCandidate(CreateCandidate(typeof(SimpleService1), dependencies), new List<ResolvedServiceEntry>());
       SetupResult.For(Get<IResolutionServices>().DependencyGraphTracker).Return(new DependencyGraphTracker());
       SetupResult.For(Get<IResolutionServices>().ActivatorStore).Return(Get<IActivatorStore>());
       SetupResult.For(Get<IResolutionServices>().ResolvableTypeMap).Return(Get<IResolvableTypeMap>());
-      SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(Service1DependsOn2))).Return(_candidate.Candidate);
+      SetupResult.For(Get<IServiceDependencyInspector>().SelectConstructor(typeof(SimpleService1))).Return(_candidate.Candidate);
     }
 
     protected override DefaultActivator Create()
     {
       return new DefaultActivator(Get<IObjectFactory>(), Get<IServiceDependencyInspector>(), Get<IServiceEntryResolver>(), _entry);
     }
-    #endregion
   }
 }

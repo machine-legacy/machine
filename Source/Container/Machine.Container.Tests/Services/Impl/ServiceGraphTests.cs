@@ -38,7 +38,7 @@ namespace Machine.Container.Services.Impl
       _target.Add(entry);
       List<ServiceRegistration> actual = new List<ServiceRegistration>(_target.RegisteredServices);
       Assert.AreEqual(entry.ServiceType, actual[0].ServiceType);
-      Assert.AreEqual(entry.ImplementationType, actual[0].ImplementationType);
+      Assert.AreEqual(entry.ServiceType, actual[0].ServiceType);
     }
 
     [Test]
@@ -52,7 +52,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void Lookup_SubclassInGraphThatDoesntHaveConcreteType_IsThatEntry()
     {
-      ServiceEntry entry = ServiceEntryHelper.NewEntry(typeof(IService1), typeof(IService1));
+      ServiceEntry entry = ServiceEntryHelper.NewEntry(typeof(IService1));
       _target.Add(entry);
       Assert.AreEqual(entry, _target.Lookup(typeof(IService1)));
     }

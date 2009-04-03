@@ -40,7 +40,7 @@ namespace Machine.Container
     [Test]
     public void CanResolve_Does_IsTrue()
     {
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<SimpleService1>();
       Assert.IsTrue(_machineContainer.CanResolve<IService1>());
     }
 
@@ -54,7 +54,7 @@ namespace Machine.Container
     [Test]
     public void Resolve_By_Interface_No_Dependencies_Resolves_Entry()
     {
-      _machineContainer.Add<IService1, Service1>();
+      _machineContainer.Add<Service1>();
       Assert.IsNotNull(_machineContainer.ResolveObject<IService1>());
     }
 
@@ -70,7 +70,7 @@ namespace Machine.Container
     [ExpectedException(typeof(PendingDependencyException))]
     public void Resolve_Single_Dependency_Not_There_Throws()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
+      _machineContainer.Add<Service2DependsOn1>();
       _machineContainer.ResolveObject<IService2>();
     }
 
@@ -102,8 +102,8 @@ namespace Machine.Container
     [Test]
     public void Resolve_Single_Dependency_There_Resolves_Instance()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<Service2DependsOn1>();
+      _machineContainer.Add<SimpleService1>();
       Assert.IsNotNull(_machineContainer.ResolveObject<IService2>());
     }
 
@@ -127,15 +127,15 @@ namespace Machine.Container
     [Test]
     public void Add_Circular_Dependency_Does_Nothing()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
-      _machineContainer.Add<IService1, Service1DependsOn2>();
+      _machineContainer.Add<Service2DependsOn1>();
+      _machineContainer.Add<Service1DependsOn2>();
     }
 
     [Test]
     public void Add_Replaces_The_Old_Service()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
-      _machineContainer.Add<IService2, SimpleService2>();
+      _machineContainer.Add<Service2DependsOn1>();
+      _machineContainer.Add<SimpleService2>();
     }
 
     [Test]
@@ -151,7 +151,7 @@ namespace Machine.Container
     public void Resolve_Weird_Overlapping_Throws()
     {
       _machineContainer.Add<SimpleService2>();
-      _machineContainer.Add<IService1, Service1>();
+      _machineContainer.Add<Service1>();
       _machineContainer.Add<Service1DependsOn2>();
       _machineContainer.Resolve.Object<Service1>();
       _machineContainer.Resolve.Object<Service1DependsOn2>();
@@ -161,8 +161,8 @@ namespace Machine.Container
     [ExpectedException(typeof(CircularDependencyException))]
     public void Resolve_Circular_Dependency_Throws()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
-      _machineContainer.Add<IService1, Service1DependsOn2>();
+      _machineContainer.Add<Service2DependsOn1>();
+      _machineContainer.Add<Service1DependsOn2>();
       _machineContainer.ResolveObject<IService2>();
     }
 
@@ -170,22 +170,22 @@ namespace Machine.Container
     [ExpectedException(typeof(PendingDependencyException))]
     public void Resolve_Waiting_Dependencies_Throws()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
+      _machineContainer.Add<Service2DependsOn1>();
       _machineContainer.ResolveObject<IService2>();
     }
 
     [Test]
     public void Resolve_Not_Waiting_Dependencies_Works()
     {
-      _machineContainer.Add<IService2, Service2DependsOn1>();
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<Service2DependsOn1>();
+      _machineContainer.Add<SimpleService1>();
       Assert.IsNotNull(_machineContainer.ResolveObject<IService2>());
     }
 
     [Test]
     public void Resolve_Singleton_Yields_Same_Instances()
     {
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<SimpleService1>();
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       IService1 service2 = _machineContainer.ResolveObject<IService1>();
       Assert.AreEqual(service1, service2);
@@ -195,7 +195,7 @@ namespace Machine.Container
     [ExpectedException(typeof(ServiceContainerException))]
     public void Resolve_And_Change_Entry_Throws()
     {
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<SimpleService1>();
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       _machineContainer.Register.Type<IService1>().AsTransient();
     }
@@ -203,7 +203,7 @@ namespace Machine.Container
     [Test]
     public void Resolve_And_Deactivate_Change_Entry_Works()
     {
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<SimpleService1>();
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       _machineContainer.Deactivate(service1);
       _machineContainer.Register.Type<IService1>().AsTransient();
@@ -213,7 +213,7 @@ namespace Machine.Container
     [Test]
     public void Resolve_Transient_Yields_Multiple_Instances()
     {
-      _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
+      _machineContainer.Add<SimpleService1>(LifestyleType.Transient);
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       IService1 service2 = _machineContainer.ResolveObject<IService1>();
       Assert.AreNotEqual(service1, service2);
@@ -222,7 +222,7 @@ namespace Machine.Container
     [Test]
     public void Resolve_With_Overrides_With_Overrides_Uses_Override()
     {
-      _machineContainer.Add<IService1, Service1DependsOn2>(LifestyleType.Transient);
+      _machineContainer.Add<Service1DependsOn2>(LifestyleType.Transient);
       Assert.IsNotNull(_machineContainer.ResolveWithOverrides<IService1>(new SimpleService2()));
     }
 
@@ -242,14 +242,14 @@ namespace Machine.Container
     [ExpectedException(typeof(ServiceContainerException))]
     public void Deactivate_Not_Created_By_Container_Throws()
     {
-      _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
+      _machineContainer.Add<SimpleService1>(LifestyleType.Transient);
       _machineContainer.Deactivate(new SimpleService1());
     }
 
     [Test]
     public void Deactivate_First_Time_Just_Does_That()
     {
-      _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
+      _machineContainer.Add<SimpleService1>(LifestyleType.Transient);
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       _machineContainer.Deactivate(service1);
     }
@@ -258,7 +258,7 @@ namespace Machine.Container
     [ExpectedException(typeof(ServiceContainerException))]
     public void Deactivate_Second_Time_Throws()
     {
-      _machineContainer.Add<IService1, SimpleService1>(LifestyleType.Transient);
+      _machineContainer.Add<SimpleService1>(LifestyleType.Transient);
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       _machineContainer.Deactivate(service1);
       _machineContainer.Deactivate(service1);
@@ -267,7 +267,7 @@ namespace Machine.Container
     [Test]
     public void Deactivate_A_Disposable_Calls_Dispose()
     {
-      _machineContainer.Add<IDisposableService, DisposableService>();
+      _machineContainer.Add<DisposableService>();
       IDisposableService disposable = _machineContainer.ResolveObject<IDisposableService>();
       _machineContainer.Deactivate(disposable);
       Assert.IsTrue(disposable.IsDisposed);
@@ -276,7 +276,7 @@ namespace Machine.Container
     [Test]
     public void Deactivate_A_Singleton_Creates_New_Instance_Afterwards()
     {
-      _machineContainer.Add<IService1, SimpleService1>();
+      _machineContainer.Add<SimpleService1>();
       IService1 service1 = _machineContainer.ResolveObject<IService1>();
       _machineContainer.Deactivate(service1);
       IService1 service2 = _machineContainer.ResolveObject<IService1>();
@@ -287,7 +287,7 @@ namespace Machine.Container
     [ExpectedException(typeof(AmbiguousServicesException))]
     public void Lots_Of_Services_With_AmbigiousDependency_Throws()
     {
-      _machineContainer.Add<IService1, Service1>();
+      _machineContainer.Add<Service1>();
       _machineContainer.Add<Service2DependsOn1>();
       _machineContainer.Add<SimpleService1>();
       IService2 service2 = _machineContainer.ResolveObject<IService2>();
@@ -297,7 +297,7 @@ namespace Machine.Container
     public void Lots_Of_Services_Works()
     {
       ContainerResolver resolve = _machineContainer.Resolve;
-      _machineContainer.Add<IService1, Service1>();
+      _machineContainer.Add<Service1>();
       _machineContainer.Add<Service2DependsOn1>();
       _machineContainer.Add<SimpleService2>();
       IService1 service1a = _machineContainer.ResolveObject<Service1>();

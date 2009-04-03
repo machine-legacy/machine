@@ -11,20 +11,16 @@ namespace Machine.Container.Model
   [TestFixture]
   public class ServiceEntryTests : ScaffoldTests<ServiceEntry>
   {
-    #region Test Methods
     [Test]
     public void ToString_Always_ReturnsAString()
     {
       Run();
       Assert.IsNotNull(_target.ToString());
     }
-    #endregion
 
-    #region Methods
     protected override ServiceEntry Create()
     {
-      return new ServiceEntry(typeof(IService1), typeof(SimpleService1), LifestyleType.Singleton);
+      return new ServiceEntry(typeof(SimpleService1), LifestyleType.Singleton);
     }
-    #endregion
   }
 }

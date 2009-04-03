@@ -8,7 +8,6 @@ namespace Machine.Container.Model
     private readonly string _key;
     private string _name;
     private Type _serviceType;
-    private Type _implementationType;
     private LifestyleType _lifestyleType;
     private long _numberOfActiveInstances;
     private readonly List<InterceptorApplication> _interceptors = new List<InterceptorApplication>();
@@ -46,19 +45,7 @@ namespace Machine.Container.Model
       set
       {
         AssertHasNoActiveInstances();
-        AssertValidTypes(value, _implementationType);
         _serviceType = value;
-      }
-    }
-
-    public Type ImplementationType
-    {
-      get { return _implementationType; }
-      set
-      {
-        AssertHasNoActiveInstances();
-        AssertValidTypes(_serviceType, value);
-        _implementationType = value;
       }
     }
 
@@ -66,10 +53,6 @@ namespace Machine.Container.Model
     {
       get
       {
-        if (_implementationType != null && !_implementationType.IsAbstract)
-        {
-          return _implementationType;
-        }
         if (!_serviceType.IsAbstract)
         {
           return _serviceType;
@@ -92,16 +75,15 @@ namespace Machine.Container.Model
       }
     }
 
-    public ServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType)
-      : this(serviceType, implementationType, lifestyleType, String.Empty)
+    public ServiceEntry(Type implementationType, LifestyleType lifestyleType)
+      : this(implementationType, lifestyleType, String.Empty)
     {
     }
 
-    public ServiceEntry(Type serviceType, Type implementationType, LifestyleType lifestyleType, string key)
+    public ServiceEntry(Type implementationType, LifestyleType lifestyleType, string key)
     {
-      AssertValidTypes(serviceType, implementationType);
-      _serviceType = serviceType;
-      _implementationType = implementationType;
+      AssertValidTypes(implementationType);
+      _serviceType = implementationType;
       _lifestyleType = lifestyleType;
       _key = key;
       _lock = ServiceEntryLockBroker.Singleton.GetLockForEntry(this);
@@ -109,7 +91,7 @@ namespace Machine.Container.Model
 
     public override string ToString()
     {
-      return String.Format("Entry<{0}, {1}, {2}>", this.ServiceType, this.ImplementationType, _numberOfActiveInstances);
+      return String.Format("Entry<{0}, {1}", this.ServiceType, _numberOfActiveInstances);
     }
 
     public bool IsNamed(string name)
@@ -148,12 +130,8 @@ namespace Machine.Container.Model
       }
     }
 
-    private static void AssertValidTypes(Type serviceType, Type implementationType)
+    private static void AssertValidTypes(Type implementationType)
     {
-      if (!serviceType.IsAssignableFrom(implementationType))
-      {
-        throw new ServiceContainerException("Service Type should be assignable from Implementation Type!");
-      }
     }
 
     private void AssertHasNoActiveInstances()

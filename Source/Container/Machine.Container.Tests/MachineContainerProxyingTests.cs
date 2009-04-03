@@ -9,13 +9,11 @@ using NUnit.Framework;
 namespace Machine.Container
 {
   [TestFixture]
+  [Ignore]
   public class MachineContainerProxyingTests : MachineContainerTestsFixture
   {
-    #region Member Data
     private MachineContainer _machineContainer;
-    #endregion
 
-    #region Test Setup and Teardown Methods
     public override void Setup()
     {
       base.Setup();
@@ -26,9 +24,7 @@ namespace Machine.Container
       _machineContainer.PrepareForServices();
       _machineContainer.Start();
     }
-    #endregion
 
-    #region Test Methods
     [Test]
     [ExpectedException(typeof(ServiceContainerException))]
     public void Intercept_When_Not_Installed_Throws()
@@ -38,7 +34,7 @@ namespace Machine.Container
       _machineContainer.AddPlugin(new DisposablePlugin());
       _machineContainer.PrepareForServices();
       _machineContainer.Start();
-      _machineContainer.Register.Type<SimpleService1>().Provides<IService1>().Intercept<SimpleInterceptor>();
+      _machineContainer.Register.Type<SimpleService1>().Intercept<SimpleInterceptor>();
     }
 
     [Test]
@@ -53,7 +49,7 @@ namespace Machine.Container
     public void Intercept_Creates_Instance_That_Is_Proxied()
     {
       _machineContainer.Register.Type<SimpleInterceptor>();
-      _machineContainer.Register.Type<SimpleService1>().Provides<IService1>().Intercept<SimpleInterceptor>();
+      _machineContainer.Register.Type<SimpleService1>().Intercept<SimpleInterceptor>();
       IService1 service1 = _machineContainer.Resolve.Object<IService1>();
       Assert.IsTrue(typeof(IProxyTargetAccessor).IsInstanceOfType(service1));
       service1.SayHello();
@@ -63,7 +59,7 @@ namespace Machine.Container
     public void Intercept_Call_Method_Calls_Proxy()
     {
       _machineContainer.Register.Type<SimpleInterceptor>();
-      _machineContainer.Register.Type<SimpleService1>().Provides<IService1>().Intercept<SimpleInterceptor>();
+      _machineContainer.Register.Type<SimpleService1>().Intercept<SimpleInterceptor>();
       IService1 service1 = _machineContainer.Resolve.Object<IService1>();
       service1.SayHello();
       IProxyTargetAccessor proxyTargetAccessor = (IProxyTargetAccessor)service1;
@@ -74,10 +70,9 @@ namespace Machine.Container
     [Test]
     public void No_Intercept_Creates_Instance_That_Is_Not_Proxied()
     {
-      _machineContainer.Register.Type<SimpleService1>().Provides<IService1>();
+      _machineContainer.Register.Type<SimpleService1>();
       IService1 service1 = _machineContainer.Resolve.Object<IService1>();
       Assert.IsFalse(typeof(IProxyTargetAccessor).IsInstanceOfType(service1));
     }
-    #endregion
   }
 }

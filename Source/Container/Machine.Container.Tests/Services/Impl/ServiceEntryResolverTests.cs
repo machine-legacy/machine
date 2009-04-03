@@ -30,11 +30,11 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void CreateEntryIfMissing_NotThereYet_JustCreatesEntryNothingElse()
     {
-      ServiceEntry entry = new ServiceEntry(typeof(Service1), typeof(Service1), LifestyleType.Singleton);
+      ServiceEntry entry = new ServiceEntry(typeof(Service1), LifestyleType.Singleton);
       using (_mocks.Record())
       {
         Expect.Call(_serviceGraph.Lookup(typeof(Service1))).Return(null);
-        Expect.Call(_serviceEntryFactory.CreateServiceEntry(typeof(Service1), typeof(Service1), LifestyleType.Singleton)).Return(entry);
+        Expect.Call(_serviceEntryFactory.CreateServiceEntry(typeof(Service1), LifestyleType.Singleton)).Return(entry);
         _serviceGraph.Add(entry);
       }
       Assert.AreEqual(entry, _target.CreateEntryIfMissing(typeof(Service1)));
@@ -44,7 +44,7 @@ namespace Machine.Container.Services.Impl
     [Test]
     public void CreateEntryIfMissing_IsThere_JustReturnsTheOldOne()
     {
-      ServiceEntry entry = new ServiceEntry(typeof(Service1), typeof(Service1), LifestyleType.Singleton);
+      ServiceEntry entry = new ServiceEntry(typeof(Service1), LifestyleType.Singleton);
       using (_mocks.Record())
       {
         Expect.Call(_serviceGraph.Lookup(typeof(Service1))).Return(entry);
