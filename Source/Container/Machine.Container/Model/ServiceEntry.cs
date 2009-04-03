@@ -13,6 +13,7 @@ namespace Machine.Container.Model
     private long _numberOfActiveInstances;
     private readonly List<InterceptorApplication> _interceptors = new List<InterceptorApplication>();
     private IPropertySettings _propertySettings;
+    private readonly ServiceEntryLock _lock;
 
     public string Key
     {
@@ -103,6 +104,7 @@ namespace Machine.Container.Model
       _implementationType = implementationType;
       _lifestyleType = lifestyleType;
       _key = key;
+      _lock = ServiceEntryLockBroker.Singleton.GetLockForEntry(this);
     }
 
     public override string ToString()
@@ -199,7 +201,7 @@ namespace Machine.Container.Model
 
     public ServiceEntryLock Lock
     {
-      get { return ServiceEntryLockBroker.Singleton.GetLockForEntry(this); }
+      get { return _lock; }
     }
   }
 }
