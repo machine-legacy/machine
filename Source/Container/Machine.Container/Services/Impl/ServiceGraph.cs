@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Machine.Container.Model;
 using Machine.Container.Plugins;
@@ -13,9 +14,14 @@ namespace Machine.Container.Services.Impl
 
     private readonly IListenerInvoker _listenerInvoker;
     private readonly IDictionary<Type, ServiceEntry> _map = new Dictionary<Type, ServiceEntry>();
+    #if DEBUGGING_LOCKS
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ServiceGraph");
+    #else
+    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    #endif
     private readonly List<Type> _registrationOrder = new List<Type>();
     private readonly Dictionary<string, ServiceEntry> _nameLookupCache = new Dictionary<string, ServiceEntry>();
+    private readonly Memento<Type, ServiceEntry> _lazyLookups = new Memento<Type, ServiceEntry>();
 
     public ServiceGraph(IListenerInvoker listenerInvoker)
     {

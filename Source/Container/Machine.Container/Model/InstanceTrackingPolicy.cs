@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading;
 
 using Machine.Core.Utility;
 
@@ -22,7 +23,11 @@ namespace Machine.Container.Model
   {
     private static readonly log4net.ILog _log = log4net.LogManager.GetLogger(typeof(GlobalActivationScope));
 
+    #if DEBUGGING_LOCKS
     private readonly IReaderWriterLock _lock = ReaderWriterLockFactory.CreateLock("ObjectInstances");
+    #else
+    private readonly ReaderWriterLock _lock = new ReaderWriterLock();
+    #endif
     private readonly Dictionary<object, RememberedActivation> _map = new Dictionary<object, RememberedActivation>();
 
     public TrackingStatus Remember(ResolvedServiceEntry entry, Activation activation)
@@ -39,7 +44,7 @@ namespace Machine.Container.Model
         }
         else
         {
-          _lock.UpgradeToWriterLock();
+          _lock.UpgradeToWriterLock(Timeout.Infinite);
           if (_map.ContainsKey(instance))
           {
             /* Not checking again is bad because multiple people can come back with the SAME instance,
