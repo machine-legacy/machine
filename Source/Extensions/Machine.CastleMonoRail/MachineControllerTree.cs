@@ -4,17 +4,17 @@ using Castle.MonoRail.Framework;
 using Castle.MonoRail.Framework.Services;
 
 using Machine.Container.Model;
-using Machine.Container.Services;
+using Machine.Container;
 
 namespace Machine.CastleMonoRail
 {
   public class MachineControllerTree : IControllerTree
   {
     private readonly IControllerTree _defaultTree;
-    private readonly IMachineContainer _container;
+    private readonly IResolutionOnlyContainer _container;
     private bool _initialized;
 
-    public MachineControllerTree(IMachineContainer container)
+    public MachineControllerTree(IResolutionOnlyContainer container)
     {
       _container = container;
       _defaultTree = new DefaultControllerTree();

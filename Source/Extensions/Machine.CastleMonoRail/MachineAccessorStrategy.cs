@@ -3,7 +3,7 @@ using System;
 using Castle.Core;
 using Castle.MonoRail.Framework;
 
-using Machine.Container.Services;
+using Machine.Container;
 
 namespace Machine.CastleMonoRail
 {

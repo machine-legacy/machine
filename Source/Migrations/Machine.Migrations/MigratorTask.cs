@@ -1,6 +1,6 @@
 ﻿using System;
+using Machine.Container;
 
-using Machine.Container.Services;
 using Machine.Core.Utility;
 using Machine.Migrations.DatabaseProviders;
 using Machine.Migrations.SchemaProviders;
@@ -40,7 +40,7 @@ namespace Machine.Migrations
       IMigratorContainerFactory migratorContainerFactory = CreateContainerFactory();
       using (Machine.Core.LoggingUtilities.Log4NetNdc.Push(String.Empty))
       {
-        IHighLevelContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
+        IMachineContainer container = migratorContainerFactory.CreateAndPopulateContainer(this);
         container.Resolve.Object<IMigrator>().RunMigrator();
       }
       return true;

@@ -1,5 +1,4 @@
 ﻿using Machine.Container;
-using Machine.Container.Services;
 using Machine.Core.Services;
 using Machine.Core.Services.Impl;
 using Machine.Migrations.DatabaseProviders;
@@ -10,37 +9,37 @@ namespace Machine.Migrations.Services.Impl
   public class MigratorContainerFactory : IMigratorContainerFactory
   {
     #region IMigratorContainerFactory Members
-    public virtual IHighLevelContainer CreateAndPopulateContainer(IConfiguration configuration)
+    public virtual IMachineContainer CreateAndPopulateContainer(IConfiguration configuration)
     {
-      IHighLevelContainer container = CreateContainer();
+      IMachineContainer container = CreateContainer();
       container.Initialize();
       container.PrepareForServices();
-      container.Add<IConnectionProvider>(configuration.ConnectionProviderType);
-      container.Add<ITransactionProvider>(configuration.TransactionProviderType);
-      container.Add<IDatabaseProvider>(configuration.DatabaseProviderType);
-      container.Add<ISchemaProvider>(configuration.SchemaProviderType);
-      container.Add<IFileSystem, FileSystem>();
-      container.Add<INamer, Namer>();
-      container.Add<ISchemaStateManager, SchemaStateManager>();
-      container.Add<IMigrationFinder, MigrationFinder>();
-      container.Add<IMigrationSelector, MigrationSelector>();
-      container.Add<IMigrationRunner, MigrationRunner>();
-      container.Add<IMigrationInitializer, MigrationInitializer>();
-      container.Add<IMigrator, Migrator>();
-      container.Add<IMigrationFactoryChooser, MigrationFactoryChooser>();
-      container.Add<IVersionStateFactory, VersionStateFactory>();
-      container.Add<IWorkingDirectoryManager, WorkingDirectoryManager>();
-      container.Add<ICommonTransformations, CommonTransformations>();
-      container.Add<IConfiguration>(configuration);
-      container.Add<CSharpMigrationFactory>();
-      container.Add<BooMigrationFactory>();
-      container.Add<SqlScriptMigrationFactory>();
+      container.Register.Type(configuration.ConnectionProviderType);
+      container.Register.Type(configuration.TransactionProviderType);
+      container.Register.Type(configuration.DatabaseProviderType);
+      container.Register.Type(configuration.SchemaProviderType);
+      container.Register.Type<FileSystem>();
+      container.Register.Type<Namer>();
+      container.Register.Type<SchemaStateManager>();
+      container.Register.Type<MigrationFinder>();
+      container.Register.Type<MigrationSelector>();
+      container.Register.Type<MigrationRunner>();
+      container.Register.Type<MigrationInitializer>();
+      container.Register.Type<Migrator>();
+      container.Register.Type<MigrationFactoryChooser>();
+      container.Register.Type<VersionStateFactory>();
+      container.Register.Type<WorkingDirectoryManager>();
+      container.Register.Type<CommonTransformations>();
+      container.Register.Type<IConfiguration>().Is(configuration);
+      container.Register.Type<CSharpMigrationFactory>();
+      container.Register.Type<BooMigrationFactory>();
+      container.Register.Type<SqlScriptMigrationFactory>();
       container.Start();
       return container;
     }
     #endregion
 
-    public virtual IHighLevelContainer CreateContainer()
+    public virtual IMachineContainer CreateContainer()
     {
       return new MachineContainer();
     }

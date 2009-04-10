@@ -3,16 +3,16 @@ using System.Collections.Generic;
 
 using Castle.MonoRail.Framework;
 
-using Machine.Container.Services;
+using Machine.Container;
 
 namespace Machine.CastleMonoRail
 {
   public class MachineControllerFactory : IControllerFactory
   {
     private readonly IControllerTree _controllerTree;
-    private readonly IMachineContainer _container;
+    private readonly IResolutionOnlyContainer _container;
 
-    public MachineControllerFactory(IMachineContainer container, IControllerTree controllerTree)
+    public MachineControllerFactory(IResolutionOnlyContainer container, IControllerTree controllerTree)
     {
       _container = container;
       _controllerTree = controllerTree;

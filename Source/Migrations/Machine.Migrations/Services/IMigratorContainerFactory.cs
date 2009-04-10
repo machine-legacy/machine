@@ -1,9 +1,9 @@
-﻿using Machine.Container.Services;
+﻿using Machine.Container;
 
 namespace Machine.Migrations.Services
 {
   public interface IMigratorContainerFactory
   {
-    IHighLevelContainer CreateAndPopulateContainer(IConfiguration configuration);
+    IMachineContainer CreateAndPopulateContainer(IConfiguration configuration);
   }
 }

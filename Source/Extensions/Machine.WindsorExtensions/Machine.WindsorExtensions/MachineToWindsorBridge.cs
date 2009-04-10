@@ -6,13 +6,13 @@ using Castle.Windsor;
 using Machine.Container;
 using Machine.Container.Model;
 using Machine.Container.Plugins;
-using Machine.Container.Services;
+using Machine.Container;
 
 using LifestyleType = Castle.Core.LifestyleType;
 
 namespace Machine.WindsorExtensions
 {
-  public class MachineToWindsorBridge : IHighLevelContainer
+  public class MachineToWindsorBridge : IMachineContainer
   {
     readonly IWindsorContainer _windsor;
     readonly WindsorWrapper _wrapper;

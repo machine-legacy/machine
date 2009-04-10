@@ -9,10 +9,10 @@ namespace Machine.MsMvc
 {
   public class ReflectiveControllerTypeMap : IControllerTypeMap
   {
-    private readonly IMachineContainer _container;
+    private readonly IResolutionOnlyContainer _container;
     private Dictionary<string, Type> _map;
 
-    public ReflectiveControllerTypeMap(IMachineContainer container)
+    public ReflectiveControllerTypeMap(IResolutionOnlyContainer container)
     {
       _container = container;
     }
