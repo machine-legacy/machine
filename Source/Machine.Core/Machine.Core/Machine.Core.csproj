@@ -77,6 +77,7 @@
     <Compile Include="Services\IThreadManager.cs" />
     <Compile Include="Services\TemporaryDirectoryHandle.cs" />
     <Compile Include="Services\INamer.cs" />
+    <Compile Include="Utility\ArrayHelpers.cs" />
     <Compile Include="Utility\DotNetReaderWriterLock.cs" />
     <Compile Include="Utility\Enumerate.cs" />
     <Compile Include="Utility\IReaderWriterLock.cs" />
@@ -92,6 +93,7 @@
     <Compile Include="Utility\StackPopper.cs" />
     <Compile Include="Utility\StringHelpers.cs" />
     <Compile Include="Utility\TimeSpanHelper.cs" />
+    <Compile Include="Utility\TypeHelpers.cs" />
     <Compile Include="Utility\XmlSerializationHelper.cs" />
     <Compile Include="ValueTypes\AbstractValueTypeInspector.cs" />
     <Compile Include="ValueTypes\CalculateHashCodeFunctionFactory.cs" />

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 
+using Machine.Core.Utility;
+
 namespace Machine.Core.ValueTypes
 {
   public delegate bool ObjectEqualityFunction(object a, object b);
@@ -18,6 +20,7 @@ namespace Machine.Core.ValueTypes
     {
       DynamicMethod method = NewMethod(type, typeof(bool), new Type[] {typeof(object), typeof(object)});
       ILGenerator il = method.GetILGenerator();
+      MethodInfo arrayEquals = typeof(ArrayHelpers).GetMethod("AreArraysEqual", new[] { typeof(Array), typeof(Array) });
       MethodInfo objectEquals = typeof(Object).GetMethod("Equals", new Type[] {typeof(Object), typeof(Object)});
       bool hasState = false;
       foreach (FieldInfo field in AllFields(type))
@@ -25,7 +28,15 @@ namespace Machine.Core.ValueTypes
         Label label = il.DefineLabel();
         il.Emit(OpCodes.Ldarg_0);
         il.Emit(OpCodes.Castclass, type);
-        if (field.FieldType.IsValueType && !field.FieldType.IsEnum)
+        if (field.FieldType.IsArray)
+        {
+          il.Emit(OpCodes.Ldfld, field);
+          il.Emit(OpCodes.Ldarg_1);
+          il.Emit(OpCodes.Castclass, type);
+          il.Emit(OpCodes.Ldfld, field);
+          il.Emit(OpCodes.Call, arrayEquals);
+        }
+        else if (field.FieldType.IsValueType && !field.FieldType.IsEnum && !field.FieldType.IsNullableType())
         {
           MethodInfo valueEquals = field.FieldType.GetMethod("Equals", new Type[] {field.FieldType});
           il.Emit(OpCodes.Ldflda, field);

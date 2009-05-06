@@ -113,4 +113,15 @@ namespace Machine.Core.ValueTypes
       _maybe = maybe;
     }
   }
+
+  public class MessageWithArray
+  {
+    readonly string[] _array;
+
+    public MessageWithArray(params string[] array)
+    {
+      _array = array;
+    }
+  }
+
 }
