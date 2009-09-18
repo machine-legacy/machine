@@ -18,7 +18,11 @@ namespace Machine.Container.Services.Impl
       {
         return activator;
       }
-      throw new ServiceResolutionException("Unable to activate: " + entry);
+      if ((services.Flags & LookupFlags.ThrowIfUnable) == LookupFlags.ThrowIfUnable)
+      {
+        throw new ServiceResolutionException("Unable to activate: " + entry);
+      }
+      return null;
     }
   }
 }

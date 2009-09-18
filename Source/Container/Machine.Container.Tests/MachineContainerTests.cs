@@ -40,6 +40,13 @@ namespace Machine.Container
     }
 
     [Test]
+    public void CanResolve_With_Dependencies()
+    {
+      _machineContainer.Register.Type<Service1DependsOn2>();
+      Assert.IsFalse(_machineContainer.CanResolve<Service1DependsOn2>());
+    }
+
+    [Test]
     public void CanResolve_DoesButNotUnderInterface_IsTrue()
     {
       _machineContainer.Register.Type<SimpleService1>();
