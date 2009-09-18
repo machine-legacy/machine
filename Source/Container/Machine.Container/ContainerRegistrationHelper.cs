@@ -79,8 +79,15 @@ namespace Machine.Container
 
     public virtual void AddServiceCollection<T>() where T : IServiceCollection
     {
-      _container.Register.Type(typeof(T));
-      AddServiceCollection((IServiceCollection)_container.Resolve.Object(typeof(T)));
+      AddServiceCollection(typeof(T));
+    }
+
+    public virtual void AddServiceCollection(Type type)
+    {
+      if (!typeof(IServiceCollection).IsAssignableFrom(type))
+        throw new ArgumentException("type");
+      _container.Register.Type(type);
+      AddServiceCollection((IServiceCollection)_container.Resolve.Object(type));
     }
 
     public virtual void StartContainer()
