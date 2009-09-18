@@ -18,6 +18,10 @@ namespace Machine.Container
 
     protected override object DoGetInstance(Type serviceType, string key)
     {
+      if (String.IsNullOrEmpty(key))
+      {
+        return _container.Resolve.Object(serviceType);
+      }
       return _container.Resolve.Named(key);
     }
 

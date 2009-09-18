@@ -55,7 +55,11 @@ namespace Machine.Container.Services.Impl
 
     public ServiceEntry Lookup(string name)
     {
-      List<ServiceEntry> matches = new List<ServiceEntry>();
+      if (String.IsNullOrEmpty(name))
+      {
+        return null;
+      }
+      var matches = new List<ServiceEntry>();
       using (RWLock.AsReader(_lock))
       {
         if (RWLock.UpgradeToWriterIf(_lock, delegate() { return !_nameLookupCache.ContainsKey(name); }))
