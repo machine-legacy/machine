@@ -15,20 +15,20 @@ namespace Machine.Benchmark
       {
         PlainUseCase useCase = new PlainUseCase();
         useCase.Run(0);
-        Console.WriteLine("Plain:            {0}", Measure(useCase.Run, 10000));
+        Console.WriteLine("Plain:            {0}", Measure(useCase.Run, 100000));
         GC.Collect();
       }
 
       {
         MachineUseCase useCase = new MachineUseCase();
-        Console.WriteLine("Machine:          {0}", Measure(useCase.Run, 10000));
+        Console.WriteLine("Machine:          {0}", Measure(useCase.Run, 100000));
         GC.Collect();
       }
 
       {
         MachineUseCase useCase = new MachineUseCase();
         useCase.Run(0);
-        Console.WriteLine("Machine (Primed): {0}", Measure(useCase.Run, 10000));
+        Console.WriteLine("Machine (Primed): {0}", Measure(useCase.Run, 100000));
         GC.Collect();
       }
 

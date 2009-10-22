@@ -19,7 +19,7 @@ namespace Machine.Container.Services.Impl
 
     public virtual IInstanceTrackingPolicy CreateInstanceTrackingPolicy()
     {
-      return new GlobalActivationScope();
+      return new DoNotTrackInstances();
     }
 
     public virtual IRootActivatorFactory CreateActivatorFactory(IServiceEntryResolver entryResolver)
