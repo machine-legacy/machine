@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Machine.Container.Model;
 using Machine.Container.Services;
 using Machine.Container.Services.Impl;
+using Machine.Core;
 
 namespace Machine.Container
 {
@@ -117,6 +118,7 @@ namespace Machine.Container
     protected virtual object Resolve(IResolvableType resolvableType, IResolutionServices services)
     {
       ResolvedServiceEntry entry = _containerServices.ServiceEntryResolver.ResolveEntry(services, resolvableType);
+      if (entry == null) throw new YouFoundABugException("No entry, bug?");
       Activation activation = entry.Activate(services);
       activation.AssertIsFullyActivated();
       return activation.Instance;
