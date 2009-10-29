@@ -53,6 +53,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.MsMvc.Specs", "Exte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Benchmark", "Machine.Benchmark\Machine.Benchmark.csproj", "{4C98C39D-1726-441C-9185-3E198425C765}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Machine.Core.Aspects", "Machine.Core.Aspects\Machine.Core.Aspects.csproj", "{9CF6841F-6CAD-4DE8-B0E2-32E98B4868D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -147,6 +149,10 @@ Global
 		{4C98C39D-1726-441C-9185-3E198425C765}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C98C39D-1726-441C-9185-3E198425C765}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C98C39D-1726-441C-9185-3E198425C765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF6841F-6CAD-4DE8-B0E2-32E98B4868D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF6841F-6CAD-4DE8-B0E2-32E98B4868D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF6841F-6CAD-4DE8-B0E2-32E98B4868D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF6841F-6CAD-4DE8-B0E2-32E98B4868D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
